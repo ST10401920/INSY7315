@@ -1,0 +1,54 @@
+[versions]
+agp = "8.12.1"
+kotlin = "2.2.10"
+coreKtx = "1.17.0"
+appcompat = "1.7.1"
+material = "1.12.0"
+activity = "1.10.1"
+# constraintlayout = "2.2.1" # Defined below, remove this duplicate
+firebaseBom = "34.1.0"
+firebaseAuthKtx = "23.2.1"
+# credentials = "1.5.0" # Defined below, remove this duplicate
+# credentialsPlayServicesAuth = "1.5.0" # Defined below, remove this duplicate
+# googleid = "1.1.1" # Defined below, remove this duplicate
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+# googleGmsGoogleServices = "4.4.3" # Defined below, remove this duplicate
+constraintlayout = "2.2.1"  # Keep this one (or the one on line 8, just ensure only one)
+googleGmsGoogleServices = "4.4.3" # Keep this one (or the one on line 17)
+firebaseAuth = "24.0.1" # This seems to be a different version for firebaseAuth, decide which one you need
+credentials = "1.5.0"
+credentialsPlayServicesAuth = "1.5.0"
+googleid = "1.1.1"
+cardview = "1.0.0"
+
+# Combine the [libraries] blocks
+[libraries]
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+
+# Credential Manager
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+
+# Google Identity
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }

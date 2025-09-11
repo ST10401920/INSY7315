@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Nestify</string>
+    // todo
+    <string name="default_web_client_id">620437493972-kaerf0iphru05mc8en2lbkb3er4g46lj.apps.googleusercontent.com</string>
+</resources>
