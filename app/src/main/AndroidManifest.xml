@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nestify"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".Filter"
+            android:exported="false" />
         <activity
             android:name=".Chatbot"
             android:exported="false" />
