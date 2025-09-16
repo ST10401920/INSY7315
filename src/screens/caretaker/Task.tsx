@@ -358,9 +358,9 @@ const TaskPage: React.FC = () => {
       transition: "all 0.3s ease",
     },
     filterButtonActive: {
-      background: "#50bc72",
+      background: "linear-gradient(135deg, #50bc72, #41599c)",
       color: "white",
-      border: "1px solid #50bc72",
+      border: "none",
     },
     searchInput: {
       padding: "8px 16px",
@@ -468,7 +468,7 @@ const TaskPage: React.FC = () => {
       fontSize: "14px",
     },
     buttonPrimary: {
-      backgroundColor: "#50bc72",
+      background: "linear-gradient(135deg, #50bc72, #41599c)",
       color: "white",
     },
     buttonSecondary: {
@@ -568,7 +568,7 @@ const TaskPage: React.FC = () => {
       bottom: "24px",
       right: "24px",
       padding: "12px 20px",
-      backgroundColor: "#50bc72",
+      background: "linear-gradient(135deg, #50bc72, #41599c)",
       color: "white",
       borderRadius: "8px",
       boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)",
@@ -1219,7 +1219,8 @@ const TaskPage: React.FC = () => {
                         style={{
                           ...styles.button,
                           ...styles.buttonPrimary,
-                          backgroundColor: "#047857",
+                          background:
+                            "linear-gradient(135deg, #50bc72, #41599c)",
                         }}
                         onClick={() =>
                           updateTaskStatus(activeTask.id, "completed")

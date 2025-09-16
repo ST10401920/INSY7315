@@ -14,16 +14,20 @@ const Navbar: React.FC = () => (
           padding: "24px 0",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <img
-            src={logo}
-            alt="Nestify Logo"
-            style={{ width: "32px", height: "32px", borderRadius: "8px" }}
-          />
-          <span style={{ fontSize: "24px", fontWeight: "bold", color: "#000" }}>
-            Nestify
-          </span>
-        </div>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <img
+              src={logo}
+              alt="Nestify Logo"
+              style={{ width: "32px", height: "32px", borderRadius: "8px" }}
+            />
+            <span
+              style={{ fontSize: "24px", fontWeight: "bold", color: "#000" }}
+            >
+              Nestify
+            </span>
+          </div>
+        </Link>
         <nav style={{ display: "flex", gap: "32px" }}>
           <Link
             to="/properties"
@@ -57,7 +61,6 @@ const Navbar: React.FC = () => (
           >
             Sign In
           </Link>
-          
         </div>
       </div>
     </div>

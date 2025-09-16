@@ -25,7 +25,7 @@ const RoleSelection: React.FC = () => {
         navigate("/admin/dashboard");
         break;
       case "property_manager":
-        navigate("/property-manager/dashboard");
+        navigate("/propertymanager/properties");
         break;
       case "caretaker":
         navigate("/caretaker/tasks");

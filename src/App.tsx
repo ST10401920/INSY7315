@@ -2,6 +2,7 @@ import logo from "./assets/Nestify-Logo.png";
 import { Routes, Route, Link } from "react-router-dom";
 import SignIn from "./SignIn";
 import CreateAccountPage from "./CreateAccount";
+import ViewProperty from "./ViewProperty";
 import Navbar from "./components/Navbar";
 import RoleSelection from "./RoleSelection";
 import AdminDashboard from "./screens/admin/Dashboard";
@@ -860,6 +861,7 @@ const HomePage = () => {
 // Import the Task and UserManagement page components
 import Task from "./screens/caretaker/Task";
 import UserManagement from "./screens/admin/UserManagement";
+import Property from "./screens/propertyManager/Properties";
 
 function App() {
   return (
@@ -871,8 +873,12 @@ function App() {
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/users" element={<UserManagement />} />
       <Route path="/caretaker/tasks" element={<Task />} />
+      <Route path="/propertymanager/properties" element={<Property />} />
+      <Route path="/properties" element={<ViewProperty />} />
     </Routes>
   );
 }
+
+
 
 export default App;
