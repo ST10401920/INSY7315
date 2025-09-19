@@ -7,6 +7,7 @@ import propertyRoutes from "./src/routes/properties";
 import maintenanceRoutes from "./src/routes/maintenance";
 import userManagementRoutes from "./src/routes/userManagement";
 import announcementsRoutes from "./src/routes/announcements";
+import noAuthProperty from "./src/routes/noAuthProperty";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/properties", propertyRoutes);
 app.use("/maintenance", maintenanceRoutes);
 app.use("/user-management", userManagementRoutes);
 app.use("/announcements", announcementsRoutes);
+app.use("/no-auth-properties", noAuthProperty);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
