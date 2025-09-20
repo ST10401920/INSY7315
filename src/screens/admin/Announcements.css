@@ -1,0 +1,11 @@
+.announcement-form input:focus,
+.announcement-form textarea:focus {
+  border-color: #50bc72;
+  box-shadow: 0 0 0 3px rgba(80, 188, 114, 0.1);
+}
+
+.announcement-form input,
+.announcement-form textarea {
+  background-color: white !important;
+  color: #111827 !important;
+}
