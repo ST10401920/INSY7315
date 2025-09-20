@@ -87,11 +87,16 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (error) throw error;
+
+      // Store the token
+      if (data?.session?.access_token) {
+        localStorage.setItem("token", data.session.access_token);
+      }
 
       // Get user data after successful login
       const {
@@ -150,6 +155,10 @@ const LoginPage: React.FC = () => {
 
       if (session?.user) {
         console.log("User is authenticated, checking role...");
+        // Store the access token
+        if (session.access_token) {
+          localStorage.setItem("token", session.access_token);
+        }
         // User is authenticated, check their role
         const { data: profile } = await supabase
           .from("profiles")

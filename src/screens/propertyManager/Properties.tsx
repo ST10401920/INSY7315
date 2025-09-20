@@ -224,6 +224,19 @@ const Properties: React.FC = () => {
             >
               Error: {loadError}
             </div>
+          ) : properties.length === 0 ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "2rem",
+                backgroundColor: "#f8fafc",
+                borderRadius: "0.5rem",
+                color: "#64748b",
+              }}
+            >
+              No properties found. Click "Add Property" to create your first
+              property listing.
+            </div>
           ) : (
             <div
               style={{
