@@ -28,10 +28,12 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
 });
 
 router.get("/", requireAuth, async (req: Request, res: Response) => {
-  // fetch properties that are available
+  const userId = (req as any).userId;
+
   const { data, error } = await supabase
     .from("property")
     .select("*")
+    .eq("user_id", userId)
     .eq("available", true);
 
   if (error) return res.status(400).json({ error: error.message });
