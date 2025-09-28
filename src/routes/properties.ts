@@ -33,8 +33,7 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
   const { data, error } = await supabase
     .from("property")
     .select("*")
-    .eq("user_id", userId)
-    .eq("available", true);
+    .eq("user_id", userId);
 
   if (error) return res.status(400).json({ error: error.message });
 

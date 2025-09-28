@@ -4,5 +4,5 @@ import requireAuth from "../middleware/requireAuth";
 
 const router = Router();
 
-//to be continues 😭 🔨
+//to be continued 😭 🔨
 export default router;

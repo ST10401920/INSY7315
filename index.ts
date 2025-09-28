@@ -9,6 +9,8 @@ import userManagementRoutes from "./src/routes/userManagement";
 import announcementsRoutes from "./src/routes/announcements";
 import noAuthProperty from "./src/routes/noAuthProperty";
 import adminDash from "./src/routes/adminDash";
+import rentalsRoutes from "./src/routes/rentals";
+import applicationsRoutes from "./src/routes/applications";
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use("/user-management", userManagementRoutes);
 app.use("/announcements", announcementsRoutes);
 app.use("/no-auth-properties", noAuthProperty);
 app.use("/admin-dash", adminDash);
+app.use("/applications", applicationsRoutes);
+app.use("/rentals", rentalsRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
