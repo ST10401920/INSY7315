@@ -37,7 +37,7 @@ const Navbar: React.FC = () => (
             Properties
           </Link>
           <Link
-            to="/leases"
+            to="/propertymanager/leases"
             style={{
               color: "#374151",
               textDecoration: "none",

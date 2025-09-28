@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import RoleSelection from "./RoleSelection";
 import AdminDashboard from "./screens/admin/Dashboard";
 import Announcements from "./screens/admin/Announcements";
+import Lease from "./screens/propertyManager/Lease";
 // Inline SVG Icons
 const Building2Icon = ({ style }: { style?: React.CSSProperties }) => (
   <svg
@@ -876,6 +877,7 @@ function App() {
       <Route path="/admin/announcements" element={<Announcements />} />
       <Route path="/caretaker/tasks" element={<Task />} />
       <Route path="/propertymanager/properties" element={<Property />} />
+      <Route path="/propertymanager/leases" element={<Lease />} />
       <Route path="/properties" element={<ViewProperty />} />
     </Routes>
   );
