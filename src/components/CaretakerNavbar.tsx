@@ -27,7 +27,7 @@ const Navbar: React.FC = () => (
         </div>
         <nav style={{ display: "flex", gap: "32px" }}>
           <Link
-            to="/task"
+            to="/caretaker/tasks"
             style={{
               color: "#374151",
               textDecoration: "none",

@@ -1,6 +1,20 @@
 import supabase from "../../SupabaseClient";
 
 /**
+ * Gets the current session token from Supabase
+ * @returns Promise<string>
+ */
+export const getSupabaseToken = async (): Promise<string> => {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) {
+    throw new Error("No active session");
+  }
+  return session.access_token;
+};
+
+/**
  * Handles user logout and redirects to homepage
  * @returns Promise<void>
  */

@@ -864,6 +864,7 @@ const HomePage = () => {
 import Task from "./screens/caretaker/Task";
 import UserManagement from "./screens/admin/UserManagement";
 import Property from "./screens/propertyManager/Properties";
+import Maintenance from "./screens/propertyManager/Maintenance";
 
 function App() {
   return (
@@ -879,6 +880,7 @@ function App() {
       <Route path="/propertymanager/properties" element={<Property />} />
       <Route path="/propertymanager/leases" element={<Lease />} />
       <Route path="/properties" element={<ViewProperty />} />
+      <Route path="/propertymanager/maintenance" element={<Maintenance />} />
     </Routes>
   );
 }

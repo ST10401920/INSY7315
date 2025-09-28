@@ -1,204 +1,98 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
 import CaretakerNavbar from "../../components/CaretakerNavbar";
 import Footer from "../../components/Footer";
+import { getSupabaseToken } from "../../utils/auth";
 import "./Task.css";
 
-// Interface for task data structure
-interface TaskImage {
-  id: string;
-  url: string;
-  caption?: string;
-}
-
+// Interface for task data structure from API
 interface Task {
-  id: string;
-  title: string;
+  id: number;
+  property_id: number;
+  rental_id: number;
+  tenant_id: string;
+  caretaker_id?: string;
   description: string;
-  propertyName: string;
-  propertyUnit?: string;
-  priority: "low" | "medium" | "high" | "urgent";
-  status: "pending" | "in progress" | "completed";
-  dateSubmitted: string;
-  dateUpdated: string;
-  tenantName: string;
-  tenantContact: string;
-  images: TaskImage[];
-  completionImages: TaskImage[];
-  notes?: string;
+  category: string;
+  photos: string[];
+  urgency: "low" | "medium" | "high";
+  status: "pending" | "in_progress" | "completed";
+  progress_notes?: string[];
+  created_at: string;
+  updated_at: string;
+  // Additional fields that we'll get from joins or separate calls
+  property_name?: string;
+  property_unit?: string;
+  tenant_name?: string;
+  tenant_contact?: string;
 }
-
-// Mock data for demonstration
-const mockTasks: Task[] = [
-  {
-    id: "task-1",
-    title: "Leaking Kitchen Faucet",
-    description:
-      "The kitchen faucet has been dripping consistently. Water is collecting in the sink basin and it's getting worse.",
-    propertyName: "Sunset Heights",
-    propertyUnit: "Apt 301",
-    priority: "medium",
-    status: "pending",
-    dateSubmitted: "2025-08-30T15:23:00",
-    dateUpdated: "2025-08-30T15:23:00",
-    tenantName: "Sarah Johnson",
-    tenantContact: "sarah.j@example.com",
-    images: [
-      {
-        id: "img-1",
-        url: "https://images.unsplash.com/photo-1585400044344-a83be0859ee1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-        caption: "Kitchen faucet leaking",
-      },
-    ],
-    completionImages: [],
-  },
-  {
-    id: "task-2",
-    title: "Broken AC Unit",
-    description:
-      "The AC unit in the living room is not cooling properly and making a loud noise when running. Temperature in apartment is reaching 85°F.",
-    propertyName: "Marina Towers",
-    propertyUnit: "Unit 512",
-    priority: "high",
-    status: "in progress",
-    dateSubmitted: "2025-08-29T10:15:00",
-    dateUpdated: "2025-09-01T09:30:00",
-    tenantName: "Michael Chen",
-    tenantContact: "michael.c@example.com",
-    images: [
-      {
-        id: "img-2",
-        url: "https://images.unsplash.com/photo-1581275233127-20dc052072e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-        caption: "AC unit exterior",
-      },
-      {
-        id: "img-3",
-        url: "https://images.unsplash.com/photo-1611072337226-1972e4e0d0b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-        caption: "Thermostat reading",
-      },
-    ],
-    completionImages: [],
-    notes: "Ordered replacement part on 9/1. Should arrive within 2 days.",
-  },
-  {
-    id: "task-3",
-    title: "Clogged Bathroom Drain",
-    description:
-      "The bathroom sink is draining very slowly. I've tried using drain cleaner but it didn't solve the issue.",
-    propertyName: "Oak Ridge Apartments",
-    propertyUnit: "202",
-    priority: "low",
-    status: "completed",
-    dateSubmitted: "2025-08-27T14:40:00",
-    dateUpdated: "2025-08-28T11:15:00",
-    tenantName: "Emily Rodriguez",
-    tenantContact: "emily.r@example.com",
-    images: [
-      {
-        id: "img-4",
-        url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-        caption: "Bathroom sink with standing water",
-      },
-    ],
-    completionImages: [
-      {
-        id: "img-5",
-        url: "https://images.unsplash.com/photo-1620626011761-996c5c8d0d7b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-        caption: "Cleaned drain and pipes",
-      },
-      {
-        id: "img-6",
-        url: "https://images.unsplash.com/photo-1620626710703-9dfbf9d88b2a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-        caption: "Water flowing properly now",
-      },
-    ],
-    notes:
-      "Used snake tool to remove hair clog. Also applied enzyme cleaner to prevent future clogs.",
-  },
-  {
-    id: "task-4",
-    title: "Broken Door Handle",
-    description:
-      "The handle on the front door is loose and sometimes gets stuck. It's becoming difficult to open and close the door properly.",
-    propertyName: "Willow Gardens",
-    propertyUnit: "House 7",
-    priority: "medium",
-    status: "pending",
-    dateSubmitted: "2025-09-01T08:12:00",
-    dateUpdated: "2025-09-01T08:12:00",
-    tenantName: "Robert Taylor",
-    tenantContact: "robert.t@example.com",
-    images: [
-      {
-        id: "img-7",
-        url: "https://images.unsplash.com/photo-1581622558663-b2886e4f2cd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&q=80",
-        caption: "Door handle is misaligned",
-      },
-    ],
-    completionImages: [],
-  },
-  {
-    id: "task-5",
-    title: "Smoke Detector Beeping",
-    description:
-      "The smoke detector in the hallway has been beeping intermittently for the past two days. Likely needs a battery replacement.",
-    propertyName: "Parkside Commons",
-    propertyUnit: "Apt 118",
-    priority: "urgent",
-    status: "in progress",
-    dateSubmitted: "2025-08-31T19:45:00",
-    dateUpdated: "2025-09-01T10:20:00",
-    tenantName: "Jennifer Kim",
-    tenantContact: "jennifer.k@example.com",
-    images: [],
-    completionImages: [],
-    notes:
-      "Scheduled visit for today at 2PM. Will replace batteries and check all smoke detectors in unit.",
-  },
-];
 
 const TaskPage: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>(mockTasks);
-  const [loading, setLoading] = useState(false);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [statusUpdateMessage, setStatusUpdateMessage] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
 
-  useEffect(() => {
-    // In a real app, you would fetch tasks from your API
-    setLoading(true);
-    // Simulating API fetch
-    setTimeout(() => {
-      setTasks(mockTasks);
+  // Fetch tasks assigned to the current caretaker
+  const fetchTasks = async () => {
+    try {
+      const token = await getSupabaseToken();
+      const response = await axios.get(
+        "http://localhost:3000/maintenance/assigned",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setTasks(response.data.maintenance || []);
       setLoading(false);
-    }, 800);
+    } catch (err: any) {
+      console.error("Error fetching tasks:", err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
   }, []);
 
   // Update task status
-  const updateTaskStatus = (
-    taskId: string,
-    newStatus: "pending" | "in progress" | "completed"
+  const updateTaskStatus = async (
+    taskId: number,
+    newStatus: "pending" | "in_progress" | "completed"
   ) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              status: newStatus,
-              dateUpdated: new Date().toISOString(),
-            }
-          : task
-      )
-    );
+    try {
+      const token = await getSupabaseToken();
+      await axios.patch(
+        `http://localhost:3000/maintenance/${taskId}/status`,
+        { status: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    // Show success message
-    setStatusUpdateMessage(`Task status updated to ${newStatus}`);
-    setTimeout(() => setStatusUpdateMessage(""), 3000);
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === taskId
+            ? {
+                ...task,
+                status: newStatus,
+                updated_at: new Date().toISOString(),
+              }
+            : task
+        )
+      );
 
-    // Close modal if task is set to completed
-    if (newStatus === "completed" && activeTask?.id === taskId) {
-      setTimeout(() => setActiveTask(null), 1500);
+      // Show success message
+      setStatusUpdateMessage(`Task status updated to ${newStatus}`);
+      setTimeout(() => setStatusUpdateMessage(""), 3000);
+
+      // Close modal if task is set to completed
+      if (newStatus === "completed" && activeTask?.id === taskId) {
+        setTimeout(() => setActiveTask(null), 1500);
+      }
+    } catch (err: any) {
+      console.error("Error updating task status:", err);
+      setStatusUpdateMessage("Failed to update task status");
     }
   };
 
@@ -211,39 +105,50 @@ const TaskPage: React.FC = () => {
   };
 
   // Submit completion photos
-  const submitCompletionPhotos = (taskId: string) => {
+  const submitCompletionPhotos = async (taskId: number) => {
     if (uploadedImages.length === 0) return;
 
-    // In a real app, you would upload these to your storage service
-    const newCompletionImages: TaskImage[] = uploadedImages.map(
-      (file, index) => ({
-        id: `new-img-${Date.now()}-${index}`,
-        url: URL.createObjectURL(file),
-        caption: `Completion photo ${index + 1}`,
-      })
-    );
+    try {
+      const formData = new FormData();
+      uploadedImages.forEach((file) => {
+        formData.append("photos", file);
+      });
 
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              completionImages: [
-                ...task.completionImages,
-                ...newCompletionImages,
-              ],
-              dateUpdated: new Date().toISOString(),
-            }
-          : task
-      )
-    );
+      const token = await getSupabaseToken();
+      const response = await axios.post(
+        `http://localhost:3000/maintenance/${taskId}/photos`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-    // Clear uploaded files
-    setUploadedImages([]);
+      // Update task with new photos from API response
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === taskId
+            ? {
+                ...task,
+                photos: [...task.photos, ...response.data.photos],
+                updated_at: new Date().toISOString(),
+              }
+            : task
+        )
+      );
 
-    // Show success message
-    setStatusUpdateMessage("Photos uploaded successfully");
-    setTimeout(() => setStatusUpdateMessage(""), 3000);
+      // Clear uploaded files
+      setUploadedImages([]);
+
+      // Show success message
+      setStatusUpdateMessage("Photos uploaded successfully");
+      setTimeout(() => setStatusUpdateMessage(""), 3000);
+    } catch (err: any) {
+      console.error("Error uploading images:", err);
+      setStatusUpdateMessage("Failed to upload images");
+    }
   };
 
   // Filter tasks by status
@@ -263,33 +168,29 @@ const TaskPage: React.FC = () => {
     });
   };
 
-  // Get appropriate background color for priority levels
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
+  // Get appropriate background color for urgency levels
+  const getPriorityColor = (urgency: string) => {
+    switch (urgency) {
       case "low":
         return "#e5f6ff";
       case "medium":
         return "#fff8e6";
       case "high":
         return "#ffe9e6";
-      case "urgent":
-        return "#ffdfdf";
       default:
         return "#f3f4f6";
     }
   };
 
-  // Get appropriate text color for priority levels
-  const getPriorityTextColor = (priority: string) => {
-    switch (priority) {
+  // Get appropriate text color for urgency levels
+  const getPriorityTextColor = (urgency: string) => {
+    switch (urgency) {
       case "low":
         return "#0284c7";
       case "medium":
         return "#ca8a04";
       case "high":
         return "#dc2626";
-      case "urgent":
-        return "#991b1b";
       default:
         return "#374151";
     }
@@ -660,11 +561,11 @@ const TaskPage: React.FC = () => {
             <button
               style={{
                 ...styles.filterButton,
-                ...(filterStatus === "in progress"
+                ...(filterStatus === "in_progress"
                   ? styles.filterButtonActive
                   : {}),
               }}
-              onClick={() => setFilterStatus("in progress")}
+              onClick={() => setFilterStatus("in_progress")}
             >
               In Progress
             </button>
@@ -697,20 +598,20 @@ const TaskPage: React.FC = () => {
                 >
                   <div style={styles.taskHeader}>
                     <div>
-                      <h3 style={styles.taskTitle}>{task.title}</h3>
+                      <h3 style={styles.taskTitle}>{task.category}</h3>
                       <p style={styles.taskProperty}>
-                        {task.propertyName}{" "}
-                        {task.propertyUnit && `• ${task.propertyUnit}`}
+                        {task.property_name || "Property"}{" "}
+                        {task.property_unit && `• ${task.property_unit}`}
                       </p>
                       <div
                         style={{
                           ...styles.priorityBadge,
-                          backgroundColor: getPriorityColor(task.priority),
-                          color: getPriorityTextColor(task.priority),
+                          backgroundColor: getPriorityColor(task.urgency),
+                          color: getPriorityTextColor(task.urgency),
                         }}
                       >
-                        {task.priority.charAt(0).toUpperCase() +
-                          task.priority.slice(1)}{" "}
+                        {task.urgency.charAt(0).toUpperCase() +
+                          task.urgency.slice(1)}{" "}
                         Priority
                       </div>
                     </div>
@@ -722,7 +623,7 @@ const TaskPage: React.FC = () => {
                           color: getStatusColor(task.status).text,
                         }}
                       >
-                        {task.status === "in progress"
+                        {task.status === "in_progress"
                           ? "In Progress"
                           : task.status.charAt(0).toUpperCase() +
                             task.status.slice(1)}
@@ -755,7 +656,7 @@ const TaskPage: React.FC = () => {
                           <line x1="8" y1="2" x2="8" y2="6"></line>
                           <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
-                        <span>Submitted {formatDate(task.dateSubmitted)}</span>
+                        <span>Submitted {formatDate(task.created_at)}</span>
                       </div>
                       <div style={styles.taskMetaItem}>
                         <svg
@@ -771,18 +672,18 @@ const TaskPage: React.FC = () => {
                           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                           <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        <span>{task.tenantName}</span>
+                        <span>{task.tenant_name || "Tenant"}</span>
                       </div>
                     </div>
 
                     {/* Image previews */}
-                    {task.images.length > 0 && (
+                    {task.photos && task.photos.length > 0 && (
                       <div style={styles.imagePreviewContainer}>
-                        {task.images.map((image) => (
+                        {task.photos.map((photoUrl, index) => (
                           <img
-                            key={image.id}
-                            src={image.url}
-                            alt={image.caption || "Task image"}
+                            key={index}
+                            src={photoUrl}
+                            alt="Task image"
                             style={styles.imagePreview}
                             onClick={() => setActiveTask(task)}
                           />
@@ -790,7 +691,7 @@ const TaskPage: React.FC = () => {
                       </div>
                     )}
 
-                    {task.notes && (
+                    {task.progress_notes && task.progress_notes.length > 0 && (
                       <div style={styles.noteSection}>
                         <p
                           style={{
@@ -801,7 +702,9 @@ const TaskPage: React.FC = () => {
                         >
                           Notes:
                         </p>
-                        <p style={styles.noteText}>{task.notes}</p>
+                        <p style={styles.noteText}>
+                          {task.progress_notes[task.progress_notes.length - 1]}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -884,7 +787,7 @@ const TaskPage: React.FC = () => {
                       marginBottom: "12px",
                     }}
                   >
-                    {activeTask.title}
+                    {activeTask.category}
                   </h3>
                   <div
                     style={{
@@ -898,12 +801,12 @@ const TaskPage: React.FC = () => {
                     <div
                       style={{
                         ...styles.priorityBadge,
-                        backgroundColor: getPriorityColor(activeTask.priority),
-                        color: getPriorityTextColor(activeTask.priority),
+                        backgroundColor: getPriorityColor(activeTask.urgency),
+                        color: getPriorityTextColor(activeTask.urgency),
                       }}
                     >
-                      {activeTask.priority.charAt(0).toUpperCase() +
-                        activeTask.priority.slice(1)}{" "}
+                      {activeTask.urgency.charAt(0).toUpperCase() +
+                        activeTask.urgency.slice(1)}{" "}
                       Priority
                     </div>
                     <span
@@ -913,7 +816,7 @@ const TaskPage: React.FC = () => {
                         color: getStatusColor(activeTask.status).text,
                       }}
                     >
-                      {activeTask.status === "in progress"
+                      {activeTask.status === "in_progress"
                         ? "In Progress"
                         : activeTask.status.charAt(0).toUpperCase() +
                           activeTask.status.slice(1)}
@@ -926,8 +829,9 @@ const TaskPage: React.FC = () => {
                       marginBottom: "16px",
                     }}
                   >
-                    <strong>{activeTask.propertyName}</strong>{" "}
-                    {activeTask.propertyUnit && `• ${activeTask.propertyUnit}`}
+                    <strong>{activeTask.property_name || "Property"}</strong>{" "}
+                    {activeTask.property_unit &&
+                      `• ${activeTask.property_unit}`}
                   </p>
                   <p style={{ ...styles.taskDescription, fontSize: "16px" }}>
                     {activeTask.description}
@@ -957,9 +861,7 @@ const TaskPage: React.FC = () => {
                         <line x1="8" y1="2" x2="8" y2="6"></line>
                         <line x1="3" y1="10" x2="21" y2="10"></line>
                       </svg>
-                      <span>
-                        Submitted {formatDate(activeTask.dateSubmitted)}
-                      </span>
+                      <span>Submitted {formatDate(activeTask.created_at)}</span>
                     </div>
                     <div style={styles.taskMetaItem}>
                       <svg
@@ -985,7 +887,7 @@ const TaskPage: React.FC = () => {
                         <line x1="3" y1="10" x2="21" y2="10"></line>
                       </svg>
                       <span>
-                        Last updated {formatDate(activeTask.dateUpdated)}
+                        Last updated {formatDate(activeTask.updated_at)}
                       </span>
                     </div>
                     <div style={styles.taskMetaItem}>
@@ -1002,7 +904,7 @@ const TaskPage: React.FC = () => {
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                       </svg>
-                      <span>{activeTask.tenantName}</span>
+                      <span>{activeTask.tenant_name || "Tenant"}</span>
                     </div>
                     <div style={styles.taskMetaItem}>
                       <svg
@@ -1017,66 +919,39 @@ const TaskPage: React.FC = () => {
                       >
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                       </svg>
-                      <span>{activeTask.tenantContact}</span>
+                      <span>
+                        {activeTask.tenant_contact || "No contact info"}
+                      </span>
                     </div>
                   </div>
                 </div>
 
-                {activeTask.notes && (
-                  <div style={styles.modalSection}>
-                    <h4 style={styles.modalSectionTitle}>Notes</h4>
-                    <div style={styles.noteSection}>
-                      <p style={styles.noteText}>{activeTask.notes}</p>
+                {activeTask.progress_notes &&
+                  activeTask.progress_notes.length > 0 && (
+                    <div style={styles.modalSection}>
+                      <h4 style={styles.modalSectionTitle}>Progress Notes</h4>
+                      <div style={styles.noteSection}>
+                        {activeTask.progress_notes.map((note, index) => (
+                          <p key={index} style={styles.noteText}>
+                            {note}
+                          </p>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Tenant's Images */}
-                {activeTask.images.length > 0 && (
+                {/* Task Photos */}
+                {activeTask.photos && activeTask.photos.length > 0 && (
                   <div style={styles.modalSection}>
-                    <h4 style={styles.modalSectionTitle}>Images from Tenant</h4>
+                    <h4 style={styles.modalSectionTitle}>Task Photos</h4>
                     <div style={styles.imageGallery}>
-                      {activeTask.images.map((image) => (
-                        <div
-                          key={image.id}
-                          style={styles.galleryImageContainer}
-                        >
+                      {activeTask.photos.map((photoUrl, index) => (
+                        <div key={index} style={styles.galleryImageContainer}>
                           <img
-                            src={image.url}
-                            alt={image.caption || "Task image"}
+                            src={photoUrl}
+                            alt="Task image"
                             style={styles.galleryImage}
                           />
-                          {image.caption && (
-                            <div style={styles.galleryImageCaption}>
-                              {image.caption}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Completion Images */}
-                {activeTask.completionImages.length > 0 && (
-                  <div style={styles.modalSection}>
-                    <h4 style={styles.modalSectionTitle}>Completion Images</h4>
-                    <div style={styles.imageGallery}>
-                      {activeTask.completionImages.map((image) => (
-                        <div
-                          key={image.id}
-                          style={styles.galleryImageContainer}
-                        >
-                          <img
-                            src={image.url}
-                            alt={image.caption || "Completion image"}
-                            style={styles.galleryImage}
-                          />
-                          {image.caption && (
-                            <div style={styles.galleryImageCaption}>
-                              {image.caption}
-                            </div>
-                          )}
                         </div>
                       ))}
                     </div>
@@ -1200,7 +1075,7 @@ const TaskPage: React.FC = () => {
                       <button
                         style={{
                           ...styles.button,
-                          ...(activeTask.status === "in progress"
+                          ...(activeTask.status === "in_progress"
                             ? {
                                 ...styles.buttonPrimary,
                                 opacity: 0.5,
@@ -1209,9 +1084,9 @@ const TaskPage: React.FC = () => {
                             : styles.buttonSecondary),
                         }}
                         onClick={() =>
-                          updateTaskStatus(activeTask.id, "in progress")
+                          updateTaskStatus(activeTask.id, "in_progress")
                         }
-                        disabled={activeTask.status === "in progress"}
+                        disabled={activeTask.status === "in_progress"}
                       >
                         In Progress
                       </button>
