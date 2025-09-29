@@ -12,9 +12,9 @@
         android:title="Chatbot" />
 
     <item
-        android:id="@+id/navigation_analysis"
+        android:id="@+id/navigation_dashboard"
         android:icon="@drawable/analysis"
-        android:title="Analysis" />
+        android:title="Dashboard" />
 
     <item
         android:id="@+id/navigation_profile"

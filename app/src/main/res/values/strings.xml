@@ -1,5 +1,48 @@
 <resources>
     <string name="app_name">Nestify</string>
-    // todo
     <string name="default_web_client_id">620437493972-kaerf0iphru05mc8en2lbkb3er4g46lj.apps.googleusercontent.com</string>
+    <string name="english">English</string>
+
+    <string name="create_account">Create your\nAccount</string>
+    <string name="enter_details">Enter your details to continue</string>
+    <string name="or_register_with">Or register with</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="register">Register</string>
+    <string name="already_have_account">Already have an account\?</string>
+    <string name="sign_in">Sign In</string>
+
+    <string name="sign_in_account">Sign in to your\nAccount</string>
+    <string name="enter_email_password">Enter your email and password to log in</string>
+    <string name="or_login_with">Or login with</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot Password \?</string>
+    <string name="login">Login</string>
+    <string name="do_not_have_account">Don\'t have an account\? </string>
+    <string name="sign_up">Sign Up</string>
+
+    <string name="find_rental_hint">Find a Rental</string>
+    <string name="no_results_found">No results found</string>
+
+    <string name="filter">Filter</string>
+    <string name="amenities">Amenities</string>
+    <string name="all">All</string>
+    <string name="gym">Gym</string>
+    <string name="pool">Pool</string>
+    <string name="wifi">Wifi</string>
+    <string name="price_range">Price Range</string>
+    <string name="price_r600">R5000</string>
+    <string name="price_r1500">R6000</string>
+    <string name="price_r2000">R7000</string>
+    <string name="price_r2500">R8000</string>
+    <string name="price_r3000">R9000</string>
+    <string name="price_r5000">R10000</string>
+    <string name="bedrooms">Bedrooms</string>
+    <string name="bedroom_1">1</string>
+    <string name="bedroom_2">2</string>
+    <string name="bedroom_3">3</string>
+    <string name="bedroom_4">4</string>
+    <string name="bedroom_5_plus">5+</string>
+    <string name="reset_filter">Reset Filter</string>
+    <string name="apply">Apply</string>
 </resources>

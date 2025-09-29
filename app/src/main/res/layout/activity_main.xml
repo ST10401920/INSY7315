@@ -14,7 +14,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/logo"
-        android:contentDescription="Home"
+        android:contentDescription="@string/app_name"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in to your\nAccount"
+        android:text="@string/sign_in_account"
         android:textSize="26sp"
         android:textStyle="bold"
         android:textAlignment="center"
@@ -39,7 +39,7 @@
         android:id="@+id/tvSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter your email and password to log in"
+        android:text="@string/enter_email_password"
         android:textSize="14sp"
         android:textColor="#FFCCBC"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
@@ -90,7 +90,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="  Or login with  "
+                    android:text="@string/or_login_with"
                     android:textColor="#AAAAAA"
                     android:textSize="12sp"/>
 
@@ -109,7 +109,7 @@
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:hint="Email"
+                    android:hint="@string/email_hint"
                     android:inputType="textEmailAddress"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,7 +122,7 @@
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:hint="Password"
+                    android:hint="@string/password_hint"
                     android:inputType="textPassword"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,7 +138,7 @@
                     android:id="@+id/cbRemember"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Remember me"
+                    android:text="@string/remember_me"
                     android:textColor="#757575"
                     android:textSize="14sp"/>
 
@@ -151,7 +151,7 @@
                     android:id="@+id/tvForgotPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Forgot Password ?"
+                    android:text="@string/forgot_password"
                     android:textColor="#4D81E7"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -163,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:gravity="center"
-                android:text="Login"
+                android:text="@string/login"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -182,13 +182,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Don't have an account? "
+                    android:text="@string/do_not_have_account"
                     android:textColor="#AAA"/>
                 <TextView
                     android:id="@+id/tvSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sign Up"
+                    android:text="@string/sign_up"
                     android:textColor="#4D81E7"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -196,7 +196,7 @@
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        android:id="@+id/ivFingerprint"
+        android:id="@+id/start_authentication"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/ic_fingerprint"
@@ -204,6 +204,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,19 @@
 package com.vcsd.nestify
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -16,6 +22,7 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.CredentialManager
 import com.google.android.gms.common.SignInButton
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
@@ -25,7 +32,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import com.google.firebase.internal.InternalTokenResult
+//import com.google.firebase.messaging.FirebaseMessaging
+//import com.google.firebase.messaging.messaging
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,8 +42,6 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.POST
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -52,22 +58,80 @@ class Register : AppCompatActivity() {
     private lateinit var credentialManager: CredentialManager
     private lateinit var getCredentialRequest: GetCredentialRequest
 
+//    private val requestPermissionLauncher = registerForActivityResult(
+//        ActivityResultContracts.RequestPermission(),
+//    ) { isGranted: Boolean ->
+//        if (isGranted) {
+//            Firebase.messaging.isAutoInitEnabled = true
+//            Toast.makeText(this, "Notifications enabled", Toast.LENGTH_SHORT).show()
+//        } else {
+//            Toast.makeText(this, "Notifications disabled", Toast.LENGTH_SHORT).show()
+//        }
+//
+//    }
+
+//    private fun askNotificationPermission() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            when {
+//                ContextCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.POST_NOTIFICATIONS
+//                ) == PackageManager.PERMISSION_GRANTED -> {
+//                    // Permission is already granted
+//                    Firebase.messaging.isAutoInitEnabled = true
+//                    Toast.makeText(this, "Notifications already enabled", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+//                    AlertDialog.Builder(this)
+//                        .setTitle("Notifications Permission")
+//                        .setMessage("CozySpaces would like to send you notifications about bookings and updates.")
+//                        .setPositiveButton("Allow") { _, _ ->
+//                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+//                        }
+//                        .setNegativeButton("No Thanks", null)
+//                        .show()
+//                }
+//
+//                else -> {
+//                    // First time request
+//                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+//                }
+//            }
+//        } else {
+//            // For Android < 13, no runtime permission required
+//            Firebase.messaging.isAutoInitEnabled = true
+//        }
+//    }
+
     companion object {
         private const val TAG = "Register"
     }
 
-    private val retrofitInstance by lazy {
-        Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
 
-    private val apiService by lazy { retrofitInstance.create(com.vcsd.nestify.ApiService::class.java) }
+    private val apiService = RetrofitClient.apiService
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+//        askNotificationPermission()
+
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+//                return@OnCompleteListener
+//            }
+//            val token = task.result
+//            val msg = getString(R.string.msg_token_fmt, token)
+//            Log.d(TAG, msg)
+//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+//        })
+
+
         setContentView(R.layout.activity_register)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -88,15 +152,15 @@ class Register : AppCompatActivity() {
             .build()
 
         findViewById<SignInButton>(R.id.btnGoogle).setOnClickListener {
-            Log.d(com.vcsd.nestify.Register.Companion.TAG, "OnClickListener ATTACHED AND TRIGGERED") // Basic log
-            Log.d(com.vcsd.nestify.Register.Companion.TAG, "btnGoogle clicked")
+            Log.d(TAG, "OnClickListener ATTACHED AND TRIGGERED") // Basic log
+            Log.d(TAG, "btnGoogle clicked")
             signInWithGoogle()
         }
 
         val etEmail = findViewById<TextInputEditText>(R.id.etEmail)
         val etPassword = findViewById<TextInputEditText>(R.id.etPassword)
         val tvRegister = findViewById<TextView>(R.id.tvRegister)
-        val tvSignUp = findViewById<TextView>(R.id.tvSignUp)
+        val tvSignUp = findViewById<TextView>(R.id.tvSignIn)
 
         tvSignUp.setOnClickListener {
             val intent = Intent(this@Register, MainActivity::class.java)
@@ -119,28 +183,29 @@ class Register : AppCompatActivity() {
                             if (signupResponse?.accessToken != null) {
                                 saveToken(signupResponse.accessToken)
                                 Toast.makeText(this@Register, "Signup successful! Token stored.", Toast.LENGTH_LONG).show()
-                                Log.d(com.vcsd.nestify.Register.Companion.TAG, "Token: ${signupResponse.accessToken}, User: ${signupResponse.user}")
+                                Log.d(TAG, "Token: ${signupResponse.accessToken}, User: ${signupResponse.user}")
                                 val intent = Intent(this@Register, HomePage::class.java)
                                 startActivity(intent)
                             } else {
                                 Toast.makeText(this@Register, "Signup successful, but no token received.", Toast.LENGTH_LONG).show()
-                                Log.e(com.vcsd.nestify.Register.Companion.TAG, "Signup success but no token/user: ${response.body()}")
+                                Log.e(TAG, "Signup success but no token/user: ${response.body()}")
                             }
                         } else {
                             val errorBody = response.errorBody()?.string() ?: "Unknown error"
                             Toast.makeText(this@Register, "Signup failed: $errorBody", Toast.LENGTH_LONG).show()
-                            Log.e(com.vcsd.nestify.Register.Companion.TAG, "Signup failed: ${response.code()} - $errorBody")
+                            Log.e(TAG, "Signup failed: ${response.code()} - $errorBody")
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(this@Register, "Network error: ${e.message}", Toast.LENGTH_LONG).show()
-                        Log.e(com.vcsd.nestify.Register.Companion.TAG, "Network error", e)
+                        Log.e(TAG, "Network error", e)
                     }
                 }
             }
         }
     }
+
     private fun signInWithGoogle() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -201,6 +266,9 @@ class Register : AppCompatActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
                             val url = URL("http://10.0.2.2:3000/auth/firebase")
+                            //val url = URL("http://10.0.0.119:3000/auth/firebase")
+                            //val url = URL("https://prog7314-express.onrender.com/auth/firebase")
+                            //val url = URL("http://172.20.10.2:3000/auth/firebase")
                             val conn = url.openConnection() as HttpURLConnection
                             conn.requestMethod = "POST"
                             conn.setRequestProperty("Content-Type", "application/json")

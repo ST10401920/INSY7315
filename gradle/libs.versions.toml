@@ -1,5 +1,6 @@
 [versions]
 agp = "8.12.1"
+flexbox = "3.0.0"
 kotlin = "2.2.10"
 coreKtx = "1.17.0"
 appcompat = "1.7.1"
@@ -28,6 +29,7 @@ cardview = "1.0.0"
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+flexbox = { module = "com.google.android:flexbox", version.ref = "flexbox" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
