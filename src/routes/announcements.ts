@@ -8,13 +8,6 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
   const adminId = (req as any).userId;
   const { title, message } = req.body;
 
-  //this could be the issue if it dont work possibly.
-  if ((req as any).role !== "admin") {
-    return res
-      .status(403)
-      .json({ error: "Only admins can post announcements" });
-  }
-
   const { data, error } = await supabase
     .from("announcments")
     .insert([

@@ -9,7 +9,7 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
   const { name, location, images, bedrooms, price, amenities } = req.body;
 
   const { data, error } = await supabase
-    .from("property") 
+    .from("property")
     .insert([
       {
         user_id: userId,
@@ -28,10 +28,12 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
 });
 
 router.get("/", requireAuth, async (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+
   const { data, error } = await supabase
-    .from("property") 
+    .from("property")
     .select("*")
-    .eq("available", true);
+    .eq("user_id", userId);
 
   if (error) return res.status(400).json({ error: error.message });
 
@@ -43,7 +45,7 @@ router.get("/:id", requireAuth, async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const { data, error } = await supabase
-    .from("property") 
+    .from("property")
     .select("*")
     .eq("id", id)
     .single();
