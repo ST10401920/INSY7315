@@ -197,4 +197,91 @@ router.get("/caretakers", requireAuth, async (req: Request, res: Response) => {
   }
 });
 
+
+// PUT /maintenance/:id/update - caretaker updates task status and optionally adds photos
+router.put("/:id/update", requireAuth, async (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+  const { id } = req.params;
+  const { status, progress_notes, photos } = req.body;
+
+  try {
+    // Validate status if provided
+    const allowedStatuses = ["pending", "in_progress", "completed"];
+    if (status && !allowedStatuses.includes(status)) {
+      return res.status(400).json({ error: "Invalid status value." });
+    }
+
+    // Fetch the maintenance request
+    const { data: maintenance, error: fetchError } = await supabase
+      .from("maintenance")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (fetchError || !maintenance) {
+      return res.status(404).json({ error: "Maintenance request not found" });
+    }
+
+    // Verify the caretaker is assigned to this task
+    if (maintenance.caretaker_id !== userId) {
+      return res.status(403).json({ error: "You are not assigned to this task" });
+    }
+
+    // Prepare update payload
+    const updatePayload: any = {
+      updated_at: new Date().toISOString(),
+    };
+
+    // Update status if provided
+    if (status) {
+      updatePayload.status = status;
+    }
+
+    // Add progress notes if provided
+    if (progress_notes) {
+      const currentNotes = maintenance.progress_notes || [];
+      const newNote = typeof progress_notes === 'string' ? progress_notes : progress_notes.join('; ');
+      updatePayload.progress_notes = [...currentNotes, newNote];
+    }
+
+    // Add photos if provided
+    if (photos && Array.isArray(photos) && photos.length > 0) {
+      const currentPhotos = maintenance.photos || [];
+      updatePayload.photos = [...currentPhotos, ...photos];
+    }
+
+    // Update the maintenance request
+    const { data, error } = await supabase
+      .from("maintenance")
+      .update(updatePayload)
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.json({ 
+      maintenance: data?.[0],
+      message: "Task updated successfully"
+    });
+
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Server error" });
+  }
+});
+
+
+//get for tenant
+router.get("/:id", requireAuth, async(req:Request, res:Response) => {
+  const userId = (req as any).userId;
+  const { id } = req.params;
+  const { data, error } = await supabase
+      .from("maintenance")
+      .select("*")
+      
+    if (error) return res.status(400).json({ error: error.message });
+    return res.json({ maintenance: data });
+
+});
 export default router;
