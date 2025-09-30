@@ -39,16 +39,6 @@ const Navbar: React.FC = () => (
           >
             View Properties
           </Link>
-          <a
-            href="#contact"
-            style={{
-              color: "#374151",
-              textDecoration: "none",
-              fontWeight: "500",
-            }}
-          >
-            Contact
-          </a>
         </nav>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <Link

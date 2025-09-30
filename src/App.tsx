@@ -7,6 +7,8 @@ import Navbar from "./components/Navbar";
 import RoleSelection from "./RoleSelection";
 import AdminDashboard from "./screens/admin/Dashboard";
 import Announcements from "./screens/admin/Announcements";
+import Announcement from "./screens/propertyManager/Announcement";
+import Announcementcare from "./screens/caretaker/Announcement";
 import Lease from "./screens/propertyManager/Lease";
 // Inline SVG Icons
 const Building2Icon = ({ style }: { style?: React.CSSProperties }) => (
@@ -865,6 +867,7 @@ import Task from "./screens/caretaker/Task";
 import UserManagement from "./screens/admin/UserManagement";
 import Property from "./screens/propertyManager/Properties";
 import Maintenance from "./screens/propertyManager/Maintenance";
+import Reports from "./screens/admin/Reports";
 
 function App() {
   return (
@@ -881,6 +884,9 @@ function App() {
       <Route path="/propertymanager/leases" element={<Lease />} />
       <Route path="/properties" element={<ViewProperty />} />
       <Route path="/propertymanager/maintenance" element={<Maintenance />} />
+      <Route path="/propertymanager/announcement" element={<Announcement />} />
+      <Route path="/caretaker/announcement" element={<Announcementcare />} />
+      <Route path="/admin/reports" element={<Reports />} />
     </Routes>
   );
 }

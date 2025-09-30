@@ -34,6 +34,7 @@ const TaskPage: React.FC = () => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [statusUpdateMessage, setStatusUpdateMessage] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [newNote, setNewNote] = useState("");
 
   // Fetch tasks assigned to the current caretaker
   const fetchTasks = async () => {
@@ -64,8 +65,8 @@ const TaskPage: React.FC = () => {
   ) => {
     try {
       const token = await getSupabaseToken();
-      await axios.patch(
-        `http://localhost:3000/maintenance/${taskId}/status`,
+      await axios.put(
+        `http://localhost:3000/maintenance/${taskId}/update`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -83,7 +84,9 @@ const TaskPage: React.FC = () => {
       );
 
       // Show success message
-      setStatusUpdateMessage(`Task status updated to ${newStatus}`);
+      setStatusUpdateMessage(
+        `Task status updated to ${newStatus.replace("_", " ")}`
+      );
       setTimeout(() => setStatusUpdateMessage(""), 3000);
 
       // Close modal if task is set to completed
@@ -115,13 +118,25 @@ const TaskPage: React.FC = () => {
       });
 
       const token = await getSupabaseToken();
-      const response = await axios.post(
-        `http://localhost:3000/maintenance/${taskId}/photos`,
-        formData,
+
+      // First upload photos to get URLs (you might need a separate upload endpoint)
+      // For now, let's assume we have the photo URLs
+      // In a real implementation, you'd upload to cloud storage first
+      const photoUrls = uploadedImages.map(
+        (_, index) =>
+          `https://your-storage-service.com/photos/${taskId}-${Date.now()}-${index}.jpg`
+      );
+
+      const response = await axios.put(
+        `http://localhost:3000/maintenance/${taskId}/update`,
+        {
+          photos: photoUrls,
+          progress_notes: "Photos uploaded by caretaker",
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -132,12 +147,23 @@ const TaskPage: React.FC = () => {
           task.id === taskId
             ? {
                 ...task,
-                photos: [...task.photos, ...response.data.photos],
+                photos: response.data.maintenance.photos,
+                progress_notes: response.data.maintenance.progress_notes,
                 updated_at: new Date().toISOString(),
               }
             : task
         )
       );
+
+      // Update activeTask if it's the same task
+      if (activeTask?.id === taskId) {
+        setActiveTask({
+          ...activeTask,
+          photos: response.data.maintenance.photos,
+          progress_notes: response.data.maintenance.progress_notes,
+          updated_at: new Date().toISOString(),
+        });
+      }
 
       // Clear uploaded files
       setUploadedImages([]);
@@ -148,6 +174,52 @@ const TaskPage: React.FC = () => {
     } catch (err: any) {
       console.error("Error uploading images:", err);
       setStatusUpdateMessage("Failed to upload images");
+    }
+  };
+
+  // Submit progress note
+  const submitProgressNote = async (taskId: number, note: string) => {
+    if (!note.trim()) return;
+
+    try {
+      const token = await getSupabaseToken();
+      const response = await axios.put(
+        `http://localhost:3000/maintenance/${taskId}/update`,
+        { progress_notes: note.trim() },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Update task with new notes from API response
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === taskId
+            ? {
+                ...task,
+                progress_notes: response.data.maintenance.progress_notes,
+                updated_at: new Date().toISOString(),
+              }
+            : task
+        )
+      );
+
+      // Update activeTask if it's the same task
+      if (activeTask?.id === taskId) {
+        setActiveTask({
+          ...activeTask,
+          progress_notes: response.data.maintenance.progress_notes,
+          updated_at: new Date().toISOString(),
+        });
+      }
+
+      // Clear note input
+      setNewNote("");
+
+      // Show success message
+      setStatusUpdateMessage("Progress note added successfully");
+      setTimeout(() => setStatusUpdateMessage(""), 3000);
+    } catch (err: any) {
+      console.error("Error adding progress note:", err);
+      setStatusUpdateMessage("Failed to add progress note");
     }
   };
 
@@ -459,10 +531,12 @@ const TaskPage: React.FC = () => {
     selectedFile: {
       display: "flex",
       justifyContent: "space-between",
-      padding: "8px 12px",
-      backgroundColor: "#f9fafb",
-      borderRadius: "4px",
+      alignItems: "center",
+      padding: "12px 16px",
+      backgroundColor: "#f3f4f6",
+      borderRadius: "8px",
       marginBottom: "8px",
+      border: "1px solid #e5e7eb",
     },
     statusAlert: {
       position: "fixed",
@@ -940,6 +1014,43 @@ const TaskPage: React.FC = () => {
                     </div>
                   )}
 
+                {/* Add Progress Note */}
+                {activeTask.status !== "completed" && (
+                  <div style={styles.modalSection}>
+                    <h4 style={styles.modalSectionTitle}>Add Progress Note</h4>
+                    <textarea
+                      value={newNote}
+                      onChange={(e) => setNewNote(e.target.value)}
+                      placeholder="Add a progress note..."
+                      style={{
+                        width: "100%",
+                        padding: "12px",
+                        borderRadius: "8px",
+                        border: "1px solid #e5e7eb",
+                        fontSize: "14px",
+                        minHeight: "80px",
+                        resize: "vertical",
+                        backgroundColor: "white",
+                        color: "#111827",
+                        outline: "none",
+                        transition: "all 0.2s ease",
+                        marginBottom: "12px",
+                      }}
+                    />
+                    <button
+                      style={{
+                        ...styles.button,
+                        ...styles.buttonSecondary,
+                        opacity: newNote.trim() ? 1 : 0.5,
+                      }}
+                      onClick={() => submitProgressNote(activeTask.id, newNote)}
+                      disabled={!newNote.trim()}
+                    >
+                      Add Note
+                    </button>
+                  </div>
+                )}
+
                 {/* Task Photos */}
                 {activeTask.photos && activeTask.photos.length > 0 && (
                   <div style={styles.modalSection}>
@@ -1009,14 +1120,23 @@ const TaskPage: React.FC = () => {
                           style={{
                             fontSize: "14px",
                             fontWeight: "600",
-                            marginBottom: "8px",
+                            marginBottom: "12px",
+                            color: "#374151",
                           }}
                         >
                           Selected files ({uploadedImages.length})
                         </h5>
                         {uploadedImages.map((file, index) => (
                           <div key={index} style={styles.selectedFile}>
-                            <span>{file.name}</span>
+                            <span
+                              style={{
+                                color: "#374151",
+                                fontSize: "14px",
+                                fontWeight: "500",
+                              }}
+                            >
+                              {file.name}
+                            </span>
                             <button
                               onClick={() =>
                                 setUploadedImages((prev) =>
@@ -1026,8 +1146,13 @@ const TaskPage: React.FC = () => {
                               style={{
                                 background: "none",
                                 border: "none",
-                                color: "#9ca3af",
+                                color: "#ef4444",
                                 cursor: "pointer",
+                                fontSize: "18px",
+                                fontWeight: "bold",
+                                padding: "4px 8px",
+                                borderRadius: "4px",
+                                transition: "all 0.2s",
                               }}
                             >
                               &times;

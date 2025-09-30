@@ -57,6 +57,17 @@ const Navbar: React.FC = () => (
           >
             Maintenance
           </Link>
+
+          <Link
+            to="/propertymanager/announcement"
+            style={{
+              color: "#374151",
+              textDecoration: "none",
+              fontWeight: "500",
+            }}
+          >
+            Announcements
+          </Link>
         </nav>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <button

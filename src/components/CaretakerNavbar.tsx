@@ -36,6 +36,17 @@ const Navbar: React.FC = () => (
           >
             Task Board
           </Link>
+
+          <Link
+            to="/caretaker/announcement"
+            style={{
+              color: "#374151",
+              textDecoration: "none",
+              fontWeight: "500",
+            }}
+          >
+            Announcements
+          </Link>
         </nav>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <button
