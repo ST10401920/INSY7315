@@ -34,16 +34,27 @@ class PropertyDetails : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_property_details)
 
-        val propertyId = intent.getStringExtra("PROPERTY_ID")
-        if (propertyId == null) {
-            Toast.makeText(this, "Property not found", Toast.LENGTH_SHORT).show()
+        val propertyId = intent.getStringExtra("PROPERTY_ID") ?: run {
+            Toast.makeText(this, "Property ID not found.", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
+//        if (propertyId == null) {
+//            Toast.makeText(this, "Property not found", Toast.LENGTH_SHORT).show()
+//            finish()
+//            return
+//        }
 
         propertyApi = RetrofitClient.propertyApi
 
         fetchPropertyDetails(propertyId)
+
+        val rentButton = findViewById<TextView>(R.id.rentBtn)
+        rentButton.setOnClickListener {
+            val intent = Intent(this, ApplicationForm::class.java)
+            intent.putExtra("PROPERTY_ID", propertyId)
+            startActivity(intent)
+        }
 
         val backButton = findViewById<ImageView>(R.id.back_arrow)
 

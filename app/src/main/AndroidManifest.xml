@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nestify"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".PaymentSuccess"
+            android:exported="false" />
         <activity
             android:name=".ScreenSubmit"
             android:exported="false" />

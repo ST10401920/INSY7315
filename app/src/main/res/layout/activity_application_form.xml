@@ -164,6 +164,16 @@
                 android:layout_marginBottom="12dp"/>
 
             <TextView
+                android:id="@+id/tv_uploaded_docs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No documents uploaded"
+                android:textColor="#000"
+                android:padding="8dp"
+                android:layout_marginBottom="12dp"/>
+
+
+            <TextView
                 android:id="@+id/btn_upload_docs"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

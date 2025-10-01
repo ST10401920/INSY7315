@@ -45,4 +45,9 @@
     <string name="bedroom_5_plus">5+</string>
     <string name="reset_filter">Reset Filter</string>
     <string name="apply">Apply</string>
+
+    <string name="success_icon">Success icon</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="success_message">Your apartment was successfully booked.\nYou can check your booking in the Profile menu.</string>
+    <string name="go_home">Go to Home</string>
 </resources>
