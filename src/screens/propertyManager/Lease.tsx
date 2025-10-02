@@ -24,16 +24,47 @@ interface LeaseApplication {
   updated_at: string;
 }
 
+interface Lease {
+  id: number;
+  manager_id: string;
+  tenant_id: string;
+  lease_document: string;
+  signed_document?: string;
+  status: "sent_to_tenant" | "signed_by_tenant" | "acknowledged_by_manager";
+  created_at: string;
+  updated_at: string;
+}
+
 const Lease: React.FC = () => {
   const [leaseApplications, setLeaseApplications] = useState<
     LeaseApplication[]
   >([]);
+  const [leases, setLeases] = useState<Lease[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sendingLease, setSendingLease] = useState<number | null>(null);
+  const [leaseDocument, setLeaseDocument] = useState<File | null>(null);
+  const [showLeaseModal, setShowLeaseModal] = useState(false);
+  const [selectedApplicant, setSelectedApplicant] =
+    useState<LeaseApplication | null>(null);
 
   useEffect(() => {
     fetchLeaseApplications();
+    fetchLeases();
   }, []);
+
+  const fetchLeases = async () => {
+    try {
+      const token = await getSupabaseToken();
+      const response = await axios.get("http://localhost:3000/leases", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log("Fetched leases:", response.data.leases); // Debug log
+      setLeases(response.data.leases || []);
+    } catch (err: any) {
+      console.error("Error fetching leases:", err.message);
+    }
+  };
 
   const fetchLeaseApplications = async () => {
     try {
@@ -114,6 +145,90 @@ const Lease: React.FC = () => {
     }
   };
 
+  const handleSendLease = async () => {
+    if (!selectedApplicant || !leaseDocument) {
+      alert("Please select a lease document file");
+      return;
+    }
+
+    setSendingLease(selectedApplicant.id);
+    try {
+      const token = await getSupabaseToken();
+
+      // Convert file to base64
+      const fileBase64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          // Extract base64 data (remove the data:application/pdf;base64, prefix)
+          const base64Data = result.split(",")[1];
+          resolve(base64Data);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(leaseDocument);
+      });
+
+      // Send as JSON with base64 file data
+      const response = await axios.post(
+        "http://localhost:3000/leases",
+        {
+          tenantId: selectedApplicant.applicant_id,
+          lease_document: `data:application/pdf;base64,${fileBase64}`,
+          filename: leaseDocument.name,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Lease sent:", response.data);
+      alert("Lease document sent successfully to tenant!");
+
+      // Refresh leases
+      await fetchLeases();
+
+      // Close modal and reset
+      setShowLeaseModal(false);
+      setLeaseDocument(null);
+      setSelectedApplicant(null);
+    } catch (err: any) {
+      console.error("Error sending lease:", err.response?.data || err.message);
+      alert("Failed to send lease document. Please try again.");
+    } finally {
+      setSendingLease(null);
+    }
+  };
+
+  const handleAcknowledgeLease = async (leaseId: number) => {
+    try {
+      const token = await getSupabaseToken();
+      await axios.put(
+        `http://localhost:3000/leases/${leaseId}`,
+        { action: "acknowledge" },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      alert("Lease acknowledged successfully!");
+      await fetchLeases();
+    } catch (err: any) {
+      console.error(
+        "Error acknowledging lease:",
+        err.response?.data || err.message
+      );
+      alert("Failed to acknowledge lease. Please try again.");
+    }
+  };
+
+  // Helper function to find lease for an applicant
+  const getLeaseForApplicant = (applicantId: string) => {
+    return leases.find((lease) => lease.tenant_id === applicantId);
+  };
+
   if (loading)
     return (
       <div
@@ -191,16 +306,46 @@ const Lease: React.FC = () => {
         }}
       >
         <div style={{ padding: "24px" }}>
-          <h1
+          <div
             style={{
-              fontSize: "24px",
-              fontWeight: "bold",
-              color: "#000000",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               marginBottom: "24px",
             }}
           >
-            Lease Applications
-          </h1>
+            <h1
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                color: "#000000",
+                margin: 0,
+              }}
+            >
+              Lease Applications
+            </h1>
+            <button
+              onClick={() => {
+                fetchLeases();
+                fetchLeaseApplications();
+              }}
+              style={{
+                padding: "8px 16px",
+                borderRadius: "6px",
+                border: "1px solid #e5e7eb",
+                backgroundColor: "white",
+                color: "#374151",
+                fontSize: "14px",
+                fontWeight: "500",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              🔄 Refresh
+            </button>
+          </div>
 
           <div style={{ overflowX: "auto" }}>
             <table
@@ -211,20 +356,22 @@ const Lease: React.FC = () => {
                 borderSpacing: 0,
                 boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                 borderRadius: "8px",
-                minWidth: "1000px", // Ensure table doesn't get too narrow
+                minWidth: "1400px", // Ensure table doesn't get too narrow
               }}
             >
               <thead style={{ backgroundColor: "#f3f4f6" }}>
                 <tr>
                   {[
-                    { name: "Applicant Name", width: "14%" },
-                    { name: "Contact", width: "10%" },
-                    { name: "ID & Age", width: "12%" },
-                    { name: "Employment", width: "10%" },
-                    { name: "Income Details", width: "14%" },
-                    { name: "Property ID", width: "8%" },
-                    { name: "Documents", width: "8%" },
-                    { name: "Actions", width: "24%" },
+                    { name: "Applicant Name", width: "12%" },
+                    { name: "Contact", width: "8%" },
+                    { name: "ID & Age", width: "10%" },
+                    { name: "Employment", width: "8%" },
+                    { name: "Income Details", width: "12%" },
+                    { name: "Property ID", width: "6%" },
+                    { name: "Documents", width: "6%" },
+                    { name: "Actions", width: "18%" },
+                    { name: "Lease Status", width: "10%" },
+                    { name: "Signed Document", width: "10%" },
                   ].map((header) => (
                     <th
                       key={header.name}
@@ -347,7 +494,52 @@ const Lease: React.FC = () => {
                           </button>
                         </div>
                       )}
-                      {lease.status !== "pending" && (
+                      {lease.status === "approved" && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "4px",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              padding: "4px 8px",
+                              borderRadius: "9999px",
+                              fontSize: "12px",
+                              fontWeight: "500",
+                              backgroundColor: "#D1FAE5",
+                              color: "#065F46",
+                            }}
+                          >
+                            Approved
+                          </span>
+                          {!getLeaseForApplicant(lease.applicant_id) && (
+                            <button
+                              onClick={() => {
+                                setSelectedApplicant(lease);
+                                setShowLeaseModal(true);
+                              }}
+                              style={{
+                                backgroundColor: "#3B82F6",
+                                color: "white",
+                                padding: "4px 8px",
+                                borderRadius: "4px",
+                                fontSize: "12px",
+                                fontWeight: "500",
+                                cursor: "pointer",
+                                border: "none",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              Send Lease
+                            </button>
+                          )}
+                        </div>
+                      )}
+                      {lease.status === "rejected" && (
                         <span
                           style={{
                             display: "inline-flex",
@@ -356,20 +548,227 @@ const Lease: React.FC = () => {
                             borderRadius: "9999px",
                             fontSize: "12px",
                             fontWeight: "500",
-                            backgroundColor:
-                              lease.status === "approved"
-                                ? "#D1FAE5"
-                                : "#FEE2E2",
-                            color:
-                              lease.status === "approved"
-                                ? "#065F46"
-                                : "#991B1B",
+                            backgroundColor: "#FEE2E2",
+                            color: "#991B1B",
                           }}
                         >
-                          {lease.status.charAt(0).toUpperCase() +
-                            lease.status.slice(1)}
+                          Rejected
                         </span>
                       )}
+                    </td>
+
+                    {/* Lease Status Column */}
+                    <td style={{ padding: "16px 24px" }}>
+                      {(() => {
+                        // Only show lease info for approved applications
+                        if (lease.status !== "approved") {
+                          return (
+                            <span
+                              style={{ color: "#6B7280", fontSize: "12px" }}
+                            >
+                              N/A
+                            </span>
+                          );
+                        }
+
+                        const leaseDoc = getLeaseForApplicant(
+                          lease.applicant_id
+                        );
+                        if (!leaseDoc) {
+                          return (
+                            <span
+                              style={{ color: "#6B7280", fontSize: "12px" }}
+                            >
+                              No lease sent
+                            </span>
+                          );
+                        }
+
+                        const statusColors = {
+                          sent_to_tenant: { bg: "#FEF3C7", text: "#92400E" },
+                          signed_by_tenant: { bg: "#D1FAE5", text: "#065F46" },
+                          acknowledged_by_manager: {
+                            bg: "#E0E7FF",
+                            text: "#3730A3",
+                          },
+                        };
+
+                        const color = statusColors[leaseDoc.status];
+
+                        return (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "4px",
+                            }}
+                          >
+                            <span
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                padding: "4px 8px",
+                                borderRadius: "9999px",
+                                fontSize: "12px",
+                                fontWeight: "500",
+                                backgroundColor: color.bg,
+                                color: color.text,
+                              }}
+                            >
+                              {leaseDoc.status
+                                .replace(/_/g, " ")
+                                .replace(/\b\w/g, (l) => l.toUpperCase())}
+                            </span>
+
+                            {leaseDoc.status === "signed_by_tenant" && (
+                              <button
+                                onClick={() =>
+                                  handleAcknowledgeLease(leaseDoc.id)
+                                }
+                                style={{
+                                  backgroundColor: "#10B981",
+                                  color: "white",
+                                  padding: "2px 6px",
+                                  borderRadius: "4px",
+                                  fontSize: "11px",
+                                  fontWeight: "500",
+                                  cursor: "pointer",
+                                  border: "none",
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                Acknowledge
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })()}
+                    </td>
+
+                    {/* Signed Document Column */}
+                    <td style={{ padding: "16px 24px" }}>
+                      {(() => {
+                        // Only show signed documents for approved applications
+                        if (lease.status !== "approved") {
+                          return (
+                            <span
+                              style={{ color: "#6B7280", fontSize: "12px" }}
+                            >
+                              N/A
+                            </span>
+                          );
+                        }
+
+                        const leaseDoc = getLeaseForApplicant(
+                          lease.applicant_id
+                        );
+                        console.log(
+                          `Checking signed doc for applicant ${lease.applicant_id}:`,
+                          leaseDoc
+                        ); // Debug log
+
+                        if (leaseDoc?.signed_document) {
+                          console.log(
+                            `Found signed document: ${leaseDoc.signed_document}`
+                          ); // Debug log
+
+                          const handleViewSigned = () => {
+                            try {
+                              if (!leaseDoc.signed_document) return;
+
+                              // Convert base64 to blob for viewing
+                              let base64Data = leaseDoc.signed_document;
+
+                              // Remove data URL prefix if present
+                              if (base64Data.includes(",")) {
+                                base64Data = base64Data.split(",")[1];
+                              }
+
+                              // Clean the base64 string - remove any whitespace or invalid characters
+                              base64Data = base64Data.replace(
+                                /[^A-Za-z0-9+/=]/g,
+                                ""
+                              );
+
+                              // Validate base64 string length (should be multiple of 4)
+                              while (base64Data.length % 4 !== 0) {
+                                base64Data += "=";
+                              }
+
+                              console.log(
+                                "Cleaned base64 data length:",
+                                base64Data.length
+                              );
+                              console.log(
+                                "First 100 chars:",
+                                base64Data.substring(0, 100)
+                              );
+
+                              const byteCharacters = atob(base64Data);
+                              const byteNumbers = new Array(
+                                byteCharacters.length
+                              );
+                              for (let i = 0; i < byteCharacters.length; i++) {
+                                byteNumbers[i] = byteCharacters.charCodeAt(i);
+                              }
+                              const byteArray = new Uint8Array(byteNumbers);
+                              const blob = new Blob([byteArray], {
+                                type: "application/pdf",
+                              });
+                              const url = window.URL.createObjectURL(blob);
+                              window.open(url, "_blank");
+
+                              // Clean up the URL after a short delay
+                              setTimeout(
+                                () => window.URL.revokeObjectURL(url),
+                                1000
+                              );
+                            } catch (error) {
+                              console.error("Error opening PDF:", error);
+                              console.error(
+                                "Base64 data:",
+                                leaseDoc.signed_document?.substring(0, 200)
+                              );
+
+                              // Fallback: try to download the PDF instead
+                              try {
+                                const link = document.createElement("a");
+                                link.href = leaseDoc.signed_document || "";
+                                link.download = "signed-lease.pdf";
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                              } catch (downloadError) {
+                                alert(
+                                  "Error opening signed document. The file may be corrupted. Please contact support."
+                                );
+                              }
+                            }
+                          };
+
+                          return (
+                            <button
+                              onClick={handleViewSigned}
+                              style={{
+                                color: "#2563EB",
+                                background: "none",
+                                border: "none",
+                                textDecoration: "underline",
+                                fontSize: "12px",
+                                fontWeight: "500",
+                                cursor: "pointer",
+                              }}
+                            >
+                              View Signed
+                            </button>
+                          );
+                        }
+                        return (
+                          <span style={{ color: "#6B7280", fontSize: "12px" }}>
+                            Not signed
+                          </span>
+                        );
+                      })()}
                     </td>
                   </tr>
                 ))}
@@ -378,6 +777,193 @@ const Lease: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Lease Modal */}
+      {showLeaseModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              borderRadius: "12px",
+              padding: "32px",
+              maxWidth: "500px",
+              width: "90%",
+              maxHeight: "80vh",
+              overflow: "auto",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: "20px",
+                fontWeight: "600",
+                color: "#111827",
+                marginBottom: "16px",
+              }}
+            >
+              Send Lease Document
+            </h2>
+
+            {selectedApplicant && (
+              <div
+                style={{
+                  backgroundColor: "#f9fafb",
+                  padding: "16px",
+                  borderRadius: "8px",
+                  marginBottom: "20px",
+                }}
+              >
+                <p style={{ margin: 0, fontSize: "14px", color: "#374151" }}>
+                  <strong>Tenant:</strong> {selectedApplicant.first_name}{" "}
+                  {selectedApplicant.last_name}
+                </p>
+                <p
+                  style={{
+                    margin: "4px 0 0 0",
+                    fontSize: "14px",
+                    color: "#374151",
+                  }}
+                >
+                  <strong>Phone:</strong> {selectedApplicant.phone_number}
+                </p>
+              </div>
+            )}
+
+            <div style={{ marginBottom: "20px" }}>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#374151",
+                  marginBottom: "8px",
+                }}
+              >
+                Lease Document (PDF) *
+              </label>
+              <input
+                type="file"
+                accept=".pdf,application/pdf"
+                onChange={(e) => setLeaseDocument(e.target.files?.[0] || null)}
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  outline: "none",
+                  boxSizing: "border-box",
+                  backgroundColor: "#f9fafb",
+                }}
+              />
+              {leaseDocument && (
+                <div
+                  style={{
+                    marginTop: "8px",
+                    padding: "8px 12px",
+                    backgroundColor: "#f3f4f6",
+                    borderRadius: "6px",
+                    border: "1px solid #d1d5db",
+                  }}
+                >
+                  <span style={{ fontSize: "12px", color: "#374151" }}>
+                    Selected: {leaseDocument.name}
+                  </span>
+                  <button
+                    onClick={() => setLeaseDocument(null)}
+                    style={{
+                      marginLeft: "8px",
+                      color: "#ef4444",
+                      background: "none",
+                      border: "none",
+                      fontSize: "12px",
+                      cursor: "pointer",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "#6b7280",
+                  margin: "4px 0 0 0",
+                }}
+              >
+                Upload a PDF lease document to send to the tenant
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                justifyContent: "flex-end",
+              }}
+            >
+              <button
+                onClick={() => {
+                  setShowLeaseModal(false);
+                  setLeaseDocument(null);
+                  setSelectedApplicant(null);
+                }}
+                style={{
+                  padding: "12px 20px",
+                  borderRadius: "8px",
+                  border: "1px solid #e5e7eb",
+                  backgroundColor: "white",
+                  color: "#374151",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSendLease}
+                disabled={
+                  !leaseDocument || sendingLease === selectedApplicant?.id
+                }
+                style={{
+                  padding: "12px 20px",
+                  borderRadius: "8px",
+                  border: "none",
+                  background: "linear-gradient(135deg, #50bc72, #41599c)",
+                  color: "white",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  cursor:
+                    sendingLease === selectedApplicant?.id
+                      ? "not-allowed"
+                      : "pointer",
+                  opacity: sendingLease === selectedApplicant?.id ? 0.6 : 1,
+                }}
+              >
+                {sendingLease === selectedApplicant?.id
+                  ? "Sending..."
+                  : "Send Lease"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
