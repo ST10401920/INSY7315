@@ -197,7 +197,6 @@ router.get("/caretakers", requireAuth, async (req: Request, res: Response) => {
   }
 });
 
-
 // PUT /maintenance/:id/update - caretaker updates task status and optionally adds photos
 router.put("/:id/update", requireAuth, async (req: Request, res: Response) => {
   const userId = (req as any).userId;
@@ -224,7 +223,9 @@ router.put("/:id/update", requireAuth, async (req: Request, res: Response) => {
 
     // Verify the caretaker is assigned to this task
     if (maintenance.caretaker_id !== userId) {
-      return res.status(403).json({ error: "You are not assigned to this task" });
+      return res
+        .status(403)
+        .json({ error: "You are not assigned to this task" });
     }
 
     // Prepare update payload
@@ -240,7 +241,10 @@ router.put("/:id/update", requireAuth, async (req: Request, res: Response) => {
     // Add progress notes if provided
     if (progress_notes) {
       const currentNotes = maintenance.progress_notes || [];
-      const newNote = typeof progress_notes === 'string' ? progress_notes : progress_notes.join('; ');
+      const newNote =
+        typeof progress_notes === "string"
+          ? progress_notes
+          : progress_notes.join("; ");
       updatePayload.progress_notes = [...currentNotes, newNote];
     }
 
@@ -261,27 +265,22 @@ router.put("/:id/update", requireAuth, async (req: Request, res: Response) => {
       return res.status(400).json({ error: error.message });
     }
 
-    res.json({ 
+    res.json({
       maintenance: data?.[0],
-      message: "Task updated successfully"
+      message: "Task updated successfully",
     });
-
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Server error" });
   }
 });
 
-
 //get for tenant
-router.get("/:id", requireAuth, async(req:Request, res:Response) => {
+router.get("/:id", requireAuth, async (req: Request, res: Response) => {
   const userId = (req as any).userId;
   const { id } = req.params;
-  const { data, error } = await supabase
-      .from("maintenance")
-      .select("*")
-      
-    if (error) return res.status(400).json({ error: error.message });
-    return res.json({ maintenance: data });
+  const { data, error } = await supabase.from("maintenance").select("*");
 
+  if (error) return res.status(400).json({ error: error.message });
+  return res.json({ maintenance: data });
 });
 export default router;
