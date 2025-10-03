@@ -1,58 +1,41 @@
 import express, { Request, Response } from "express";
 import fetch from "node-fetch";
-import { GoogleAuth } from "google-auth-library";
 
 const router = express.Router();
-const GEMINI_API_URL = "https://us-central1-aiplatform.googleapis.com/v1/projects/ssoproject-469311/locations/us-central1/models/gemini-2.0-flash-lite:predict";
+
+const API_KEY = "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";
+const MODEL = "deepseek/deepseek-r1:free";
 
 router.post("/", async (req: Request, res: Response) => {
-  const { message } = req.body;
-  if (!message) return res.status(400).json({ error: "Message is required" });
-
   try {
-    const auth = new GoogleAuth({
-      keyFile: "./src/config/serviceAccountKey.json", 
-      scopes: "https://www.googleapis.com/auth/cloud-platform",
-    });
+    const userMessage = req.body.message;
+    console.log("User message:", userMessage);
 
-    const client = await auth.getClient();
-    const token = await client.getAccessToken();
-
-    const response = await fetch(GEMINI_API_URL, {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token.token}`,
       },
       body: JSON.stringify({
-        instances: [
-          {
-            content: message,
-            context: "You are a helpful property management assistant for Nestify. Answer in a friendly, professional tone. Keep answers short and clear."
-          }
+        model: MODEL,
+        messages: [
+          { role: "system", content: "You are a helpful property management assistant for Nestify. Keep answers short and clear." },
+          { role: "user", content: userMessage }
         ],
-        parameters: {
-          temperature: 0.7,
-          maxOutputTokens: 256
-        }
       }),
     });
 
-    const text = await response.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      console.error("Response is not valid JSON:", text);
-      return res.status(500).json({ error: "Invalid response from Gemini API" });
-    }
+    const data = await response.json();
+    console.log("OpenRouter raw response:", JSON.stringify(data, null, 2));
 
-    const reply = data.predictions?.[0]?.content ?? "Sorry, I didn’t understand your question.";
-    res.json({ reply });
+    const botMessage = data.choices?.[0]?.message?.content || "Sorry, I didn’t understand.";
+    console.log("Bot reply:", botMessage);
 
-  } catch (err: any) {
-    console.error("Gemini API error:", err);
-    res.status(500).json({ error: "Failed to get AI response" });
+    res.json({ reply: botMessage });
+  } catch (err) {
+    console.error("Chatbot error:", err);
+    res.status(500).json({ reply: "Something went wrong." });
   }
 });
 
