@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Nestify"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ApplicationHistory"
+            android:exported="false" />
+        <activity
+            android:name=".Lease"
+            android:exported="false" />
+        <activity
             android:name=".PaymentSuccess"
             android:exported="false" />
         <activity

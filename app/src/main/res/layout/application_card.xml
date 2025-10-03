@@ -1,0 +1,74 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white">
+
+        <!-- Property Image -->
+        <ImageView
+            android:id="@+id/img_property"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder"
+            android:contentDescription="Property Image"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Property Name -->
+        <TextView
+            android:id="@+id/tv_property_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Property Name"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:paddingBottom="4dp"/>
+
+        <!-- Application Status -->
+        <TextView
+            android:id="@+id/tv_application_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textColor="#333333"
+            android:paddingBottom="8dp"
+            android:textSize="14sp"/>
+
+        <!-- Lease Action Buttons -->
+        <TextView
+            android:id="@+id/btn_view_lease"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/gradient_green_blue"
+            android:text="View Lease"
+            android:textColor="#FFFFFF"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/btn_upload_signed"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/gradient_green_blue"
+            android:text="Upload Signed Lease"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textSize="14sp"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

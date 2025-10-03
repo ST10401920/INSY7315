@@ -30,6 +30,14 @@ object RetrofitClient {
         instance.create(ApplicationApi::class.java)
     }
 
+    val noAuthPropertyApi: NoAuthPropertyApi by lazy {
+        instance.create(NoAuthPropertyApi::class.java)
+    }
+
+    val leaseApi: LeaseApi by lazy {
+        instance.create(LeaseApi::class.java)
+    }
+
     val chatApi: ChatApi by lazy {
         instance.create(ChatApi::class.java)
     }

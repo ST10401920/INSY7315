@@ -27,6 +27,7 @@ class HomePage : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var propertyAdapter: PropertyAdapter
     private lateinit var propertyApi: PropertyApi
+    private lateinit var noAuthApi: NoAuthPropertyApi
 
     private lateinit var searchView: SearchView
     private lateinit var filterButton: ImageView
@@ -43,6 +44,7 @@ class HomePage : AppCompatActivity() {
         noResultsText = findViewById(R.id.tv_no_results)
 
         propertyApi = RetrofitClient.propertyApi
+        noAuthApi = RetrofitClient.noAuthPropertyApi
         fetchProperties()
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
@@ -120,19 +122,9 @@ class HomePage : AppCompatActivity() {
     }
 
     private fun fetchProperties() {
-        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-        val accessToken = sharedPreferences.getString("access_token", null)
-
-        if (accessToken == null) {
-            Toast.makeText(this, "Session expired. Please log in again.", Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-            return
-        }
-
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                val response = propertyApi.getProperties("Bearer $accessToken")
+                val response = RetrofitClient.noAuthPropertyApi.getProperties()
                 if (response.isSuccessful) {
                     val properties = response.body()?.properties?.toMutableList() ?: mutableListOf()
                     setupRecyclerView(properties)

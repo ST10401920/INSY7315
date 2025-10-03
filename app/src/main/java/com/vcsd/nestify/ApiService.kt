@@ -29,13 +29,79 @@ interface PropertyApi {
     ): Response<PropertyResponse>
 }
 
+interface NoAuthPropertyApi {
+    @GET("no-auth-properties")
+    suspend fun getProperties(): Response<PropertiesResponse>
+
+    @GET("no-auth-properties/{id}")
+    suspend fun getPropertyById(@Path("id") id: String): Response<PropertyResponse>
+}
+
+
+
+
+
+interface LeaseApi {
+    @GET("leases")
+    suspend fun getLeases(@Header("Authorization") token: String): Response<LeasesResponse>
+}
+
+data class LeasesResponse(val leases: List<LeaseData>)
+data class LeaseData(
+    val id: String,
+    val propertyName: String?,
+    val startDate: String,
+    val endDate: String,
+    val status: String,
+    val lease_document: String?,
+    val applicantId: String
+)
+
 interface ApplicationApi {
     @POST("/applications")
     suspend fun submitApplication(
         @Header("Authorization") token: String,
         @Body request: ApplicationRequest
     ): Response<Unit>
+
+    @GET("/applications")
+    suspend fun getApplications(
+        @Header("Authorization") token: String
+    ): Response<ApplicationsResponse>
 }
+
+data class ApplicationsResponse(
+    val applications: List<ApplicationData>
+)
+
+data class ApplicationData(
+    val id: Int,
+    val property_id: Int,
+    val applicant_id: String,
+    val first_name: String,
+    val last_name: String,
+    val phone_number: String,
+    val id_number: String,
+    val age: Int,
+    val job_title: String?,
+    val income: Double?,
+    val income_source: String?,
+    val status: String,
+    val submitted_at: String,
+    val approved_at: String?,
+    val notes: String?,
+    val lease_agreed: Boolean,
+    val documents: String?,
+    val lease: LeaseData? = null
+)
+
+data class Application(
+    val id: String,
+    val propertyName: String,
+    val status: String,
+    val leaseUrl: String? = null
+)
+
 
 interface ChatApi {
     @POST("/chatbot")

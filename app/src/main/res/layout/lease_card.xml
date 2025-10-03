@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/edt_background"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+        android:id="@+id/tv_lease_property"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Property Name"
+        android:textStyle="bold"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/tv_lease_period"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lease Period: Jan 2025 - Dec 2025"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/tv_lease_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: Pending"
+        android:textColor="#D32F2F"
+        android:paddingBottom="8dp"/>
+
+    <ImageView
+        android:id="@+id/iv_lease_preview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:src="@android:drawable/ic_menu_report_image"
+        android:background="#E0E0E0"
+        android:contentDescription="Lease Preview"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/btn_view_lease"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient_green_blue"
+        android:text="View Lease"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/btn_upload_signed"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient_green_blue"
+        android:text="Upload Signed Lease"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/btn_download_lease"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient_green_blue"
+        android:text="Download Lease"
+        android:textColor="#FFFFFF"
+        android:gravity="center"/>
+</LinearLayout>

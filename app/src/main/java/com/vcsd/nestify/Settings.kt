@@ -79,6 +79,7 @@ class Settings : AppCompatActivity() {
         setupLanguageSpinner()
         setupInfoRows()
         setupSignOut()
+        setUpHistory()
     }
 
         private fun setupBottomNavigation() {
@@ -213,13 +214,19 @@ class Settings : AppCompatActivity() {
         }
     }
 
+    private fun setUpHistory() {
+        findViewById<LinearLayout>(R.id.application_history).setOnClickListener {
+            startActivity(Intent(this, ApplicationHistory::class.java))
+            finish()
+        }
+    }
+
     private fun setupSignOut() {
         findViewById<LinearLayout>(R.id.signOut).setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val prefs = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             prefs.edit().clear().apply()
             startActivity(Intent(this, MainActivity::class.java))
-            finish()
         }
     }
 

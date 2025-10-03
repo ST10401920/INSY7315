@@ -120,7 +120,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dashboard"
+                android:id="@+id/application_history"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:orientation="horizontal"
@@ -131,7 +131,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Dashboard"
+                    android:text="Application History"
                     android:textSize="16sp"
                     android:textColor="#222"/>
                 <ImageView
