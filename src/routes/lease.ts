@@ -7,12 +7,40 @@ const router = Router();
 // Manager creates a lease and sends to tenant
 router.post("/", requireAuth, async (req: Request, res: Response) => {
   const userId = (req as any).userId;
-  const { tenantId, lease_document } = req.body;
+  const { tenantId, lease_document, applicationId } = req.body;
 
-  if (!tenantId || !lease_document)
+  if (!tenantId || !lease_document || !applicationId)
     return res
       .status(400)
-      .json({ error: "Missing tenantId or lease_document" });
+      .json({ error: "Missing tenantId, lease_document, or applicationId" });
+
+  // Verify that the application exists and is approved
+  const { data: application, error: appError } = await supabase
+    .from("applications")
+    .select("*")
+    .eq("id", applicationId)
+    .eq("applicant_id", tenantId)
+    .eq("status", "approved")
+    .single();
+
+  if (appError || !application) {
+    return res.status(400).json({
+      error: "Application not found or not approved",
+    });
+  }
+
+  // Check if a lease already exists for this application
+  const { data: existingLease, error: existingError } = await supabase
+    .from("leases")
+    .select("*")
+    .eq("application_id", applicationId)
+    .single();
+
+  if (existingLease) {
+    return res.status(400).json({
+      error: "A lease already exists for this application",
+    });
+  }
 
   const { data, error } = await supabase
     .from("leases")
@@ -20,6 +48,7 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
       {
         manager_id: userId,
         tenant_id: tenantId,
+        application_id: applicationId,
         lease_document,
         status: "sent_to_tenant",
       },
@@ -47,16 +76,39 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
   const role = profile.role;
 
   if (role === "property_manager") {
+    // Include application details for better context
     const { data, error } = await supabase
       .from("leases")
-      .select("*")
+      .select(
+        `
+        *,
+        applications (
+          id,
+          property_id,
+          first_name,
+          last_name,
+          status
+        )
+      `
+      )
       .eq("manager_id", userId);
     if (error) return res.status(400).json({ error: error.message });
     return res.json({ leases: data });
   } else {
     const { data, error } = await supabase
       .from("leases")
-      .select("*")
+      .select(
+        `
+        *,
+        applications (
+          id,
+          property_id,
+          first_name,
+          last_name,
+          status
+        )
+      `
+      )
       .eq("tenant_id", userId);
     if (error) return res.status(400).json({ error: error.message });
     return res.json({ leases: data });
@@ -71,10 +123,21 @@ router.put("/:id", requireAuth, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { signed_document, action } = req.body;
 
-  // fetch lease
+  // fetch lease with application details
   const { data: lease, error: leaseErr } = await supabase
     .from("leases")
-    .select("*")
+    .select(
+      `
+      *,
+      applications (
+        id,
+        property_id,
+        first_name,
+        last_name,
+        status
+      )
+    `
+    )
     .eq("id", id)
     .single();
   if (leaseErr || !lease)
