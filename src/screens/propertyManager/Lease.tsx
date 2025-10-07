@@ -28,6 +28,7 @@ interface Lease {
   id: number;
   manager_id: string;
   tenant_id: string;
+  application_id: number; // Add this field
   lease_document: string;
   signed_document?: string;
   status: "sent_to_tenant" | "signed_by_tenant" | "acknowledged_by_manager";
@@ -173,6 +174,7 @@ const Lease: React.FC = () => {
         "http://localhost:3000/leases",
         {
           tenantId: selectedApplicant.applicant_id,
+          applicationId: selectedApplicant.id, // Add the application ID
           lease_document: `data:application/pdf;base64,${fileBase64}`,
           filename: leaseDocument.name,
         },
@@ -225,8 +227,34 @@ const Lease: React.FC = () => {
   };
 
   // Helper function to find lease for an applicant
-  const getLeaseForApplicant = (applicantId: string) => {
-    return leases.find((lease) => lease.tenant_id === applicantId);
+  const getLeaseForApplicant = (
+    applicantId: string,
+    applicationId?: number
+  ) => {
+    console.log(
+      `🔍 Looking for lease for applicant: ${applicantId}, application: ${applicationId}`
+    );
+    console.log(`📄 All leases:`, leases);
+
+    // If we have an application ID, match by that (most accurate)
+    if (applicationId) {
+      const foundLease = leases.find(
+        (lease) => lease.application_id === applicationId
+      );
+      console.log(
+        `✅ Found lease by application_id: ${applicationId}:`,
+        foundLease
+      );
+      return foundLease;
+    }
+
+    // Fallback: match by tenant_id (less accurate, may find wrong lease)
+    const foundLease = leases.find((lease) => lease.tenant_id === applicantId);
+    console.log(
+      `⚠️ Found lease by tenant_id (fallback): ${applicantId}:`,
+      foundLease
+    );
+    return foundLease;
   };
 
   if (loading)
@@ -516,7 +544,10 @@ const Lease: React.FC = () => {
                           >
                             Approved
                           </span>
-                          {!getLeaseForApplicant(lease.applicant_id) && (
+                          {!getLeaseForApplicant(
+                            lease.applicant_id,
+                            lease.id
+                          ) && (
                             <button
                               onClick={() => {
                                 setSelectedApplicant(lease);
@@ -572,7 +603,8 @@ const Lease: React.FC = () => {
                         }
 
                         const leaseDoc = getLeaseForApplicant(
-                          lease.applicant_id
+                          lease.applicant_id,
+                          lease.id
                         );
                         if (!leaseDoc) {
                           return (
@@ -660,7 +692,8 @@ const Lease: React.FC = () => {
                         }
 
                         const leaseDoc = getLeaseForApplicant(
-                          lease.applicant_id
+                          lease.applicant_id,
+                          lease.id
                         );
                         console.log(
                           `Checking signed doc for applicant ${lease.applicant_id}:`,
