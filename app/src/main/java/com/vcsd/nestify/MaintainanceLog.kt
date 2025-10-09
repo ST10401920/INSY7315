@@ -30,10 +30,13 @@ class MaintainanceLog : AppCompatActivity() {
     private lateinit var descriptionEt: EditText
     private lateinit var submitBtn: TextView
     private lateinit var backArrow: ImageView
+    private lateinit var imageContainer: LinearLayout
     private val base64Images = mutableListOf<String>()
+
 
     companion object {
         private const val IMAGE_PICK_CODE = 1001
+        private const val TAG = "MaintainanceLog"
     }
 
     private val selectedImageUris = mutableListOf<Uri>()
@@ -52,6 +55,7 @@ class MaintainanceLog : AppCompatActivity() {
         descriptionEt = findViewById(R.id.et_description)
         submitBtn = findViewById(R.id.tv_submit)
         backArrow = findViewById(R.id.back_arrow)
+        imageContainer = findViewById(R.id.imageContainer)
 
         // spinners
         issueSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, issueTypes)
@@ -72,6 +76,27 @@ class MaintainanceLog : AppCompatActivity() {
         }
     }
 
+    private fun addImageToContainer(uri: Uri) {
+        try {
+            val options = BitmapFactory.Options().apply { inSampleSize = 2 } // scale down
+            val bitmap = contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, options)
+            }
+            bitmap?.let {
+                val imageView = ImageView(this)
+                val params = LinearLayout.LayoutParams(200, 200)
+                params.setMargins(12, 0, 12, 0)
+                imageView.layoutParams = params
+                imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                imageView.setImageBitmap(it)
+                imageContainer.addView(imageView)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to display image", e)
+        }
+    }
+
+
     private fun submitMaintenanceRequest() {
         val description = descriptionEt.text.toString().trim()
         val category = issueSpinner.selectedItem?.toString().orEmpty()
@@ -80,7 +105,7 @@ class MaintainanceLog : AppCompatActivity() {
         val propertyId = intent.getStringExtra("propertyId")
         val rentalId = intent.getStringExtra("rentalId")
 
-        Log.d("MaintainanceLog", "Submitting with propertyId=$propertyId rentalId=$rentalId")
+        Log.d(TAG, "Submitting with propertyId=$propertyId rentalId=$rentalId")
 
         if (propertyId.isNullOrBlank() || rentalId.isNullOrBlank()) {
             Toast.makeText(this, "Missing property or rental ID", Toast.LENGTH_LONG).show()
@@ -116,7 +141,7 @@ class MaintainanceLog : AppCompatActivity() {
                                 }
                             }
                         } catch (e: Exception) {
-                            Log.e("MaintainanceLog", "Error encoding image", e)
+                            Log.e(TAG, "Error encoding image", e)
                             null
                         }
                     }
@@ -148,7 +173,24 @@ class MaintainanceLog : AppCompatActivity() {
             }
         }
     }
-}
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK && data != null)
+            data.clipData?.let { clipData ->
+                for (i in 0 until clipData.itemCount) {
+                    val uri = clipData.getItemAt(i).uri
+                    selectedImageUris.add(uri)
+                    addImageToContainer(uri)
+                }
+            } ?: data.data?.let { uri ->
+                // Single image
+                selectedImageUris.add(uri)
+                addImageToContainer(uri)
+            }
+        }
+    }
+
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
