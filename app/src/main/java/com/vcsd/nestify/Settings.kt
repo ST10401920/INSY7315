@@ -80,37 +80,56 @@ class Settings : AppCompatActivity() {
         setupInfoRows()
         setupSignOut()
         setUpHistory()
-    }
 
-        private fun setupBottomNavigation() {
-            val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
-            bottomNavigation.selectedItemId = R.id.navigation_profile
-            bottomNavigation.setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.navigation_home -> {
-                        startActivity(Intent(this, HomePage::class.java))
-                        true
-                    }
+        //----------code added for maintenance request--------------
+        val maintenanceRow = findViewById<LinearLayout>(R.id.maintaince)
+        maintenanceRow.setOnClickListener {
+            val prefs = getSharedPreferences(MainActivity.PREFS_KEY, Context.MODE_PRIVATE)
+            val propertyId = prefs.getString("property_id", null)
+            val rentalId = prefs.getString("rental_id", null)
 
-                    R.id.navigation_chatbot -> {
-                        startActivity(Intent(this, Chatbot::class.java))
-                        true
-                    }
-
-                    R.id.navigation_dashboard -> {
-                        startActivity(Intent(this, Dashboard::class.java))
-                        true
-                    }
-
-                    R.id.navigation_profile -> {
-                        startActivity(Intent(this, Settings::class.java))
-                        true
-                    }
-
-                    else -> false
+            if (!propertyId.isNullOrBlank() && !rentalId.isNullOrBlank()) {
+                val intent = Intent(this, MaintainanceLog::class.java).apply {
+                    putExtra("propertyId", propertyId)
+                    putExtra("rentalId", rentalId)
                 }
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No active rental found. Please log in again.", Toast.LENGTH_LONG).show()
             }
         }
+        //----------code added for maintenance request--------------
+    }
+
+    private fun setupBottomNavigation() {
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        bottomNavigation.selectedItemId = R.id.navigation_profile
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    startActivity(Intent(this, HomePage::class.java))
+                    true
+                }
+
+                R.id.navigation_chatbot -> {
+                    startActivity(Intent(this, Chatbot::class.java))
+                    true
+                }
+
+                R.id.navigation_dashboard -> {
+                    startActivity(Intent(this, Dashboard::class.java))
+                    true
+                }
+
+                R.id.navigation_profile -> {
+                    startActivity(Intent(this, Settings::class.java))
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
 
     private fun setupProfile() {
         profileNameTextView = findViewById(R.id.profileNameTextView)

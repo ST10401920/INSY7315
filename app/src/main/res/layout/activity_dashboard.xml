@@ -247,6 +247,7 @@
 
             <!-- Maintenance Requests Card -->
             <LinearLayout
+                android:id="@+id/maintenanceCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -263,55 +264,12 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp" />
 
-                <!-- Request Item 1 -->
+                <!-- Dynamic container -->
                 <LinearLayout
+                    android:id="@+id/maintenanceListContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Fix Leaking Tap"
-                        android:textSize="14sp"
-                        android:textColor="#000000" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="In Progress"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:textColor="#2196F3" />
-
-                </LinearLayout>
-
-                <!-- Request Item 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Prepaid meter broken"
-                        android:textSize="14sp"
-                        android:textColor="#000000" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Completed"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:textColor="#00B822" />
-
-                </LinearLayout>
+                    android:orientation="vertical" />
 
                 <TextView
                     android:id="@+id/tv_log_request"

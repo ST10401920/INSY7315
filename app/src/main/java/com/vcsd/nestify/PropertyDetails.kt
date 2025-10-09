@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class PropertyDetails : AppCompatActivity() {
 
-    private lateinit var propertyApi: PropertyApi
+    private lateinit var propertyApi: NoAuthPropertyApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class PropertyDetails : AppCompatActivity() {
 //            return
 //        }
 
-        propertyApi = RetrofitClient.propertyApi
+        propertyApi = RetrofitClient.noAuthPropertyApi
 
         fetchPropertyDetails(propertyId)
 
@@ -98,12 +98,13 @@ class PropertyDetails : AppCompatActivity() {
     }
 
     private fun fetchPropertyDetails(propertyId: String) {
-        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-        val accessToken = sharedPreferences.getString("access_token", null) ?: return
+//        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+//        val accessToken = sharedPreferences.getString("access_token", null) ?: return
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                val response = propertyApi.getPropertyById("Bearer $accessToken", propertyId)
+                //val response = propertyApi.getPropertyById("Bearer $accessToken", propertyId)
+                val response = propertyApi.getPropertyById(propertyId)
                 if (response.isSuccessful) {
                     val property = response.body()?.property
                     if (property != null) populatePropertyDetails(property)

@@ -24,6 +24,8 @@ class ApplicationForm : AppCompatActivity() {
     private lateinit var tvUploadedDocs: TextView
 
     private var uploadedDocs: MutableList<String> = mutableListOf()
+    private var uploadedDocNames: MutableList<String> = mutableListOf() // file names
+
     private var propertyId: String? = null
 
     private val pickFileLauncher = registerForActivityResult(
@@ -31,11 +33,18 @@ class ApplicationForm : AppCompatActivity() {
     ) { uri ->
         uri?.let {
             val fileName = getFileNameFromUri(it)
-            uploadedDocs.add(fileName)
-            tvUploadedDocs.text = "Uploaded: ${uploadedDocs.joinToString(", ")}"
+            val base64Data = encodeFileToBase64(it)
+
+            if (base64Data != null) {
+                uploadedDocs.add(base64Data)
+                uploadedDocNames.add(fileName)
+                tvUploadedDocs.text = "Uploaded: ${uploadedDocNames.joinToString(", ")}"
+                Toast.makeText(this, "$fileName uploaded successfully!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Failed to encode file", Toast.LENGTH_SHORT).show()
+            }
         }
     }
-
 
     companion object {
         private val TAG = "ApplicationForm"
@@ -97,6 +106,7 @@ class ApplicationForm : AppCompatActivity() {
                 intent.putExtra("INCOME_SOURCE", spinnerIncomeSource.selectedItem.toString())
                 intent.putExtra("LEASE_AGREED", cbAgreeLease.isChecked)
                 intent.putStringArrayListExtra("DOCUMENTS", ArrayList(uploadedDocs))
+                intent.putStringArrayListExtra("DOCUMENT_NAMES", ArrayList(uploadedDocNames))
                 startActivity(intent)
             }
         }
@@ -111,6 +121,18 @@ class ApplicationForm : AppCompatActivity() {
             }
         }
         return name
+    }
+
+    private fun encodeFileToBase64(uri: android.net.Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val bytes = inputStream?.readBytes()
+            inputStream?.close()
+            android.util.Base64.encodeToString(bytes, android.util.Base64.DEFAULT)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
 

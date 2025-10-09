@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Tenant Application"
+                android:text="@string/tenant_application"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Personal Details"
+                android:text="@string/personal_details"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edt_background"
-                android:hint="First Name"
+                android:hint="@string/first_name"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
 
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edt_background"
-                android:hint="Last Name"
+                android:hint="@string/last_name"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
 
@@ -77,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edt_background"
-                android:hint="Phone Number"
+                android:hint="@string/phone_number"
                 android:inputType="phone"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edt_background"
-                android:hint="ID Number"
+                android:hint="@string/id_number"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
 
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edt_background"
-                android:hint="Age"
+                android:hint="@string/age"
                 android:inputType="number"
                 android:padding="12dp"
                 android:layout_marginBottom="20dp"/>
@@ -112,7 +112,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Employment and Income"
+                android:text="@string/employment_income"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -123,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edt_background"
-                android:hint="Job Title"
+                android:hint="@string/job_title"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
 
@@ -132,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edt_background"
-                android:hint="Income"
+                android:hint="@string/income"
                 android:inputType="numberDecimal"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
@@ -157,7 +157,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Documents and Lease Agreement"
+                android:text="@string/documents_lease"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -167,7 +167,7 @@
                 android:id="@+id/tv_uploaded_docs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No documents uploaded"
+                android:text="@string/no_documents_uploaded"
                 android:textColor="#000"
                 android:padding="8dp"
                 android:layout_marginBottom="12dp"/>
@@ -178,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/gradient_green_blue"
-                android:text="Upload Documents"
+                android:text="@string/upload_documents"
                 android:textColor="#FFF"
                 android:gravity="center"
                 android:clickable="true"
@@ -189,7 +189,7 @@
                 android:id="@+id/cb_agree_lease"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I agree to the lease terms"
+                android:text="@string/agree_lease"
                 android:layout_marginBottom="20dp"/>
         </LinearLayout>
 
@@ -199,7 +199,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/gradient_green_blue"
-            android:text="Submit Application"
+            android:text="@string/submit_documents"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"

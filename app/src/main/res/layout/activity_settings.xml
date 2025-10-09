@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="@string/settings"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
@@ -88,7 +88,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Account Settings"
+                android:text="@string/account_settings"
                 android:textColor="#B8B8B8"
                 android:textSize="14sp"
                 android:paddingStart="20dp"
@@ -110,7 +110,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Edit profile"
+                    android:text="@string/edit_profile"
                     android:textSize="16sp"
                     android:textColor="#222"/>
                 <ImageView
@@ -131,7 +131,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Application History"
+                    android:text="@string/application_history"
                     android:textSize="16sp"
                     android:textColor="#222"/>
                 <ImageView
@@ -154,7 +154,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Log Maintainance Request"
+                    android:text="@string/log_maintainance_request"
                     android:textSize="16sp"
                     android:textColor="#222"/>
                 <ImageView
@@ -178,7 +178,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Push notifications"
+                    android:text="@string/push_notifications"
                     android:textSize="16sp"
                     android:textColor="#222"/>
                 <Switch
@@ -207,7 +207,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Dark Mode"
+                    android:text="@string/dark_mode"
                     android:textSize="16sp"
                     android:textColor="#222"/>
                 <Switch
@@ -232,7 +232,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="More"
+                android:text="@string/more"
                 android:textColor="#B8B8B8"
                 android:textSize="14sp"
                 android:paddingStart="20dp"
@@ -252,7 +252,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="About us"
+                    android:text="@string/about_us"
                     android:textSize="16sp"
                     android:textColor="#222"/>
                 <ImageView
@@ -273,7 +273,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Language"
+                    android:text="@string/language"
                     android:textSize="16sp"
                     android:textColor="#222" />
 
@@ -299,7 +299,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Sign Out"
+                    android:text="@string/sign_out"
                     android:textSize="16sp"
                     android:clickable="true"
                     android:focusable="true"

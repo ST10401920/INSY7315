@@ -52,6 +52,8 @@ class ScreenSubmit : AppCompatActivity() {
         val incomeSourceStr = intent.getStringExtra("INCOME_SOURCE")
         val leaseAgreedVal = intent.getBooleanExtra("LEASE_AGREED", false)
         val documentsList = intent.getStringArrayListExtra("DOCUMENTS") ?: emptyList()
+        val documentNames = intent.getStringArrayListExtra("DOCUMENT_NAMES") ?: emptyList()
+
 
         tvTenantName.text = "$firstName $lastName"
         tvTenantPhone.text = phone ?: "N/A"
@@ -61,7 +63,7 @@ class ScreenSubmit : AppCompatActivity() {
         tvIncome.text = "R%.2f".format(incomeVal)
         tvIncomeSource.text = incomeSourceStr ?: "N/A"
         tvLeaseAgreed.text = if (leaseAgreedVal) "Yes" else "No"
-        tvDocuments.text = if (documentsList.isNotEmpty()) documentsList.joinToString(", ") else "None"
+        tvDocuments.text = if (documentNames.isNotEmpty()) documentNames.joinToString(", ") else "None"
 
         Log.d(TAG, "Tenant Info: $firstName $lastName, Phone: $phone, ID: $idNumber, Age: $age")
         Log.d(TAG, "Employment: $jobTitleStr, Income: $incomeVal, Source: $incomeSourceStr")

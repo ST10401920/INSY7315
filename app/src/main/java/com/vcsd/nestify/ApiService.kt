@@ -1,10 +1,12 @@
 package com.vcsd.nestify
 
+import com.google.gson.annotations.SerializedName
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import java.io.Serializable
 
@@ -37,24 +39,38 @@ interface NoAuthPropertyApi {
     suspend fun getPropertyById(@Path("id") id: String): Response<PropertyResponse>
 }
 
-
-
-
-
 interface LeaseApi {
     @GET("leases")
     suspend fun getLeases(@Header("Authorization") token: String): Response<LeasesResponse>
+
+    @PUT("leases/{id}")
+    suspend fun uploadSignedLease(
+        @Header("Authorization") token: String,
+        @Path("id") leaseId: String,
+        @Body body: Map<String, String>
+    ): Response<LeaseData>
 }
 
 data class LeasesResponse(val leases: List<LeaseData>)
+//data class LeaseData(
+//    val id: String,
+//    val propertyName: String?,
+//    val startDate: String,
+//    val endDate: String,
+//    val status: String,
+//    val lease_document: String?,
+//    val applicationId: Int
+//)
+
 data class LeaseData(
     val id: String,
     val propertyName: String?,
-    val startDate: String,
-    val endDate: String,
-    val status: String,
-    val lease_document: String?,
-    val applicantId: String
+    val startDate: String?,
+    val endDate: String?,
+    val status: String?, // this is the lease status, e.g., sent_to_tenant
+    @SerializedName("lease_document") val leaseDocument: String?,
+    @SerializedName("application_id") val applicationId: Int,
+    val applications: Application? // nested application
 )
 
 interface ApplicationApi {
@@ -95,13 +111,20 @@ data class ApplicationData(
     val lease: LeaseData? = null
 )
 
-data class Application(
-    val id: String,
-    val propertyName: String,
-    val status: String,
-    val leaseUrl: String? = null
-)
+//data class Application(
+//    val id: String,
+//    val propertyName: String,
+//    val status: String,
+//    val leaseUrl: String? = null
+//)
 
+data class Application(
+    val id: Int, // match the DB type
+    @SerializedName("property_id") val propertyId: String?,
+    @SerializedName("first_name") val firstName: String?,
+    @SerializedName("last_name") val lastName: String?,
+    val status: String? // application status (approved/rejected/etc.)
+)
 
 interface ChatApi {
     @POST("/chatbot")
@@ -162,3 +185,77 @@ data class ApplicationRequest(
     val documents: List<String> = emptyList(),
     val notes: String? = ""
 )
+
+//----------code added for maintenance request------------
+interface MaintenanceApi {
+    @POST("maintenance")
+    suspend fun submitRequest(
+        @Header("Authorization") token: String,
+        @Body request: MaintenanceRequest
+    ): Response<MaintenanceEnvelope>
+
+    @GET("maintenance/my")
+    suspend fun getMyRequests(
+        @Header("Authorization") token: String
+    ): Response<MaintenanceListEnvelope>
+}
+
+data class MaintenanceRequest(
+    val propertyId: Int,
+    val rentalId: Int,
+    val caretakerId: String? = null,
+    val description: String,
+    val category: String,
+    val photos: List<String> = emptyList(),
+    val urgency: String,
+    val progress_notes: List<String> = emptyList()
+)
+
+data class MaintenanceResponse(
+    val id: String,
+    val property_id: String,
+    val rental_id: String,
+    val tenant_id: String,
+    val caretaker_id: String?,
+    val description: String,
+    val category: String,
+    val photos: List<String>?,
+    val urgency: String,
+    val progress_notes: List<String>?,
+    val status: String,
+    val created_at: String,
+    val updated_at: String?
+)
+
+data class MaintenanceEnvelope(val maintenance: MaintenanceResponse)
+data class MaintenanceListEnvelope(val maintenance: List<MaintenanceResponse>)
+
+interface RentalsApi {
+    @GET("rentals/my")
+    suspend fun getMyRentals(
+        @Header("Authorization") token: String
+    ): Response<RentalsEnvelope>
+}
+
+data class RentalsEnvelope(
+    val rentals: List<RentalWithProperty>
+)
+
+data class RentalWithProperty(
+    val rental: RentalData,
+    val property: PropertyData?
+)
+
+data class RentalData(
+    val id: String,
+    val start_date: String?,
+    val end_date: String?,
+    val status: String
+)
+
+data class PropertyData(
+    val id: String,
+    val name: String?,
+    val location: String?
+)
+//----------code added for maintenance request end------------

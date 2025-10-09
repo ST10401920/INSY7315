@@ -46,6 +46,14 @@ object RetrofitClient {
         instance.create(PropertyApi::class.java)
     }
 
+    val maintenanceApi: MaintenanceApi by lazy {
+        instance.create(MaintenanceApi::class.java)
+    }
+
+    val rentalsApi: RentalsApi by lazy {
+        instance.create(RentalsApi::class.java)
+    }
+
     val apiService: ApiService by lazy {
         instance.create(ApiService::class.java)
     }

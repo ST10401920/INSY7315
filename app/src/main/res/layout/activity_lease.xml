@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="My Leases"
+                android:text="@string/my_lease"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -49,7 +49,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pending / Signed Leases"
+                android:text="@string/pending_signed"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"

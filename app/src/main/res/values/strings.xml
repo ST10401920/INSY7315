@@ -3,6 +3,7 @@
     <string name="default_web_client_id">620437493972-kaerf0iphru05mc8en2lbkb3er4g46lj.apps.googleusercontent.com</string>
     <string name="english">English</string>
 
+<!--Register-->
     <string name="create_account">Create your\nAccount</string>
     <string name="enter_details">Enter your details to continue</string>
     <string name="or_register_with">Or register with</string>
@@ -12,6 +13,7 @@
     <string name="already_have_account">Already have an account\?</string>
     <string name="sign_in">Sign In</string>
 
+<!--Main-->
     <string name="sign_in_account">Sign in to your\nAccount</string>
     <string name="enter_email_password">Enter your email and password to log in</string>
     <string name="or_login_with">Or login with</string>
@@ -21,9 +23,11 @@
     <string name="do_not_have_account">Don\'t have an account\? </string>
     <string name="sign_up">Sign Up</string>
 
+<!--Home-->
     <string name="find_rental_hint">Find a Rental</string>
     <string name="no_results_found">No results found</string>
 
+<!--Filter-->
     <string name="filter">Filter</string>
     <string name="amenities">Amenities</string>
     <string name="all">All</string>
@@ -46,6 +50,78 @@
     <string name="reset_filter">Reset Filter</string>
     <string name="apply">Apply</string>
 
+<!--ChatBot-->
+    <string name="chat_write_message">Write your message</string>
+
+<!--Application History-->
+    <string name="application_history">Application History</string>
+
+
+<!--Application Form-->
+    <string name="tenant_application">Tenant Application</string>
+    <string name="personal_details">Personal Details</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="id_number">ID Number</string>
+    <string name="age">Age</string>
+    <string name="employment_income">Employment and Income</string>
+    <string name="job_title">Job Title</string>
+    <string name="income">Income</string>
+    <string name="documents_lease">Documents and Lease Agreement</string>
+    <string name="no_documents_uploaded">No documents uploaded</string>
+    <string name="upload_documents">Upload Documents</string>
+    <string name="agree_lease">I agree to the lease terms</string>
+    <string name="submit_documents">Submit Application</string>
+
+<!--Lease-->
+    <string name="my_lease">My Leases</string>
+    <string name="pending_signed">Pending / Signed Leases</string>
+
+<!--Lease Card-->
+    <string name="view_lease">View Lease</string>
+    <string name="upload_signed_lease">Upload Signed Lease</string>
+    <string name="download_lease">Download Lease</string>
+
+<!--Maintenance Log-->
+    <string name="maintenance_log">Maintenance Log</string>
+    <string name="type_issue">Type of Issue</string>
+    <string name="location_issue">Location of Issue</string>
+    <string name="description_issue">Description of Issue</string>
+    <string name="description">Describe the issue in detail...</string>
+    <string name="urgency">Urgency</string>
+    <string name="supporting_images">Supporting Images</string>
+    <string name="add_image">Add Image</string>
+    <string name="preferred_visit_time">Preferred Visit Time</string>
+    <string name="submit_request">Submit Request</string>
+
+<!--Property Details-->
+    <string name="home_details">Home Details</string>
+    <string name="rent">Rent</string>
+
+<!--Submit Screen-->
+    <string name="teneat_information">Tenant Information</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="income_source">Income Source</string>
+    <string name="lease_documents">Lease and Documents</string>
+    <string name="lease_agreed">Lease Agreed</string>
+    <string name="documents">Documents</string>
+    <string name="submit_application">Submit Application</string>
+
+<!--Settings-->
+    <string name="settings">Settings</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="log_maintainance_request">Log Maintenance Request</string>
+    <string name="push_notifications">Push notifications</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="more">More</string>
+    <string name="about_us">About us</string>
+    <string name="language">Language</string>
+    <string name="sign_out">Sign Out</string>
+
+<!--Success Message-->
     <string name="success_icon">Success icon</string>
     <string name="congratulations">Congratulations!</string>
     <string name="success_message">Your apartment was successfully booked.\nYou can check your booking in the Profile menu.</string>

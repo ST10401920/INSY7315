@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tenant Application"
+            android:text="@string/tenant_application"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#000000"
@@ -66,7 +66,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tenant Information"
+                android:text="@string/teneat_information"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#000000"
@@ -81,7 +81,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textSize="14sp"
                     android:textColor="#666666"/>
                 <TextView
@@ -102,7 +102,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Phone"
+                    android:text="@string/phone"
                     android:textSize="14sp"
                     android:textColor="#666666"/>
                 <TextView
@@ -123,7 +123,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="ID Number"
+                    android:text="@string/id_number"
                     android:textSize="14sp"
                     android:textColor="#666666"/>
                 <TextView
@@ -143,7 +143,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Age"
+                    android:text="@string/age"
                     android:textSize="14sp"
                     android:textColor="#666666"/>
                 <TextView
@@ -180,7 +180,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Employment and Income"
+                android:text="@string/employment_income"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#000000"
@@ -195,7 +195,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Job Title"
+                    android:text="@string/job_title"
                     android:textSize="14sp"
                     android:textColor="#666666"/>
                 <TextView
@@ -216,7 +216,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Income"
+                    android:text="@string/income"
                     android:textSize="14sp"
                     android:textColor="#666666"/>
                 <TextView
@@ -236,7 +236,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Income Source"
+                    android:text="@string/income_source"
                     android:textSize="14sp"
                     android:textColor="#666666"/>
                 <TextView
@@ -274,7 +274,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lease and Documents"
+                android:text="@string/lease_documents"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#000000"
@@ -289,7 +289,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Lease Agreed"
+                    android:text="@string/lease_agreed"
                     android:textSize="14sp"
                     android:textColor="#666666"/>
                 <TextView
@@ -308,7 +308,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Documents"
+                    android:text="@string/documents"
                     android:textSize="14sp"
                     android:textColor="#666666"
                     android:layout_marginBottom="4dp"/>

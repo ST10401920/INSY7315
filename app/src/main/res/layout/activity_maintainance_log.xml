@@ -139,24 +139,6 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="20dp">
 
-                <ImageView
-                    android:id="@+id/image1"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/image_background"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/tap_one" />
-
-                <ImageView
-                    android:id="@+id/image2"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/image_background"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/tap_two" />
-
                 <LinearLayout
                     android:id="@+id/add_image_button"
                     android:layout_width="80dp"
@@ -183,23 +165,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-            <!-- Preferred Visit Time -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Preferred Visit Time"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
-
-            <CalendarView
-                android:id="@+id/calendar_view"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/calander_background" />
 
             <!-- Submit Button -->
             <TextView

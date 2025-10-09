@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:hint="Write your message"
+            android:hint="@string/chat_write_message"
             android:textSize="14sp"
             android:textColor="#333333"
             android:textColorHint="#999999"

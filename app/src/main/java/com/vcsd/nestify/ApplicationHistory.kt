@@ -20,7 +20,11 @@ class ApplicationHistory : AppCompatActivity() {
 
     private lateinit var container: LinearLayout
     private lateinit var back: ImageView
-    private val propertyMap = mutableMapOf<Int, Property>() // property_id -> Property
+    private val propertyMap = mutableMapOf<Int, Property>()
+
+    companion object {
+        private const val TAG = "ApplicationHistory"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +58,8 @@ class ApplicationHistory : AppCompatActivity() {
     private fun fetchApplicationsAndProperties() {
         val token = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
             .getString("access_token", null) ?: return
+        Log.d("AppHistory", "Token: $token")
+
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -75,6 +81,7 @@ class ApplicationHistory : AppCompatActivity() {
                 val propertyIds = applications.map { it.property_id }.distinct()
                 propertyIds.forEach { id ->
                     try {
+                        //val propResponse = RetrofitClient.propertyApi.getPropertyById("Bearer $token", id.toString())
                         val propResponse = RetrofitClient.propertyApi.getPropertyById("Bearer $token", id.toString())
                         if (propResponse.isSuccessful) propResponse.body()?.property?.let { propertyMap[id] = it }
                     } catch (e: Exception) {
@@ -120,13 +127,13 @@ class ApplicationHistory : AppCompatActivity() {
 
             btnViewLease.setOnClickListener {
                 val intent = Intent(this, Lease::class.java)
-                intent.putExtra("LEASE_URL", app.lease?.lease_document)
-                intent.putExtra("LEASE_ID", app.lease?.id)
+                intent.putExtra("APPLICATION_ID", app.id)
                 intent.putExtra("PROPERTY_NAME", property?.name)
                 intent.putExtra("LEASE_STATUS", app.status)
-                intent.putExtra("PROPERTY_IMAGE_URL", imageUrl) // Pass URL, not Base64
+                intent.putExtra("PROPERTY_IMAGE_URL", imageUrl)
                 startActivity(intent)
             }
+
 
             container.addView(card)
         }
