@@ -100,6 +100,17 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
       return res.json({ applications: data });
     }
 
+    // made a change
+      if (role === "tenant") {
+    const { data, error } = await supabase
+      .from("applications")
+      .select("*")
+      .eq("applicant_id", userId); 
+
+    if (error) return res.status(400).json({ error: error.message });
+    return res.json({ applications: data });
+  }
+
     // admins see all applications
     if (role === "admin") {
       const { data, error } = await supabase.from("applications").select("*");
