@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">Nestify</string>
     <string name="default_web_client_id">620437493972-kaerf0iphru05mc8en2lbkb3er4g46lj.apps.googleusercontent.com</string>
+
     <string name="english">English</string>
+    <string name="afrikaans">Afrikaans</string>
+    <string name="zulu">isiZulu</string>
+    <string name="language_set">Language set to %1$s</string>
+
+    <string name="change_language">Change language</string>
+    <string name="choose_language">Choose Language</string>
 
 <!--Register-->
     <string name="create_account">Create your\nAccount</string>
@@ -79,6 +86,7 @@
     <string name="pending_signed">Pending / Signed Leases</string>
 
 <!--Lease Card-->
+    <string name="lease_status">Status: Pending</string>
     <string name="view_lease">View Lease</string>
     <string name="upload_signed_lease">Upload Signed Lease</string>
     <string name="download_lease">Download Lease</string>
@@ -92,7 +100,6 @@
     <string name="urgency">Urgency</string>
     <string name="supporting_images">Supporting Images</string>
     <string name="add_image">Add Image</string>
-    <string name="preferred_visit_time">Preferred Visit Time</string>
     <string name="submit_request">Submit Request</string>
 
 <!--Property Details-->
@@ -126,4 +133,10 @@
     <string name="congratulations">Congratulations!</string>
     <string name="success_message">Your apartment was successfully booked.\nYou can check your booking in the Profile menu.</string>
     <string name="go_home">Go to Home</string>
+
+<!--Dashboard-->
+    <string name="dashboard">Dashboard</string>
+    <string name="lease_overview">Lease Overview</string>
+    <string name="downlaod_lease">Download Lease</string>
+    <string name="maintainance_requests">Maintenance Requests</string>
 </resources>

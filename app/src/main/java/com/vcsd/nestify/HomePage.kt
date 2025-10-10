@@ -34,6 +34,10 @@ class HomePage : AppCompatActivity() {
     private lateinit var noResultsText: TextView
     private var currentFilter: PropertyFilter? = null
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -85,9 +89,9 @@ class HomePage : AppCompatActivity() {
 
         // Search filtering
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
+            override fun onQueryTextChange(newText: String?): Boolean {
                 propertyAdapter.filterAndSearch(
-                    searchText = query,
+                    searchText = newText,
                     maxPrice = currentFilter?.maxPrice,
                     bedrooms = currentFilter?.bedrooms,
                     amenitiesFilter = amenitiesToList(currentFilter?.amenities)
@@ -95,9 +99,9 @@ class HomePage : AppCompatActivity() {
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
+            override fun onQueryTextSubmit(query: String?): Boolean {
                 propertyAdapter.filterAndSearch(
-                    searchText = newText,
+                    searchText = query,
                     maxPrice = currentFilter?.maxPrice,
                     bedrooms = currentFilter?.bedrooms,
                     amenitiesFilter = amenitiesToList(currentFilter?.amenities)

@@ -1,5 +1,6 @@
 package com.vcsd.nestify
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -28,6 +29,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 class PropertyDetails : AppCompatActivity() {
 
     private lateinit var propertyApi: NoAuthPropertyApi
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

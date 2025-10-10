@@ -1,5 +1,6 @@
 package com.vcsd.nestify
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,10 @@ class ApplicationHistory : AppCompatActivity() {
 
     companion object {
         private const val TAG = "ApplicationHistory"
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

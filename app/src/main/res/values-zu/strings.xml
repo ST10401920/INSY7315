@@ -1,0 +1,141 @@
+<resources>
+    <string name="app_name">Nestify</string>
+    <string name="default_web_client_id">620437493972-kaerf0iphru05mc8en2lbkb3er4g46lj.apps.googleusercontent.com</string>
+
+    <string name="english">English</string>
+    <string name="afrikaans">Afrikaans</string>
+    <string name="zulu">isiZulu</string>
+    <string name="language_set">Ulwimi lusethwe ku-%1$s</string>
+
+    <string name="change_language">Shintsha ulimi</string>
+    <string name="choose_language">Khetha Ulimi</string>
+
+    <!--Register-->
+    <string name="create_account">Dala i-\nAkhawunti Yakho</string>
+    <string name="enter_details">Faka imininingwane yakho ukuze uqhubeke</string>
+    <string name="or_register_with">Noma ubhalise nge</string>
+    <string name="email_hint">I-imeyili</string>
+    <string name="password_hint">Iphasiwedi</string>
+    <string name="register">Bhalisa</string>
+    <string name="already_have_account">Usunayo i-akhawunti\?</string>
+    <string name="sign_in">Ngena ngemvume</string>
+
+    <!--Main-->
+    <string name="sign_in_account">Ngena ku-\nAkhawunti Yakho</string>
+    <string name="enter_email_password">Faka i-imeyili yakho nephasiwedi ukuze ungene</string>
+    <string name="or_login_with">Noma ungene nge</string>
+    <string name="remember_me">Ngikhumbule</string>
+    <string name="forgot_password">Ukhohlwe iphasiwedi \?</string>
+    <string name="login">Ngena</string>
+    <string name="do_not_have_account">Awunayo i-akhawunti\? </string>
+    <string name="sign_up">Bhalisa</string>
+
+    <!--Home-->
+    <string name="find_rental_hint">Thola Ukuqashisa</string>
+    <string name="no_results_found">Awekho imiphumela etholakele</string>
+
+    <!--Filter-->
+    <string name="filter">Hlunga</string>
+    <string name="amenities">Izinto Ezikhona</string>
+    <string name="all">Konke</string>
+    <string name="gym">Ijimu</string>
+    <string name="pool">Iphuli</string>
+    <string name="wifi">i-Wi-Fi</string>
+    <string name="price_range">Uhlu Lwentengo</string>
+    <string name="price_r600">R5000</string>
+    <string name="price_r1500">R6000</string>
+    <string name="price_r2000">R7000</string>
+    <string name="price_r2500">R8000</string>
+    <string name="price_r3000">R9000</string>
+    <string name="price_r5000">R10000</string>
+    <string name="bedrooms">Amakamelo okulala</string>
+    <string name="bedroom_1">1</string>
+    <string name="bedroom_2">2</string>
+    <string name="bedroom_3">3</string>
+    <string name="bedroom_4">4</string>
+    <string name="bedroom_5_plus">5+</string>
+    <string name="reset_filter">Setha kabusha isihlungi</string>
+    <string name="apply">Sebenzisa</string>
+
+    <!--ChatBot-->
+    <string name="chat_write_message">Bhala umyalezo wakho</string>
+
+    <!--Application History-->
+    <string name="application_history">Umlando Wezicelo</string>
+
+    <!--Application Form-->
+    <string name="tenant_application">Isicelo Somqashi</string>
+    <string name="personal_details">Imininingwane Yakho</string>
+    <string name="first_name">Igama</string>
+    <string name="last_name">Isibongo</string>
+    <string name="phone_number">Inombolo Yocingo</string>
+    <string name="id_number">Inombolo ye-ID</string>
+    <string name="age">Iminyaka</string>
+    <string name="employment_income">Umsebenzi Nemali</string>
+    <string name="job_title">Isikhundla</string>
+    <string name="income">Inzuzo</string>
+    <string name="documents_lease">Amadokhumenti Nesivumelwano sokuqashisa</string>
+    <string name="no_documents_uploaded">Awukho amadokhumenti alayishiwe</string>
+    <string name="upload_documents">Layisha Amadokhumenti</string>
+    <string name="agree_lease">Ngiyavuma imigomo yesivumelwano</string>
+    <string name="submit_documents">Thumela Isicelo</string>
+
+    <!--Lease-->
+    <string name="my_lease">Izivumelwano Zami</string>
+    <string name="pending_signed">Ezisalindile / Ezisayinwe</string>
+
+    <!--Lease Card-->
+    <string name="lease_status">Isimo: Kusalindile</string>
+    <string name="view_lease">Bheka Isivumelwano</string>
+    <string name="upload_signed_lease">Layisha Isivumelwano Esisayiniwe</string>
+    <string name="download_lease">Landa Isivumelwano</string>
+
+    <!--Maintenance Log-->
+    <string name="maintenance_log">Ilogi Yokulungisa</string>
+    <string name="type_issue">Uhlobo Lwenkinga</string>
+    <string name="location_issue">Indawo Yenkinga</string>
+    <string name="description_issue">Incazelo Yenkinga</string>
+    <string name="description">Chaza inkinga ngokuningiliziwe...</string>
+    <string name="urgency">Ukuphuthuma</string>
+    <string name="supporting_images">Izithombe Esekela</string>
+    <string name="add_image">Faka Isithombe</string>
+    <string name="submit_request">Thumela Isicelo</string>
+
+    <!--Property Details-->
+    <string name="home_details">Imininingwane Yendlu</string>
+    <string name="rent">Irenti</string>
+
+    <!--Submit Screen-->
+    <string name="teneat_information">Ulwazi Lomqashi</string>
+    <string name="name">Igama</string>
+    <string name="phone">Ucingo</string>
+    <string name="income_source">Umthombo Wemali</string>
+    <string name="lease_documents">Isivumelwano Namadokhumenti</string>
+    <string name="lease_agreed">Isivumelwano Sivunyelwe</string>
+    <string name="documents">Amadokhumenti</string>
+    <string name="submit_application">Thumela Isicelo</string>
+
+    <!--Settings-->
+    <string name="settings">Izilungiselelo</string>
+    <string name="account_settings">Izilungiselelo Ze-akhawunti</string>
+    <string name="edit_profile">Hlela iphrofayela</string>
+    <string name="log_maintainance_request">Faka isicelo sokulungisa</string>
+    <string name="push_notifications">Izaziso zokusunduza</string>
+    <string name="dark_mode">Imodi Emnyama</string>
+    <string name="more">Okunye</string>
+    <string name="about_us">Mayelana Nathi</string>
+    <string name="language">Ulimi</string>
+    <string name="sign_out">Phuma</string>
+
+    <!--Success Message-->
+    <string name="success_icon">Uphawu Lokuphumelela</string>
+    <string name="congratulations">Halala!</string>
+    <string name="success_message">Ifulethi lakho libhukhiwe ngempumelelo.\nUngabheka ukubhuka kwakho kwimenyu yephrofayela.</string>
+    <string name="go_home">Buyela Ekhaya</string>
+
+    <!--Dashboard-->
+    <string name="dashboard">Iphaneli</string>
+    <string name="lease_overview">Uhlolojikelele Lwesivumelwano</string>
+    <string name="downlaod_lease">Landa Isivumelwano</string>
+    <string name="maintainance_requests">Izicelo Zokulungisa</string>
+</resources>

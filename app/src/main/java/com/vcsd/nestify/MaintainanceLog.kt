@@ -45,6 +45,10 @@ class MaintainanceLog : AppCompatActivity() {
     private val locations = listOf("Kitchen", "Bathroom", "Living Room", "Bedroom", "Other")
     private val urgencyOptions = listOf("low", "medium", "high")
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maintainance_log)

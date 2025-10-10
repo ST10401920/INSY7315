@@ -1,5 +1,6 @@
 package com.vcsd.nestify
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
@@ -47,37 +48,41 @@ class ApplicationForm : AppCompatActivity() {
         }
     }
 
-    private fun setupBottomNavigation() {
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_home -> {
-                    startActivity(Intent(this, HomePage::class.java))
-                    true
-                }
-
-                R.id.navigation_chatbot -> {
-                    startActivity(Intent(this, Chatbot::class.java))
-                    true
-                }
-
-                R.id.navigation_dashboard -> {
-                    startActivity(Intent(this, Dashboard::class.java))
-                    true
-                }
-
-                R.id.navigation_profile -> {
-                    startActivity(Intent(this, Settings::class.java))
-                    true
-                }
-
-                else -> false
-            }
-        }
-    }
+//    private fun setupBottomNavigation() {
+//        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+//        bottomNavigation.setOnItemSelectedListener { item ->
+//            when (item.itemId) {
+//                R.id.navigation_home -> {
+//                    startActivity(Intent(this, HomePage::class.java))
+//                    true
+//                }
+//
+//                R.id.navigation_chatbot -> {
+//                    startActivity(Intent(this, Chatbot::class.java))
+//                    true
+//                }
+//
+//                R.id.navigation_dashboard -> {
+//                    startActivity(Intent(this, Dashboard::class.java))
+//                    true
+//                }
+//
+//                R.id.navigation_profile -> {
+//                    startActivity(Intent(this, Settings::class.java))
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
+//    }
 
     companion object {
         private val TAG = "ApplicationForm"
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +97,7 @@ class ApplicationForm : AppCompatActivity() {
             insets
         }
 
-        setupBottomNavigation()
+        //setupBottomNavigation()
 
         // Bind views
         etFirstName = findViewById(R.id.et_first_name)

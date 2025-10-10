@@ -32,6 +32,10 @@ class Chatbot : AppCompatActivity() {
 
     private val chatMessages = mutableListOf<ChatMessage>()
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,6 +48,10 @@ class Chatbot : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         chatAdapter = ChatAdapter(chatMessages)
         recyclerView.adapter = chatAdapter
+        findViewById<ImageView>(R.id.languageSwitch).setOnClickListener {
+            showLanguageSelector()
+        }
+
 
         messageInput = findViewById(R.id.messageInput)
         sendButton = findViewById(R.id.send)
@@ -91,6 +99,25 @@ class Chatbot : AppCompatActivity() {
         }
     }
 
+    private fun showLanguageSelector() {
+        val languages = arrayOf("English", "Afrikaans", "Zulu")
+        val languageCodes = arrayOf("en", "af", "zu")
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(getString(R.string.choose_language))
+            .setItems(languages) { _, which ->
+                val selectedLang = languageCodes[which]
+                LocaleHelper.setLocale(this, selectedLang)
+
+                // Restart to apply language change
+                val intent = intent
+                finish()
+                startActivity(intent)
+            }
+            .show()
+    }
+
+
     private fun sendMessage(messageText: String) {
         val userMessage = ChatMessage(messageText, isUser = true)
         chatAdapter.addMessage(userMessage)
@@ -108,10 +135,12 @@ class Chatbot : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                val response = chatApi.sendMessage(
+                val currentLang = LocaleHelper.getLanguage(this@Chatbot) // get current app language
+                val response = RetrofitClient.chatApi.sendMessage(
                     "Bearer $accessToken",
-                    MessageRequest(messageText)
+                    MessageRequest(messageText, currentLang)
                 )
+
                 if (response.isSuccessful) {
                     val botReply = response.body()?.reply ?: "Sorry, I didn't understand."
                     val botMessage = ChatMessage(botReply, isUser = false)

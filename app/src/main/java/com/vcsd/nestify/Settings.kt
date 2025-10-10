@@ -61,6 +61,7 @@ class Settings : AppCompatActivity() {
 //        }
 //    }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -191,8 +192,8 @@ class Settings : AppCompatActivity() {
         languageSpinner = findViewById(R.id.languageSpinner)
         val languageMap = mapOf(
             getString(R.string.english) to "en",
-//            getString(R.string.afrikaans) to "af",
-//            getString(R.string.zulu) to "zu"
+            getString(R.string.afrikaans) to "af",
+            getString(R.string.zulu) to "zu"
         )
         val languageNames = languageMap.keys.toList()
         languageSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languageNames)

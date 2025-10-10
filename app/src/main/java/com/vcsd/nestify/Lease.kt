@@ -1,4 +1,5 @@
 package com.vcsd.nestify
+import android.content.Context
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.content.Intent
@@ -37,6 +38,10 @@ class Lease : AppCompatActivity() {
 
     companion object {
         private const val TAG = "LeaseActivity"
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

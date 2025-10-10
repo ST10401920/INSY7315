@@ -1,0 +1,141 @@
+<resources>
+    <string name="app_name">Nestify</string>
+    <string name="default_web_client_id">620437493972-kaerf0iphru05mc8en2lbkb3er4g46lj.apps.googleusercontent.com</string>
+
+    <string name="english">Engels</string>
+    <string name="afrikaans">Afrikaans</string>
+    <string name="zulu">isiZulu</string>
+    <string name="language_set">Taal gestel na %1$s</string>
+
+    <string name="change_language">Verander taal</string>
+    <string name="choose_language">Kies Taal</string>
+
+    <!--Register-->
+    <string name="create_account">Skep jou\nRekening</string>
+    <string name="enter_details">Voer jou besonderhede in om voort te gaan</string>
+    <string name="or_register_with">Of registreer met</string>
+    <string name="email_hint">E-pos</string>
+    <string name="password_hint">Wagwoord</string>
+    <string name="register">Registreer</string>
+    <string name="already_have_account">Het jy reeds ’n rekening\?</string>
+    <string name="sign_in">Meld aan</string>
+
+    <!--Main-->
+    <string name="sign_in_account">Meld aan by jou\nRekening</string>
+    <string name="enter_email_password">Voer jou e-pos en wagwoord in om aan te meld</string>
+    <string name="or_login_with">Of meld aan met</string>
+    <string name="remember_me">Onthou my</string>
+    <string name="forgot_password">Wagwoord vergeet \?</string>
+    <string name="login">Aanmeld</string>
+    <string name="do_not_have_account">Het jy nie ’n rekening nie\? </string>
+    <string name="sign_up">Registreer</string>
+
+    <!--Home-->
+    <string name="find_rental_hint">Vind ’n Huur</string>
+    <string name="no_results_found">Geen resultate gevind nie</string>
+
+    <!--Filter-->
+    <string name="filter">Filter</string>
+    <string name="amenities">Geriewe</string>
+    <string name="all">Alles</string>
+    <string name="gym">Gimnasium</string>
+    <string name="pool">Swembad</string>
+    <string name="wifi">Wi-Fi</string>
+    <string name="price_range">Prysreeks</string>
+    <string name="price_r600">R5000</string>
+    <string name="price_r1500">R6000</string>
+    <string name="price_r2000">R7000</string>
+    <string name="price_r2500">R8000</string>
+    <string name="price_r3000">R9000</string>
+    <string name="price_r5000">R10000</string>
+    <string name="bedrooms">Slaapkamers</string>
+    <string name="bedroom_1">1</string>
+    <string name="bedroom_2">2</string>
+    <string name="bedroom_3">3</string>
+    <string name="bedroom_4">4</string>
+    <string name="bedroom_5_plus">5+</string>
+    <string name="reset_filter">Herstel Filter</string>
+    <string name="apply">Pas toe</string>
+
+    <!--ChatBot-->
+    <string name="chat_write_message">Skryf jou boodskap</string>
+
+    <!--Application History-->
+    <string name="application_history">Aansoekgeskiedenis</string>
+
+    <!--Application Form-->
+    <string name="tenant_application">Huurder Aansoek</string>
+    <string name="personal_details">Persoonlike Besonderhede</string>
+    <string name="first_name">Voornaam</string>
+    <string name="last_name">Van</string>
+    <string name="phone_number">Telefoonnommer</string>
+    <string name="id_number">ID-nommer</string>
+    <string name="age">Ouderdom</string>
+    <string name="employment_income">Werk en Inkomste</string>
+    <string name="job_title">Posbenaming</string>
+    <string name="income">Inkomste</string>
+    <string name="documents_lease">Dokumente en Huurooreenkoms</string>
+    <string name="no_documents_uploaded">Geen dokumente opgelaai nie</string>
+    <string name="upload_documents">Laai Dokumente op</string>
+    <string name="agree_lease">Ek stem saam met die huurooreenkoms</string>
+    <string name="submit_documents">Dien Aansoek In</string>
+
+    <!--Lease-->
+    <string name="my_lease">My Huurooreenkomste</string>
+    <string name="pending_signed">Hangende / Getekende Huure</string>
+
+    <!--Lease Card-->
+    <string name="lease_status">Status: Hangende</string>
+    <string name="view_lease">Bekyk Huurooreenkoms</string>
+    <string name="upload_signed_lease">Laai Getekende Huurooreenkoms op</string>
+    <string name="download_lease">Laai Huurooreenkoms af</string>
+
+    <!--Maintenance Log-->
+    <string name="maintenance_log">Onderhoudsverslag</string>
+    <string name="type_issue">Tipe Probleem</string>
+    <string name="location_issue">Ligging van Probleem</string>
+    <string name="description_issue">Beskrywing van Probleem</string>
+    <string name="description">Beskryf die probleem in detail...</string>
+    <string name="urgency">Urgensie</string>
+    <string name="supporting_images">Ondersteunende Beelde</string>
+    <string name="add_image">Voeg Beeld By</string>
+    <string name="submit_request">Dien Versoek In</string>
+
+    <!--Property Details-->
+    <string name="home_details">Huisbesonderhede</string>
+    <string name="rent">Huur</string>
+
+    <!--Submit Screen-->
+    <string name="teneat_information">Huurder Inligting</string>
+    <string name="name">Naam</string>
+    <string name="phone">Telefoon</string>
+    <string name="income_source">Inkomste Bron</string>
+    <string name="lease_documents">Huurooreenkoms en Dokumente</string>
+    <string name="lease_agreed">Huurooreenkoms Aanvaar</string>
+    <string name="documents">Dokumente</string>
+    <string name="submit_application">Dien Aansoek In</string>
+
+    <!--Settings-->
+    <string name="settings">Instellings</string>
+    <string name="account_settings">Rekeninginstellings</string>
+    <string name="edit_profile">Wysig Profiel</string>
+    <string name="log_maintainance_request">Dien Onderhoudsversoek In</string>
+    <string name="push_notifications">Stootkennisgewings</string>
+    <string name="dark_mode">Donker Modus</string>
+    <string name="more">Meer</string>
+    <string name="about_us">Oor Ons</string>
+    <string name="language">Taal</string>
+    <string name="sign_out">Teken Uit</string>
+
+    <!--Success Message-->
+    <string name="success_icon">Sukses Ikoon</string>
+    <string name="congratulations">Baie geluk!</string>
+    <string name="success_message">Jou woonstel is suksesvol bespreek.\nJy kan jou bespreking in die Profielkieslys nagaan.</string>
+    <string name="go_home">Gaan na Tuisblad</string>
+
+    <!--Dashboard-->
+    <string name="dashboard">Beheerpaneel</string>
+    <string name="lease_overview">Huuroorsig</string>
+    <string name="downlaod_lease">Laai Huurooreenkoms af</string>
+    <string name="maintainance_requests">Onderhoudsversoeke</string>
+</resources>

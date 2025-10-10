@@ -108,7 +108,6 @@ class Register : AppCompatActivity() {
         private const val TAG = "Register"
     }
 
-
     private val apiService = RetrofitClient.apiService
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getLanguage(newBase)))

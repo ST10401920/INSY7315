@@ -134,7 +134,11 @@ interface ChatApi {
     ): Response<MessageResponse>
 }
 
-data class MessageRequest(val message: String)
+data class MessageRequest(
+    val message: String,
+    val language: String
+)
+
 data class MessageResponse(val reply: String)
 
 data class PropertiesResponse(
