@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/edt_background"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+        android:id="@+id/tv_property_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Property Name"
+        android:textStyle="bold"
+        android:paddingBottom="4dp"/>
+    <TextView
+        android:id="@+id/tv_maintainance_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maintaince Description"
+        android:textStyle="bold"
+        android:paddingBottom="4dp"/>
+    <TextView
+        android:id="@+id/tv_maintainance_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: Completed"
+        android:textStyle="bold"
+        android:textColor="#008000"
+        android:paddingBottom="8dp"/>
+
+
+    <TextView
+        android:id="@+id/btn_open_lease"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient_green_blue"
+        android:text="Reopen Maintainance Request Ticket"
+        android:textColor="#FFFFFF"
+        android:gravity="center"/>
+</LinearLayout>

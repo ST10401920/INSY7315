@@ -10,7 +10,7 @@
     <string name="change_language">Change language</string>
     <string name="choose_language">Choose Language</string>
 
-<!--Register-->
+    <!--Register-->
     <string name="create_account">Create your\nAccount</string>
     <string name="enter_details">Enter your details to continue</string>
     <string name="or_register_with">Or register with</string>
@@ -20,7 +20,7 @@
     <string name="already_have_account">Already have an account\?</string>
     <string name="sign_in">Sign In</string>
 
-<!--Main-->
+    <!--Main-->
     <string name="sign_in_account">Sign in to your\nAccount</string>
     <string name="enter_email_password">Enter your email and password to log in</string>
     <string name="or_login_with">Or login with</string>
@@ -30,11 +30,11 @@
     <string name="do_not_have_account">Don\'t have an account\? </string>
     <string name="sign_up">Sign Up</string>
 
-<!--Home-->
+    <!--Home-->
     <string name="find_rental_hint">Find a Rental</string>
     <string name="no_results_found">No results found</string>
 
-<!--Filter-->
+    <!--Filter-->
     <string name="filter">Filter</string>
     <string name="amenities">Amenities</string>
     <string name="all">All</string>
@@ -57,14 +57,14 @@
     <string name="reset_filter">Reset Filter</string>
     <string name="apply">Apply</string>
 
-<!--ChatBot-->
+    <!--ChatBot-->
     <string name="chat_write_message">Write your message</string>
 
-<!--Application History-->
+    <!--Application History-->
     <string name="application_history">Application History</string>
 
 
-<!--Application Form-->
+    <!--Application Form-->
     <string name="tenant_application">Tenant Application</string>
     <string name="personal_details">Personal Details</string>
     <string name="first_name">First Name</string>
@@ -81,17 +81,17 @@
     <string name="agree_lease">I agree to the lease terms</string>
     <string name="submit_documents">Submit Application</string>
 
-<!--Lease-->
+    <!--Lease-->
     <string name="my_lease">My Leases</string>
     <string name="pending_signed">Pending / Signed Leases</string>
 
-<!--Lease Card-->
+    <!--Lease Card-->
     <string name="lease_status">Status: Pending</string>
     <string name="view_lease">View Lease</string>
     <string name="upload_signed_lease">Upload Signed Lease</string>
     <string name="download_lease">Download Lease</string>
 
-<!--Maintenance Log-->
+    <!--Maintenance Log-->
     <string name="maintenance_log">Maintenance Log</string>
     <string name="type_issue">Type of Issue</string>
     <string name="location_issue">Location of Issue</string>
@@ -102,11 +102,11 @@
     <string name="add_image">Add Image</string>
     <string name="submit_request">Submit Request</string>
 
-<!--Property Details-->
+    <!--Property Details-->
     <string name="home_details">Home Details</string>
     <string name="rent">Rent</string>
 
-<!--Submit Screen-->
+    <!--Submit Screen-->
     <string name="teneat_information">Tenant Information</string>
     <string name="name">Name</string>
     <string name="phone">Phone</string>
@@ -116,7 +116,7 @@
     <string name="documents">Documents</string>
     <string name="submit_application">Submit Application</string>
 
-<!--Settings-->
+    <!--Settings-->
     <string name="settings">Settings</string>
     <string name="account_settings">Account Settings</string>
     <string name="edit_profile">Edit profile</string>
@@ -128,13 +128,13 @@
     <string name="language">Language</string>
     <string name="sign_out">Sign Out</string>
 
-<!--Success Message-->
+    <!--Success Message-->
     <string name="success_icon">Success icon</string>
     <string name="congratulations">Congratulations!</string>
     <string name="success_message">Your apartment was successfully booked.\nYou can check your booking in the Profile menu.</string>
     <string name="go_home">Go to Home</string>
 
-<!--Dashboard-->
+    <!--Dashboard-->
     <string name="dashboard">Dashboard</string>
     <string name="lease_overview">Lease Overview</string>
     <string name="downlaod_lease">Download Lease</string>

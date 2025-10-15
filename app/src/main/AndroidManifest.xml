@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nestify"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".MaintainanceHistory"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -25,7 +28,6 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-
         </provider>
 
         <activity
