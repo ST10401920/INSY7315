@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme attributes -->
+    <attr name="profileNameColor" format="color" />
+    <attr name="sectionGrayColor" format="color" />
+    <attr name="dividerColor" format="color" />
+    <attr name="switchThumb" format="color" />
+    <attr name="switchTrack" format="color" />
+    <attr name="bottomNavColor" format="color" />
+    <attr name="textDarkGray" format="color"/>
+    <attr name="textLightGray" format="color"/>
+    <attr name="textBlue" format="color"/>
+
+    <attr name="cardBackground" format="color"/>
+    <attr name="backgroundLightGrey" format="color"/>
+    <attr name="textRed" format="color"/>
+    <attr name="gradientPrimary" format="reference"/>
+    <attr name="textOnPrimary" format="color"/>
+
+</resources>

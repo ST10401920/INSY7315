@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F8FA"
+    android:background="?attr/android:windowBackground"
     android:id="@+id/main"
     tools:context=".PropertyDetails">
 
@@ -45,7 +45,7 @@
                 android:id="@+id/photoCount"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
                 android:textSize="12sp"
@@ -60,9 +60,8 @@
                 android:id="@+id/propertyTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
                 android:textSize="20sp"
-                android:textColor="#1A1A1A"
+                android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold"
                 android:lineSpacingExtra="2dp"
                 android:layout_marginTop="16dp"
@@ -90,7 +89,7 @@
                     android:layout_weight="1"
                     android:text="@string/home_details"
                     android:textSize="16sp"
-                    android:textColor="#1A1A1A"
+                    android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -116,7 +115,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="1dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="?attr/colorSurface">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -133,7 +132,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorSecondary"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -146,7 +145,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="1dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="?attr/colorSurface">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -163,7 +162,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorSecondary"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -176,7 +175,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="1dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="?attr/colorSurface">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -193,7 +192,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorSecondary"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -206,7 +205,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="1dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="?attr/colorSurface">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -223,7 +222,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorSecondary"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -234,11 +233,12 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
+    <!-- Rent bar -->
     <LinearLayout
         android:id="@+id/rent_bar"
         android:layout_width="0dp"
         android:layout_height="72dp"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp"
         android:gravity="center_vertical"
@@ -259,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#1A1A1A" />
+                android:textColor="?attr/colorOnSurface" />
         </LinearLayout>
 
         <TextView
@@ -270,7 +270,7 @@
             android:text="@string/rent"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnPrimary"
             android:clickable="true"
             android:focusable="true"
             android:padding="12dp"
@@ -280,14 +280,15 @@
             android:background="@drawable/gradient_green_blue" />
     </LinearLayout>
 
+    <!-- Bottom navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         app:menu="@menu/bottom_menu"
-        app:itemIconTint="#386BF6"
-        app:itemTextColor="#386BF6"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

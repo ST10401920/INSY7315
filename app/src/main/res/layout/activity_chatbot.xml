@@ -6,9 +6,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
+    android:background="?attr/colorSurface"
     tools:context=".Chatbot">
 
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -27,14 +28,14 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="Back"
-            app:tint="#FFFFFF" />
+            app:tint="?attr/colorOnPrimary" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Nestify AI"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -59,6 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/inputContainer" />
 
+    <!-- Input Container -->
     <LinearLayout
         android:id="@+id/inputContainer"
         android:layout_width="0dp"
@@ -66,7 +68,7 @@
         android:orientation="horizontal"
         android:padding="16dp"
         android:gravity="center_vertical"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation">
@@ -79,7 +81,7 @@
             android:clickable="true"
             android:focusable="true"
             android:contentDescription="Attach"
-            app:tint="#666666" />
+            app:tint="?attr/colorOnSurface" />
 
         <EditText
             android:id="@+id/messageInput"
@@ -88,8 +90,8 @@
             android:layout_weight="1"
             android:hint="@string/chat_write_message"
             android:textSize="14sp"
-            android:textColor="#333333"
-            android:textColorHint="#999999"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hint_gray"
             android:background="@drawable/message_input"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
@@ -103,7 +105,7 @@
             android:clickable="true"
             android:focusable="true"
             android:contentDescription="Camera"
-            app:tint="#666666" />
+            app:tint="?attr/colorOnSurface" />
 
         <ImageView
             android:id="@+id/send"
@@ -111,18 +113,20 @@
             android:layout_height="24dp"
             android:src="@drawable/send"
             android:clickable="true"
-            android:focusable="true" />
+            android:focusable="true"
+            app:tint="?attr/colorPrimary" />
 
     </LinearLayout>
 
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         app:menu="@menu/bottom_menu"
-        app:itemIconTint="#386BF6"
-        app:itemTextColor="#386BF6"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

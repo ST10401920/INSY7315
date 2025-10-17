@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.annotations.SerializedName
 import com.vcsd.nestify.HomePage
 import com.vcsd.nestify.LocaleHelper
@@ -126,6 +127,13 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
+
         val bioButton = findViewById<ImageView>(R.id.start_authentication)
         bioButton.setOnClickListener {
             val biometricPrompt = BiometricPrompt.Builder(this)
@@ -163,6 +171,27 @@ class MainActivity : AppCompatActivity() {
         findViewById<SignInButton>(R.id.btnGoogle).setOnClickListener {
             signInWithGoogle()
         }
+
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+            val token = task.result
+            Log.d("FCM", "Device token: $token")
+        }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("rent_notifications")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("FCM", "Subscribed to rent_notifications")
+                } else {
+                    Log.e("FCM", "Topic subscription failed", task.exception)
+                }
+            }
+
+
 
         val etEmail = findViewById<TextInputEditText>(R.id.etEmail)
         val etPassword = findViewById<TextInputEditText>(R.id.etPassword)
@@ -385,6 +414,11 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Login successful!", Toast.LENGTH_LONG).show()
         Log.d(TAG, "Token: $token, User ID: $userId")
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            Log.d(TAG, "Device FCM token for chat: $token")
+            // Optionally store or send this token to backend to map to user
+        }
 
         // Navigate to HomePage
         val intent = Intent(this, HomePage::class.java)

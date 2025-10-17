@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
+    android:background="?attr/colorSurface"
     tools:context=".ScreenSubmit">
 
     <!-- Header -->
@@ -17,7 +17,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="16dp"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,7 +35,7 @@
             android:text="@string/tenant_application"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#000000"
+            android:textColor="?attr/colorOnSurface"
             android:gravity="center"/>
 
         <View
@@ -52,7 +52,7 @@
         android:layout_marginTop="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header">
@@ -69,7 +69,7 @@
                 android:text="@string/teneat_information"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="12dp"/>
 
             <LinearLayout
@@ -83,14 +83,14 @@
                     android:layout_weight="1"
                     android:text="@string/name"
                     android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/tvTenantName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
 
             <LinearLayout
@@ -104,14 +104,14 @@
                     android:layout_weight="1"
                     android:text="@string/phone"
                     android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/tvTenantPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
 
             <LinearLayout
@@ -125,14 +125,14 @@
                     android:layout_weight="1"
                     android:text="@string/id_number"
                     android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/tvTenantID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
 
             <LinearLayout
@@ -145,14 +145,14 @@
                     android:layout_weight="1"
                     android:text="@string/age"
                     android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/tvTenantAge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -166,7 +166,7 @@
         android:layout_marginTop="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_tenant_info">
@@ -183,7 +183,7 @@
                 android:text="@string/employment_income"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="12dp"/>
 
             <LinearLayout
@@ -197,14 +197,14 @@
                     android:layout_weight="1"
                     android:text="@string/job_title"
                     android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/tvJobTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
 
             <LinearLayout
@@ -218,14 +218,14 @@
                     android:layout_weight="1"
                     android:text="@string/income"
                     android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/tvIncome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
 
             <LinearLayout
@@ -238,14 +238,14 @@
                     android:layout_weight="1"
                     android:text="@string/income_source"
                     android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/tvIncomeSource"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -260,7 +260,7 @@
         android:layout_marginBottom="100dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_employment_income">
@@ -277,7 +277,7 @@
                 android:text="@string/lease_documents"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="12dp"/>
 
             <LinearLayout
@@ -291,14 +291,14 @@
                     android:layout_weight="1"
                     android:text="@string/lease_agreed"
                     android:textSize="14sp"
-                    android:textColor="#666666"/>
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/tvLeaseAgreed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
 
             <LinearLayout
@@ -310,7 +310,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/documents"
                     android:textSize="14sp"
-                    android:textColor="#666666"
+                    android:textColor="?attr/colorSecondary"
                     android:layout_marginBottom="4dp"/>
                 <TextView
                     android:id="@+id/tvDocuments"
@@ -318,7 +318,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textColor="?attr/colorOnSurface"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -331,7 +331,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="24dp"
         android:text="Submit Application"
-        android:textColor="#FFFFFF"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
         android:gravity="center"

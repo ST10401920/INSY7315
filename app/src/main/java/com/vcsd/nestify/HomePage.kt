@@ -88,27 +88,54 @@ class HomePage : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Search filtering
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                propertyAdapter.filterAndSearch(
+//                    searchText = newText,
+//                    maxPrice = currentFilter?.maxPrice,
+//                    bedrooms = currentFilter?.bedrooms,
+//                    amenitiesFilter = amenitiesToList(currentFilter?.amenities)
+//                )
+//                return true
+//            }
+//
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                propertyAdapter.filterAndSearch(
+//                    searchText = query,
+//                    maxPrice = currentFilter?.maxPrice,
+//                    bedrooms = currentFilter?.bedrooms,
+//                    amenitiesFilter = amenitiesToList(currentFilter?.amenities)
+//                )
+//                return true
+//            }
+//        })
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                propertyAdapter.filterAndSearch(
-                    searchText = newText,
-                    maxPrice = currentFilter?.maxPrice,
-                    bedrooms = currentFilter?.bedrooms,
-                    amenitiesFilter = amenitiesToList(currentFilter?.amenities)
-                )
+                if (::propertyAdapter.isInitialized) {
+                    propertyAdapter.filterAndSearch(
+                        searchText = newText,
+                        maxPrice = currentFilter?.maxPrice,
+                        bedrooms = currentFilter?.bedrooms,
+                        amenitiesFilter = amenitiesToList(currentFilter?.amenities)
+                    )
+                }
                 return true
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                propertyAdapter.filterAndSearch(
-                    searchText = query,
-                    maxPrice = currentFilter?.maxPrice,
-                    bedrooms = currentFilter?.bedrooms,
-                    amenitiesFilter = amenitiesToList(currentFilter?.amenities)
-                )
+                if (::propertyAdapter.isInitialized) {
+                    propertyAdapter.filterAndSearch(
+                        searchText = query,
+                        maxPrice = currentFilter?.maxPrice,
+                        bedrooms = currentFilter?.bedrooms,
+                        amenitiesFilter = amenitiesToList(currentFilter?.amenities)
+                    )
+                }
                 return true
             }
         })
+
 
         // Open filter screen
         filterButton.setOnClickListener {

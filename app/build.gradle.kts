@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,6 +72,12 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
 
-//    implementation("com.google.firebase:firebase-messaging-ktx:23.5.2")
+    implementation ("com.google.firebase:firebase-bom:34.4.0")
+    implementation("com.google.firebase:firebase-messaging")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+
 }
 

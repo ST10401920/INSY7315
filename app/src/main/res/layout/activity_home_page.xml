@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?attr/colorSurface"
     tools:context=".HomePage">
 
+    <!-- Menu Icon -->
     <ImageView
         android:id="@+id/menu"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ellipsis"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
+        android:src="@drawable/ellipsis"
+        app:tint="?attr/colorOnBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Search Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_search"
         android:layout_width="0dp"
@@ -26,7 +30,7 @@
         android:layout_marginTop="16dp"
         app:cardCornerRadius="32dp"
         app:cardElevation="4dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/menu">
@@ -51,7 +55,9 @@
                     android:iconifiedByDefault="false"
                     android:queryHint="@string/find_rental_hint"
                     android:background="@android:color/transparent"
-                    android:layout_marginBottom="4dp" />
+                    android:layout_marginBottom="4dp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOnSurfaceVariant" />
 
             </LinearLayout>
 
@@ -63,12 +69,14 @@
                 android:gravity="center"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/filter" />
+                android:src="@drawable/filter"
+                app:tint="?attr/colorOnSurface" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
+    <!-- Properties RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_properties"
         android:layout_width="0dp"
@@ -83,6 +91,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         tools:listitem="@layout/property_item" />
 
+    <!-- No Results Text -->
     <TextView
         android:id="@+id/tv_no_results"
         android:layout_width="wrap_content"
@@ -90,7 +99,7 @@
         android:text="@string/no_results_found"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="#666666"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/cv_search"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,15 +112,12 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         app:menu="@menu/bottom_menu"
-        app:itemIconTint="@color/bottom_nav_icon_color"
-        app:itemTextColor="@color/bottom_nav_item_color"
-        app:itemBackground="@android:color/transparent"
-        app:itemRippleColor="@android:color/transparent"
-        app:elevation="0dp"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

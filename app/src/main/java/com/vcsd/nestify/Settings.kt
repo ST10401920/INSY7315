@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat
@@ -81,6 +82,7 @@ class Settings : AppCompatActivity() {
         setupInfoRows()
         setupSignOut()
         setUpHistory()
+        ThemeSelector()
 
         //----------code added for maintenance request--------------
         val maintenanceRow = findViewById<LinearLayout>(R.id.maintaince)
@@ -129,6 +131,42 @@ class Settings : AppCompatActivity() {
 
                 else -> false
             }
+        }
+    }
+
+    private fun ThemeSelector() {
+        val switchTheme: Switch = findViewById(R.id.switch_theme)
+        val prefs = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val isDarkMode = prefs.getBoolean("dark_mode", false)
+
+        // Set initial switch state and thumb color
+        switchTheme.isChecked = isDarkMode
+        switchTheme.thumbTintList = ContextCompat.getColorStateList(
+            this,
+            if (isDarkMode) android.R.color.white else R.color.black
+        )
+
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            // Save preference
+            prefs.edit().putBoolean("dark_mode", isChecked).apply()
+
+            // Change thumb color
+            switchTheme.thumbTintList = ContextCompat.getColorStateList(
+                this,
+                if (isChecked) android.R.color.white else R.color.black
+            )
+
+            // Apply theme globally
+            AppCompatDelegate.setDefaultNightMode(
+                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
+                else AppCompatDelegate.MODE_NIGHT_NO
+            )
+
+            // Restart HomePage to apply theme consistently
+            val intent = Intent(this, HomePage::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -188,6 +226,46 @@ class Settings : AppCompatActivity() {
 //        }
 //    }
 
+//    private fun setupLanguageSpinner() {
+//        languageSpinner = findViewById(R.id.languageSpinner)
+//        val languageMap = mapOf(
+//            getString(R.string.english) to "en",
+//            getString(R.string.afrikaans) to "af",
+//            getString(R.string.zulu) to "zu"
+//        )
+//        val languageNames = languageMap.keys.toList()
+//        languageSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languageNames)
+//
+//        val savedLanguageCode = sharedPrefs.getString("selected_language", "en")
+//        val savedIndex = languageNames.indexOfFirst { languageMap[it] == savedLanguageCode }
+//        languageSpinner.setSelection(savedIndex.takeIf { it >= 0 } ?: 0)
+//
+//        var isSpinnerInitialized = false
+//        languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+//                if (!isSpinnerInitialized) {
+//                    isSpinnerInitialized = true
+//                    return
+//                }
+//
+//                val selectedCode = languageMap[languageNames[position]] ?: "en"
+//                val currentCode = sharedPrefs.getString("selected_language", "en")
+//
+//                if (selectedCode != currentCode) {
+//                    sharedPrefs.edit().putString("selected_language", selectedCode).apply()
+//                    setLocale(selectedCode)
+//
+//                    val intent = Intent(this@Settings, HomePage::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+//                    startActivity(intent)
+//                    finish()
+//                }
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>) {}
+//        }
+//    }
+
     private fun setupLanguageSpinner() {
         languageSpinner = findViewById(R.id.languageSpinner)
         val languageMap = mapOf(
@@ -217,6 +295,7 @@ class Settings : AppCompatActivity() {
                     sharedPrefs.edit().putString("selected_language", selectedCode).apply()
                     setLocale(selectedCode)
 
+                    // Restart HomePage instead of Settings if you want to go to main screen
                     val intent = Intent(this@Settings, HomePage::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
@@ -227,6 +306,9 @@ class Settings : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
+
+
+
 
     private fun setupInfoRows() {
         findViewById<LinearLayout>(R.id.contactUsRow).setOnClickListener {

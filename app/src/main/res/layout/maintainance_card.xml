@@ -29,14 +29,12 @@
         android:textStyle="bold"
         android:textColor="#008000"
         android:paddingBottom="8dp"/>
-
-
     <TextView
         android:id="@+id/btn_open_lease"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/gradient_green_blue"
-        android:text="Reopen Maintainance Request Ticket"
+        android:text="Reopen Request Ticket"
         android:textColor="#FFFFFF"
         android:gravity="center"/>
 </LinearLayout>

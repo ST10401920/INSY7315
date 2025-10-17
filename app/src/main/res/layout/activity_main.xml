@@ -28,7 +28,7 @@
         android:textSize="26sp"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/ivHome"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="@string/enter_email_password"
         android:textSize="14sp"
-        android:textColor="#FFCCBC"
+        android:textColor="@color/subtitle_text"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
         android:layout_marginTop="32dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -84,20 +84,20 @@
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="#EEEEEE"
+                    android:background="@color/divider_gray"
                     android:layout_weight="1" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/or_login_with"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/light_gray"
                     android:textSize="12sp"/>
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="#EEEEEE"
+                    android:background="@color/divider_gray"
                     android:layout_weight="1" />
             </LinearLayout>
 
@@ -108,7 +108,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:hint="@string/email_hint"
                     android:inputType="textEmailAddress"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -121,7 +121,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:hint="@string/password_hint"
                     android:inputType="textPassword"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/remember_me"
-                    android:textColor="#757575"
+                    android:textColor="@color/checkbox_text"
                     android:textSize="14sp"/>
 
                 <View
@@ -152,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/forgot_password"
-                    android:textColor="#4D81E7"
+                    android:textColor="@color/gradient_end"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:padding="4dp"/>
@@ -164,7 +164,7 @@
                 android:layout_height="48dp"
                 android:gravity="center"
                 android:text="@string/login"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:background="@drawable/button_gradient"
@@ -183,13 +183,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/do_not_have_account"
-                    android:textColor="#AAA"/>
+                    android:textColor="@color/light_gray"/>
                 <TextView
                     android:id="@+id/tvSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sign_up"
-                    android:textColor="#4D81E7"
+                    android:textColor="@color/gradient_end"
                     android:textStyle="bold"/>
             </LinearLayout>
         </LinearLayout>

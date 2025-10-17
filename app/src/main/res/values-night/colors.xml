@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Basic Colors -->
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FF000000</color>
+
+    <!-- Home page no results -->
+    <color name="text_gray">#999999</color>
+
+    <!-- Application History -->
+    <color name="primary_blue">#386BF6</color>
+
+    <!-- Chatbot -->
+    <color name="light_background">#121212</color>
+    <color name="medium_gray">#999999</color>
+    <color name="dark_gray">#CCCCCC</color>
+    <color name="hint_gray">#666666</color>
+
+    <!-- Dashboard -->
+    <color name="blue_primary">#6699FF</color>
+    <color name="green_primary">#00FF44</color>
+    <color name="bottom_nav_blue">#6699FF</color>
+
+    <!-- Filter -->
+    <color name="background_light">#121212</color>
+    <color name="blue_accent">#2196F3</color>
+
+    <!-- Main -->
+    <color name="subtitle_text">#FF7043</color>
+    <color name="divider_gray">#333333</color>
+    <color name="light_gray">#555555</color>
+    <color name="checkbox_text">#AAAAAA</color>
+
+    <!-- Payment Success -->
+    <color name="gray_dark">#999999</color>
+    <color name="gradient_start">#6699FF</color>
+    <color name="gradient_end">#4D81E7</color>
+
+    <!-- Property Details -->
+    <color name="black_dark">#FFFFFF</color>
+    <color name="gray_light">#121212</color>
+
+    <!-- Register -->
+    <color name="gray_medium">#555555</color>
+    <color name="peach_light">#FF7043</color>
+
+    <!-- Screen Submit -->
+    <color name="gray_card_bg">#1E1E1E</color>
+    <color name="gray_text_medium">#999999</color>
+
+    <!-- Settings -->
+    <color name="bg_light_gray">#121212</color>
+    <color name="text_dark">#FFFFFF</color>
+    <color name="section_gray">#666666</color>
+    <color name="profile_name">#FFFFFF</color>
+    <color name="divider_light">#333333</color>
+    <color name="switch_track">#81A1C1</color>
+    <color name="switch_thumb">#FFFFFF</color>
+
+    <!-- Application Card -->
+    <color name="text_dark_gray">#CCCCCC</color>
+
+    <!-- Item Bot Message -->
+    <color name="text_light_gray">#666666</color>
+
+    <!-- Item Dashboard Request -->
+    <color name="text_black">#FFFFFF</color>
+    <color name="text_blue">#2196F3</color>
+
+    <!-- Item User Message -->
+    <color name="text_dark_grey">#CCCCCC</color>
+    <color name="text_light_grey">#666666</color>
+
+    <!-- Lease Card -->
+    <color name="text_white">#000000</color>
+    <color name="text_red">#FF5252</color>
+    <color name="background_light_grey">#1E1E1E</color>
+
+    <!-- Maintainance Card -->
+    <color name="text_green">#00FF7F</color>
+
+    <!-- Property Item -->
+    <color name="card_background">#1E1E1E</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#AAAAAA</color>
+</resources>

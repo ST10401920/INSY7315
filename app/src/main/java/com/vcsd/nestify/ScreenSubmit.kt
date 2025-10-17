@@ -13,6 +13,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ScreenSubmit : AppCompatActivity() {
 
@@ -110,6 +112,28 @@ class ScreenSubmit : AppCompatActivity() {
                     )
                     if (response.isSuccessful) {
                         Toast.makeText(this@ScreenSubmit, "Application submitted", Toast.LENGTH_LONG).show()
+
+                        lifecycleScope.launch {
+                            try {
+                                val fcmMessage = FcmApi.FcmMessage(
+                                    to = "/topics/rent_notifications",
+                                    notification = FcmApi.NotificationData(
+                                        title = "Application Received!",
+                                        body = "You successfully booked a property. We’ll review your application shortly."
+                                    )
+                                )
+
+                                val fcmResponse = RetrofitClient.notificationApi.sendNotification(fcmMessage)
+                                if (fcmResponse.isSuccessful) {
+                                    Log.d(TAG, "FCM notification sent successfully")
+                                } else {
+                                    Log.e(TAG, "FCM failed: ${fcmResponse.errorBody()?.string()}")
+                                }
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error sending notification: ${e.localizedMessage}")
+                            }
+                        }
+
                         val intent = Intent(this@ScreenSubmit, PaymentSuccess::class.java)
                         startActivity(intent)
                         finish()

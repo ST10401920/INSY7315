@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="#FFFFFF"
     android:fillViewport="true"
+    android:background="?attr/colorSurface"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MaintainanceLog">
 
     <LinearLayout
@@ -17,7 +17,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#FFFFFF"
+            android:background="?attr/colorSurface"
             android:elevation="2dp"
             android:paddingHorizontal="16dp">
 
@@ -27,14 +27,15 @@
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_back"
-                android:contentDescription="Back" />
+                android:contentDescription="Back"
+                app:tint="?attr/colorOnSurface" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/maintenance_log"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -52,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type_issue"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
@@ -70,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/location_issue"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
@@ -83,12 +84,12 @@
                 android:layout_marginBottom="20dp"
                 android:paddingHorizontal="12dp" />
 
-            <!-- Description of Issue -->
+            <!-- Description -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/description_issue"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
@@ -103,14 +104,15 @@
                 android:inputType="textMultiLine"
                 android:padding="12dp"
                 android:textSize="14sp"
+                android:textColor="?attr/colorOnBackground"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
                 android:layout_marginBottom="20dp" />
-
             <!-- Urgency -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/urgency"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
@@ -128,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/supporting_images"
-                android:textColor="#000000"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp" />
@@ -160,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/add_image"
-                        android:textColor="#666666"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="10sp" />
 
                 </LinearLayout>
@@ -174,14 +176,13 @@
                 android:layout_height="50dp"
                 android:background="@drawable/gradient_green_blue"
                 android:text="@string/submit_request"
-                android:textColor="#FFFFFF"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:clickable="true"
                 android:focusable="true"
                 android:layout_marginBottom="20dp" />
-
 
         </LinearLayout>
 

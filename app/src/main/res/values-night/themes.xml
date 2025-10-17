@@ -1,7 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Nestify" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Dark theme colors -->
+        <item name="colorPrimary">@color/blue_primary</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/green_primary</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <item name="android:statusBarColor">@color/blue_primary</item>
+        <item name="android:navigationBarColor">@color/light_background</item>
+
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <item name="android:windowBackground">@color/light_background</item>
+        <item name="colorSurface">@color/card_background</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+
+        <item name="textDarkGray">@color/text_dark_gray</item>
+        <item name="textLightGray">@color/text_light_gray</item>
+
+        <item name="profileNameColor">@color/profile_name</item>
+        <item name="sectionGrayColor">@color/section_gray</item>
+        <item name="dividerColor">@color/divider_light</item>
+        <item name="switchThumb">@color/switch_thumb</item>
+        <item name="switchTrack">@color/switch_track</item>
+        <item name="bottomNavColor">@color/bottom_nav_blue</item>
+        <item name="textBlue">@color/text_blue</item>
+
     </style>
 </resources>

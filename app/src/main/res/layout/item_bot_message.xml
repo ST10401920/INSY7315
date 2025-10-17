@@ -6,20 +6,22 @@
     android:gravity="start"
     android:padding="4dp">
 
+    <!-- Bot Message -->
     <TextView
         android:id="@+id/tvMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bot_message"
         android:padding="12dp"
-        android:textColor="#333333"
+        android:textColor="@color/black"
         android:textSize="14sp"/>
 
+    <!-- Timestamp -->
     <TextView
         android:id="@+id/tvTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="11sp"
-        android:textColor="#999999"
+        android:textColor="@color/black"
         android:layout_marginTop="2dp"/>
 </LinearLayout>

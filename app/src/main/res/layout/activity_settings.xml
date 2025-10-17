@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="#F7F7F7"
-    android:id="@+id/main"
+    android:background="?attr/colorSurface"
     tools:context=".Settings">
 
     <LinearLayout
@@ -25,14 +26,14 @@
             android:layout_marginStart="24dp"
             android:src="@drawable/settings"
             android:contentDescription="Settings"
-            app:tint="#FFFFFF" />
+            app:tint="?attr/colorOnPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="22sp"
             android:layout_marginStart="12dp"/>
     </LinearLayout>
@@ -43,10 +44,8 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="24dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="?attr/colorSurface"
         android:layout_marginTop="-20dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -80,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:text="Gabby"
                     android:textSize="18sp"
-                    android:textColor="#333333"
+                    android:textColor="?attr/profileNameColor"
                     android:textStyle="bold"
                     android:layout_marginStart="12dp"/>
             </LinearLayout>
@@ -89,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/account_settings"
-                android:textColor="#B8B8B8"
+                android:textColor="?attr/sectionGrayColor"
                 android:textSize="14sp"
                 android:paddingStart="20dp"
                 android:paddingTop="8dp"
@@ -112,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/edit_profile"
                     android:textSize="16sp"
-                    android:textColor="#222"/>
+                    android:textColor="?attr/colorOnSurface"/>
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
@@ -133,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/application_history"
                     android:textSize="16sp"
-                    android:textColor="#222"/>
+                    android:textColor="?attr/colorOnSurface"/>
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
@@ -156,20 +155,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/log_maintainance_request"
                     android:textSize="16sp"
-                    android:textColor="#222"/>
+                    android:textColor="?attr/colorOnSurface"/>
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/chevron_right"/>
             </LinearLayout>
 
-
             <LinearLayout
                 android:id="@+id/pushNotificationsRow"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:minHeight="48dp"
-                android:minWidth="48dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingStart="20dp"
@@ -180,25 +176,20 @@
                     android:layout_height="wrap_content"
                     android:text="@string/push_notifications"
                     android:textSize="16sp"
-                    android:textColor="#222"/>
+                    android:textColor="?attr/colorOnSurface"/>
                 <Switch
                     android:id="@+id/switch_push_notifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:minWidth="48dp"
                     android:checked="true"
-                    android:thumbTint="#000000"
-                    android:trackTint="#40539E" />
-
+                    android:thumbTint="?attr/switchThumb"
+                    android:trackTint="?attr/switchTrack"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/themeRow"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:minHeight="48dp"
-                android:minWidth="48dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingStart="20dp"
@@ -209,23 +200,20 @@
                     android:layout_height="wrap_content"
                     android:text="@string/dark_mode"
                     android:textSize="16sp"
-                    android:textColor="#222"/>
+                    android:textColor="?attr/colorOnSurface"/>
                 <Switch
                     android:id="@+id/switch_theme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:minWidth="48dp"
                     android:checked="false"
-                    android:thumbTint="#FFFFFF"
-                    android:trackTint="#40539E" />
-
+                    android:thumbTint="?attr/colorSurface"
+                    android:trackTint="?attr/switchTrack"/>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#EEE"
+                android:background="?attr/dividerColor"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"/>
 
@@ -233,7 +221,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/more"
-                android:textColor="#B8B8B8"
+                android:textColor="?attr/sectionGrayColor"
                 android:textSize="14sp"
                 android:paddingStart="20dp"
                 android:textStyle="bold"/>
@@ -254,12 +242,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/about_us"
                     android:textSize="16sp"
-                    android:textColor="#222"/>
+                    android:textColor="?attr/colorOnSurface"/>
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/chevron_right"/>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/languageRow"
                 android:layout_width="match_parent"
@@ -268,22 +257,19 @@
                 android:gravity="center_vertical"
                 android:paddingStart="20dp"
                 android:paddingEnd="12dp">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/language"
                     android:textSize="16sp"
-                    android:textColor="#222" />
-
+                    android:textColor="?attr/colorOnSurface"/>
                 <Spinner
                     android:id="@+id/languageSpinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/signOut"
                 android:layout_width="match_parent"
@@ -303,12 +289,13 @@
                     android:textSize="16sp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:textColor="#222"/>
+                    android:textColor="?attr/colorOnSurface"/>
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/chevron_right"/>
             </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -316,12 +303,11 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         app:menu="@menu/bottom_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:itemIconTint="#386BF6"
-        app:itemTextColor="#386BF6" />
-
+        app:itemIconTint="?attr/bottomNavColor"
+        app:itemTextColor="?attr/bottomNavColor"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

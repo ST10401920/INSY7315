@@ -7,7 +7,8 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASE_URL = "http://10.0.2.2:3000/"
+    //private const val BASE_URL = "http://10.0.2.2:3000/"
+    private const val BASE_URL = "http://10.0.0.167:3000/"
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -56,5 +57,9 @@ object RetrofitClient {
 
     val apiService: ApiService by lazy {
         instance.create(ApiService::class.java)
+    }
+
+    val notificationApi: NotificationApi by lazy {
+        instance.create(NotificationApi::class.java)
     }
 }
