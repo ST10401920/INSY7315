@@ -235,8 +235,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/bedroom_1"
                     android:textSize="14sp"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:background="@drawable/selected_bg"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:background="@drawable/unselected_bg"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="10dp"
                     android:layout_marginEnd="8dp" />

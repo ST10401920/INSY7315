@@ -21,9 +21,15 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-//import com.google.firebase.Firebase
-//import com.google.firebase.auth.FirebaseAuth
-//import com.google.firebase.messaging.messaging
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
 
 class Settings : AppCompatActivity() {
@@ -48,19 +54,19 @@ class Settings : AppCompatActivity() {
         }
     }
 
-//    private val requestPermissionLauncher = registerForActivityResult(
-//        ActivityResultContracts.RequestPermission()
-//    ) { isGranted: Boolean ->
-//        if (isGranted) {
-//            Firebase.messaging.isAutoInitEnabled = true
-//            sharedPrefs.edit().putBoolean("push_enabled", true).apply()
-//            pushSwitch.isChecked = true
-//            Toast.makeText(this, "Push notifications enabled", Toast.LENGTH_SHORT).show()
-//        } else {
-//            pushSwitch.isChecked = false
-//            Toast.makeText(this, "Push notifications denied", Toast.LENGTH_SHORT).show()
-//        }
-//    }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Firebase.messaging.isAutoInitEnabled = true
+            sharedPrefs.edit().putBoolean("push_enabled", true).apply()
+            pushSwitch.isChecked = true
+            Toast.makeText(this, "Push notifications enabled", Toast.LENGTH_SHORT).show()
+        } else {
+            pushSwitch.isChecked = false
+            Toast.makeText(this, "Push notifications denied", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +83,7 @@ class Settings : AppCompatActivity() {
 
         setupBottomNavigation()
         setupProfile()
-        //setupPushNotifications()
+        setupPushNotifications()
         setupLanguageSpinner()
         setupInfoRows()
         setupSignOut()
@@ -197,8 +203,111 @@ class Settings : AppCompatActivity() {
         }
     }
 
+    private fun setupPushNotifications() {
+        pushSwitch = findViewById(R.id.switch_push_notifications)
+
+        val isPushEnabled = sharedPrefs.getBoolean("push_enabled", true)
+        val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        } else true
+
+        pushSwitch.isChecked = isPushEnabled && hasPermission
+        pushSwitch.isEnabled = hasPermission || !isPushEnabled
+
+        pushSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    Firebase.messaging.isAutoInitEnabled = true
+                    sharedPrefs.edit().putBoolean("push_enabled", true).apply()
+                    Toast.makeText(this, "Push notifications enabled", Toast.LENGTH_SHORT).show()
+
+                    // ✅ Get the FCM token and trigger test notification
+                    Firebase.messaging.token.addOnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Toast.makeText(this, "Failed to get FCM token", Toast.LENGTH_SHORT).show()
+                            return@addOnCompleteListener
+                        }
+                        val token = task.result
+                        sendTestNotification(token)
+                    }
+                }
+            } else {
+                Firebase.messaging.isAutoInitEnabled = false
+                sharedPrefs.edit().putBoolean("push_enabled", false).apply()
+                Toast.makeText(this, "Push notifications disabled", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun sendTestNotification(fcmToken: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val url = URL("http://10.0.0.167:3000/notifications/send")
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "POST"
+                conn.setRequestProperty("Content-Type", "application/json")
+                conn.doOutput = true
+
+                val body = JSONObject().apply {
+                    put("to", fcmToken)
+                    put("notification", JSONObject().apply {
+                        put("title", "Push Notifications Enabled")
+                        put("body", "Your device is ready to receive notifications 🎉")
+                    })
+                }
+
+                conn.outputStream.use { os -> os.write(body.toString().toByteArray()) }
+                val response = conn.inputStream.bufferedReader().readText()
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@Settings, "Test notification sent!", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@Settings, "Error sending test: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+
+
+//    private fun sendTestNotification(fcmToken: String) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            try {
+//                val url = URL("http://10.0.0.167:3000/notifications/send") // Adjust to your Node backend
+//                val conn = url.openConnection() as HttpURLConnection
+//                conn.requestMethod = "POST"
+//                conn.setRequestProperty("Content-Type", "application/json")
+//                conn.doOutput = true
+//
+//                val body = JSONObject().apply {
+//                    put("fcmToken", fcmToken)
+//                    put("title", "Push Notifications Enabled")
+//                    put("body", "Your device is ready to receive notifications 🎉")
+//                }
+//
+//                conn.outputStream.use { os -> os.write(body.toString().toByteArray()) }
+//
+//                val response = conn.inputStream.bufferedReader().readText()
+//                withContext(Dispatchers.Main) {
+//                    Toast.makeText(this@Settings, "Test notification sent!", Toast.LENGTH_SHORT).show()
+//                }
+//            } catch (e: Exception) {
+//                withContext(Dispatchers.Main) {
+//                    Toast.makeText(this@Settings, "Error sending test: ${e.message}", Toast.LENGTH_LONG).show()
+//                }
+//            }
+//        }
+//    }
+
+
+
 //    private fun setupPushNotifications() {
-//        pushSwitch = findViewById(R.id.pushNotificationsSwitch)
+//        pushSwitch = findViewById(R.id.switch_push_notifications)
 //
 //        val isPushEnabled = sharedPrefs.getBoolean("push_enabled", true)
 //        val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

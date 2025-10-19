@@ -86,7 +86,7 @@ class Filter : AppCompatActivity() {
 
         // Reset button
         btnReset.setOnClickListener {
-            priceSeekBar.progress = 0
+            priceSeekBar.progress = 10000
             selectedBedrooms = null
             selectedAmenities.clear()
 

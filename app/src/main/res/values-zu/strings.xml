@@ -138,4 +138,11 @@
     <string name="lease_overview">Uhlolojikelele Lwesivumelwano</string>
     <string name="downlaod_lease">Landa Isivumelwano</string>
     <string name="maintainance_requests">Izicelo Zokulungisa</string>
+    <string name="status">Isimo</string>
+    <string name="awaiting_approval">Ilinde Ukuvunyelwa</string>
+    <string name="request_history">Cela umlando</string>
+
+    <!--Maintainance Request History-->
+    <string name="maintenance_request_history">Umlando Wesicelo Sokulungisa</string>
+    <string name="reopen">Phinda uvule Ithikithi Lesicelo</string>
 </resources>

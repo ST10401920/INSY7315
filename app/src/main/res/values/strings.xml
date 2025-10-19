@@ -139,4 +139,15 @@
     <string name="lease_overview">Lease Overview</string>
     <string name="downlaod_lease">Download Lease</string>
     <string name="maintainance_requests">Maintenance Requests</string>
+    <string name="status">Status</string>
+    <string name="awaiting_approval">Awaiting Approval</string>
+    <string name="request_history">Request History</string>
+
+<!--Maintainance Request History-->
+    <string name="maintenance_request_history">Maintenance Request History</string>
+    <string name="reopen">Reopen Request Ticket</string>
+
+
+    Reopen Request Ticket
+
 </resources>

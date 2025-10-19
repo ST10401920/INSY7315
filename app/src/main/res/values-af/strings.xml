@@ -138,4 +138,11 @@
     <string name="lease_overview">Huuroorsig</string>
     <string name="downlaod_lease">Laai Huurooreenkoms af</string>
     <string name="maintainance_requests">Onderhoudsversoeke</string>
+    <string name="status">Status</string>
+    <string name="awaiting_approval">Wag op goedkeuring</string>
+    <string name="request_history">Versoek geskiedenis</string>
+
+    <!--Maintainance Request History-->
+    <string name="maintenance_request_history">Onderhoudsversoekgeskiedenis</string>
+    <string name="reopen">Heropen versoekkaartjie</string>
 </resources>

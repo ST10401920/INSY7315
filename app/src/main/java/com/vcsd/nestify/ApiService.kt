@@ -265,11 +265,19 @@ data class PropertyData(
 )
 //----------code added for maintenance request end------------
 
+//interface NotificationApi {
+//    @Headers(
+//        "Content-Type: application/json",
+//        "Authorization: key=e5tRK3d0SNek5WDVZBY_3J:APA91bGH7GQC3NqlUEMFJecSYq4vw0U8dSQ_qh7oyeWGyQ_HUkZeZshZ_lNvkvYD9_XeI9LaxynGVLxKelqH8Jluq4gyv2vs-fBcfm-MXuIrp8CDMiEmowo"
+//    )
+//    @POST("https://fcm.googleapis.com/fcm/send")
+//    suspend fun sendNotification(@Body payload: FcmApi.FcmMessage): Response<Unit>
+//}
+
 interface NotificationApi {
-    @Headers(
-        "Content-Type: application/json",
-        "Authorization: key=e5tRK3d0SNek5WDVZBY_3J:APA91bGH7GQC3NqlUEMFJecSYq4vw0U8dSQ_qh7oyeWGyQ_HUkZeZshZ_lNvkvYD9_XeI9LaxynGVLxKelqH8Jluq4gyv2vs-fBcfm-MXuIrp8CDMiEmowo"
-    )
-    @POST("https://fcm.googleapis.com/fcm/send")
+    @POST("notifications/send")
     suspend fun sendNotification(@Body payload: FcmApi.FcmMessage): Response<Unit>
+
+    @POST("notifications/broadcast")
+    suspend fun broadcastNotification(@Body payload: FcmApi.FcmMessage): Response<Unit>
 }

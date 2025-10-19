@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import org.json.JSONObject
 
 class ScreenSubmit : AppCompatActivity() {
 
@@ -38,16 +38,6 @@ class ScreenSubmit : AppCompatActivity() {
         val backArrow = findViewById<ImageView>(R.id.back_arrow)
         val btnSubmit = findViewById<TextView>(R.id.btn_submit)
 
-        val tvTenantName = findViewById<TextView>(R.id.tvTenantName)
-        val tvTenantPhone = findViewById<TextView>(R.id.tvTenantPhone)
-        val tvTenantID = findViewById<TextView>(R.id.tvTenantID)
-        val tvTenantAge = findViewById<TextView>(R.id.tvTenantAge)
-        val tvJobTitle = findViewById<TextView>(R.id.tvJobTitle)
-        val tvIncome = findViewById<TextView>(R.id.tvIncome)
-        val tvIncomeSource = findViewById<TextView>(R.id.tvIncomeSource)
-        val tvLeaseAgreed = findViewById<TextView>(R.id.tvLeaseAgreed)
-        val tvDocuments = findViewById<TextView>(R.id.tvDocuments)
-
         val propertyId = intent.getStringExtra("PROPERTY_ID")
         val firstName = intent.getStringExtra("FIRST_NAME")
         val lastName = intent.getStringExtra("LAST_NAME")
@@ -61,20 +51,16 @@ class ScreenSubmit : AppCompatActivity() {
         val documentsList = intent.getStringArrayListExtra("DOCUMENTS") ?: emptyList()
         val documentNames = intent.getStringArrayListExtra("DOCUMENT_NAMES") ?: emptyList()
 
-
-        tvTenantName.text = "$firstName $lastName"
-        tvTenantPhone.text = phone ?: "N/A"
-        tvTenantID.text = idNumber ?: "N/A"
-        tvTenantAge.text = if (age != -1) age.toString() else "N/A"
-        tvJobTitle.text = jobTitleStr ?: "N/A"
-        tvIncome.text = "R%.2f".format(incomeVal)
-        tvIncomeSource.text = incomeSourceStr ?: "N/A"
-        tvLeaseAgreed.text = if (leaseAgreedVal) "Yes" else "No"
-        tvDocuments.text = if (documentNames.isNotEmpty()) documentNames.joinToString(", ") else "None"
-
-        Log.d(TAG, "Tenant Info: $firstName $lastName, Phone: $phone, ID: $idNumber, Age: $age")
-        Log.d(TAG, "Employment: $jobTitleStr, Income: $incomeVal, Source: $incomeSourceStr")
-        Log.d(TAG, "Lease: $leaseAgreedVal, Documents: ${documentsList.joinToString(", ")}")
+        // Set tenant info
+        findViewById<TextView>(R.id.tvTenantName).text = "$firstName $lastName"
+        findViewById<TextView>(R.id.tvTenantPhone).text = phone ?: "N/A"
+        findViewById<TextView>(R.id.tvTenantID).text = idNumber ?: "N/A"
+        findViewById<TextView>(R.id.tvTenantAge).text = if (age != -1) age.toString() else "N/A"
+        findViewById<TextView>(R.id.tvJobTitle).text = jobTitleStr ?: "N/A"
+        findViewById<TextView>(R.id.tvIncome).text = "R%.2f".format(incomeVal)
+        findViewById<TextView>(R.id.tvIncomeSource).text = incomeSourceStr ?: "N/A"
+        findViewById<TextView>(R.id.tvLeaseAgreed).text = if (leaseAgreedVal) "Yes" else "No"
+        findViewById<TextView>(R.id.tvDocuments).text = if (documentNames.isNotEmpty()) documentNames.joinToString(", ") else "None"
 
         // Navigation
         backArrow.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
@@ -110,30 +96,16 @@ class ScreenSubmit : AppCompatActivity() {
                         token = "Bearer $token",
                         request = request
                     )
+
                     if (response.isSuccessful) {
                         Toast.makeText(this@ScreenSubmit, "Application submitted", Toast.LENGTH_LONG).show()
 
-                        lifecycleScope.launch {
-                            try {
-                                val fcmMessage = FcmApi.FcmMessage(
-                                    to = "/topics/rent_notifications",
-                                    notification = FcmApi.NotificationData(
-                                        title = "Application Received!",
-                                        body = "You successfully booked a property. We’ll review your application shortly."
-                                    )
-                                )
-
-                                val fcmResponse = RetrofitClient.notificationApi.sendNotification(fcmMessage)
-                                if (fcmResponse.isSuccessful) {
-                                    Log.d(TAG, "FCM notification sent successfully")
-                                } else {
-                                    Log.e(TAG, "FCM failed: ${fcmResponse.errorBody()?.string()}")
-                                }
-                            } catch (e: Exception) {
-                                Log.e(TAG, "Error sending notification: ${e.localizedMessage}")
-                            }
+                        // Send FCM notification asynchronously in GlobalScope
+                        GlobalScope.launch {
+                            sendTopicNotification()
                         }
 
+                        // Move to PaymentSuccess
                         val intent = Intent(this@ScreenSubmit, PaymentSuccess::class.java)
                         startActivity(intent)
                         finish()
@@ -145,6 +117,27 @@ class ScreenSubmit : AppCompatActivity() {
                     Toast.makeText(this@ScreenSubmit, "Network error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                 }
             }
+        }
+    }
+
+    private suspend fun sendTopicNotification() {
+        try {
+            val fcmMessage = FcmApi.FcmMessage(
+                to = "/topics/rent_notifications",
+                notification = FcmApi.NotificationData(
+                    title = "Application Received!",
+                    body = "You successfully booked a property. We’ll review your application shortly."
+                )
+            )
+
+            val fcmResponse = RetrofitClient.notificationApi.sendNotification(fcmMessage)
+            if (fcmResponse.isSuccessful) {
+                Log.d(TAG, "FCM topic notification sent successfully")
+            } else {
+                Log.e(TAG, "FCM failed: ${fcmResponse.errorBody()?.string()}")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error sending FCM notification: ${e.localizedMessage}")
         }
     }
 }

@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/gradient_green_blue"
-        android:text="Reopen Request Ticket"
+        android:text="@string/reopen"
         android:textColor="#FFFFFF"
         android:gravity="center"/>
 </LinearLayout>

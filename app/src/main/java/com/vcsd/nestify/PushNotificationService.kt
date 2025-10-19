@@ -11,7 +11,6 @@ import com.google.firebase.messaging.RemoteMessage
 class PushNotificationService: FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        // TODO: send token to your backend
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
