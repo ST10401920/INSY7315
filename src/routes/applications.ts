@@ -101,15 +101,17 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
     }
 
     // made a change
-      if (role === "tenant") {
+// Treat empty or null roles as tenant
+  if (role === "tenant" || !role || role.trim() === "") {
     const { data, error } = await supabase
       .from("applications")
       .select("*")
-      .eq("applicant_id", userId); 
+      .eq("applicant_id", userId);
 
     if (error) return res.status(400).json({ error: error.message });
     return res.json({ applications: data });
   }
+
 
     // admins see all applications
     if (role === "admin") {
