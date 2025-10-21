@@ -16,15 +16,16 @@ import leaseRoutes from "./src/routes/lease";
 import notificationsRouter from "./src/routes/pushNotifications";
 import reportsRoutes from "./src/routes/reports";
 
-
 const app = express();
 
 // Global middleware
-app.use(cors({
-  origin: 'http://localhost:5173', 
-  credentials: true               
-}));
-app.use(express.json({ limit: "10mb" })); 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: "10mb" }));
 
 // Route registration
 app.use("/auth", authRoutes);
@@ -34,9 +35,9 @@ app.use("/user-management", userManagementRoutes);
 app.use("/announcements", announcementsRoutes);
 app.use("/chatbot/", chatbotRoutes);
 app.use("/no-auth-properties", noAuthProperty);
-app.use("/admin-dash", adminDash);             
-app.use("/applications", applicationsRoutes);  
-app.use("/rentals", rentalsRoutes);           
+app.use("/admin-dash", adminDash);
+app.use("/applications", applicationsRoutes);
+app.use("/rentals", rentalsRoutes);
 app.use("/leases", leaseRoutes);
 app.use("/notifications", notificationsRouter);
 app.use("/api/reports", reportsRoutes);
