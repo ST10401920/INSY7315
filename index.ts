@@ -14,6 +14,7 @@ import rentalsRoutes from "./src/routes/rentals";
 import applicationsRoutes from "./src/routes/applications";
 import leaseRoutes from "./src/routes/lease";
 import notificationsRouter from "./src/routes/pushNotifications";
+import reportsRoutes from "./src/routes/reports";
 
 
 const app = express();
@@ -38,6 +39,8 @@ app.use("/applications", applicationsRoutes);
 app.use("/rentals", rentalsRoutes);           
 app.use("/leases", leaseRoutes);
 app.use("/notifications", notificationsRouter);
+app.use("/api/reports", reportsRoutes);
+app.use("/static", express.static("public"));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

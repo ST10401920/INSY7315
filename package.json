@@ -23,6 +23,7 @@
     "google-auth-library": "^10.3.0",
     "nodemon": "^3.1.10",
     "openai": "^5.22.0",
+    "puppeteer": "^24.25.0",
     "string-similarity": "^4.0.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
