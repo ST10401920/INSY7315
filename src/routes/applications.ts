@@ -94,24 +94,31 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
 
       const { data, error } = await supabase
         .from("applications")
-        .select("*")
+        .select(
+          "id, applicant_id, property_id, first_name, last_name, phone_number, id_number, age, job_title, income, income_source, status, approved_at, notes, submitted_at, documents"
+        )
         .in("property_id", propIds);
       if (error) return res.status(400).json({ error: error.message });
-      return res.json({ applications: data });
+      // Process data to convert documents to boolean (has documents or not)
+      const processedData = data?.map((app) => ({
+        ...app,
+        documents: app.documents ? true : false,
+      }));
+
+      return res.json({ applications: processedData });
     }
 
     // made a change
-// Treat empty or null roles as tenant
-  if (role === "tenant" || !role || role.trim() === "") {
-    const { data, error } = await supabase
-      .from("applications")
-      .select("*")
-      .eq("applicant_id", userId);
+    // Treat empty or null roles as tenant
+    if (role === "tenant" || !role || role.trim() === "") {
+      const { data, error } = await supabase
+        .from("applications")
+        .select("*")
+        .eq("applicant_id", userId);
 
-    if (error) return res.status(400).json({ error: error.message });
-    return res.json({ applications: data });
-  }
-
+      if (error) return res.status(400).json({ error: error.message });
+      return res.json({ applications: data });
+    }
 
     // admins see all applications
     if (role === "admin") {
@@ -127,6 +134,76 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
   }
 });
 
+// Get specific application document
+router.get(
+  "/:id/document",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const userId = (req as any).userId;
+
+    try {
+      // Fetch user role
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .single();
+
+      if (profileError || !profile) {
+        return res.status(400).json({ error: "Unable to fetch user role" });
+      }
+
+      const role = profile.role;
+
+      // Get the application with just the document field
+      const { data: application, error } = await supabase
+        .from("applications")
+        .select("documents, applicant_id, property_id")
+        .eq("id", id)
+        .single();
+
+      if (error || !application) {
+        return res.status(404).json({ error: "Application not found" });
+      }
+      // Add debug logging
+      console.log("Application found:", {
+        id: id,
+        hasDocuments: !!application.documents,
+        documentsType: typeof application.documents,
+        documentsLength: application.documents?.length || 0,
+        documentsPreview:
+          application.documents?.substring?.(0, 50) || "no preview",
+      });
+
+      // Authorization check
+      let authorized = false;
+
+      if (role === "admin") {
+        authorized = true;
+      } else if (role === "tenant" || !role || role.trim() === "") {
+        // Tenant can only access their own applications
+        authorized = application.applicant_id === userId;
+      } else if (role === "property_manager") {
+        // Property manager can access applications for their properties
+        const { data: props } = await supabase
+          .from("property")
+          .select("id")
+          .eq("user_id", userId);
+        const propIds = (props || []).map((p: any) => p.id);
+        authorized = propIds.includes(application.property_id);
+      }
+
+      if (!authorized) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
+      res.json({ document: application.documents });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || "Server error" });
+    }
+  }
+);
 // Update application status (approve/reject) - only property manager who owns the property or admin
 router.put("/:id", requireAuth, async (req: Request, res: Response) => {
   const userId = (req as any).userId;
