@@ -112,26 +112,30 @@ const TaskPage: React.FC = () => {
     if (uploadedImages.length === 0) return;
 
     try {
-      const formData = new FormData();
-      uploadedImages.forEach((file) => {
-        formData.append("photos", file);
-      });
-
       const token = await getSupabaseToken();
 
-      // First upload photos to get URLs (you might need a separate upload endpoint)
-      // For now, let's assume we have the photo URLs
-      // In a real implementation, you'd upload to cloud storage first
-      const photoUrls = uploadedImages.map(
-        (_, index) =>
-          `https://your-storage-service.com/photos/${taskId}-${Date.now()}-${index}.jpg`
+      // Convert images to base64
+      const base64Images = await Promise.all(
+        uploadedImages.map((file) => {
+          return new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const result = reader.result as string;
+              resolve(result); // This includes the data:image/jpeg;base64, prefix
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        })
       );
+
+      console.log(`Uploading ${base64Images.length} images as base64`);
 
       const response = await axios.put(
         `http://localhost:3000/maintenance/${taskId}/update`,
         {
-          photos: photoUrls,
-          progress_notes: "Photos uploaded by caretaker",
+          photos: base64Images,
+          progress_notes: `${uploadedImages.length} completion photos uploaded by caretaker`,
         },
         {
           headers: {
@@ -753,10 +757,10 @@ const TaskPage: React.FC = () => {
                     {/* Image previews */}
                     {task.photos && task.photos.length > 0 && (
                       <div style={styles.imagePreviewContainer}>
-                        {task.photos.map((photoUrl, index) => (
+                        {task.photos.map((photoData, index) => (
                           <img
                             key={index}
-                            src={photoUrl}
+                            src={photoData} // Base64 data URL can be used directly
                             alt="Task image"
                             style={styles.imagePreview}
                             onClick={() => setActiveTask(task)}
@@ -1056,10 +1060,10 @@ const TaskPage: React.FC = () => {
                   <div style={styles.modalSection}>
                     <h4 style={styles.modalSectionTitle}>Task Photos</h4>
                     <div style={styles.imageGallery}>
-                      {activeTask.photos.map((photoUrl, index) => (
+                      {activeTask.photos.map((photoData, index) => (
                         <div key={index} style={styles.galleryImageContainer}>
                           <img
-                            src={photoUrl}
+                            src={photoData} // Base64 data URL can be used directly
                             alt="Task image"
                             style={styles.galleryImage}
                           />
