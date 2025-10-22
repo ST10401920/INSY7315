@@ -16,12 +16,11 @@ interface LeaseApplication {
   job_title: string;
   income: number;
   income_source: string;
-  documents?: string;
+  documents?: boolean; // Changed to boolean
   status: "pending" | "approved" | "rejected";
   approved_at?: string;
   notes?: string;
-  created_at: string;
-  updated_at: string;
+  submitted_at: string;
 }
 
 interface Lease {
@@ -120,7 +119,7 @@ const Lease: React.FC = () => {
           )
         );
 
-        // If it was approved and created a rental, you might want to show a success message
+        // If it was approved and created a rental
         if (response.data.rental) {
           alert("Application approved and rental created successfully!");
         }
@@ -226,35 +225,105 @@ const Lease: React.FC = () => {
     }
   };
 
+  const downloadApplicationDocument = async (applicationId: number) => {
+    try {
+      console.log(`Requesting document for application ID: ${applicationId}`);
+      const token = await getSupabaseToken();
+      const response = await axios.get(
+        `http://localhost:3000/applications/${applicationId}/document`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log("API Response:", response.data);
+      console.log("Response status:", response.status);
+
+      const { document: documentData } = response.data;
+      const filename = `application-${applicationId}-documents.pdf`;
+
+      if (!documentData) {
+        console.log("No document found in response");
+        alert("No document found for this application.");
+        return;
+      }
+
+      console.log("Document type:", typeof documentData);
+      console.log("Document preview:", documentData?.substring?.(0, 100));
+
+      let base64Data = "";
+
+      // Handle different document formats
+      if (typeof documentData === "string") {
+        try {
+          // Try to parse as JSON array first (your current format)
+          const parsed = JSON.parse(documentData);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            console.log("Document is JSON array format");
+            base64Data = parsed[0]; // Get first element from array
+          } else {
+            console.log("Document is plain string");
+            base64Data = documentData;
+          }
+        } catch (e) {
+          // If JSON parsing fails, treat as plain string
+          console.log("Document is plain string (JSON parse failed)");
+          base64Data = documentData;
+        }
+      } else {
+        console.log("Document is not a string");
+        alert("Document format not supported.");
+        return;
+      }
+
+      // Remove data URL prefix if present
+      if (base64Data.startsWith("data:")) {
+        console.log("Removing data URL prefix");
+        base64Data = base64Data.split(",")[1];
+      }
+
+      console.log("Processing base64 data, length:", base64Data.length);
+
+      try {
+        // Convert base64 to blob for download
+        const byteCharacters = atob(base64Data);
+        const byteArray = new Uint8Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteArray[i] = byteCharacters.charCodeAt(i);
+        }
+        const blob = new Blob([byteArray], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+        console.log("Download initiated successfully");
+      } catch (decodeError) {
+        console.error("Error decoding base64:", decodeError);
+        alert("Error processing document. The file may be corrupted.");
+      }
+    } catch (error) {
+      console.error("Error downloading document:", error);
+      alert("Error downloading document. Please try again.");
+    }
+  };
+
   // Helper function to find lease for an applicant
   const getLeaseForApplicant = (
     applicantId: string,
     applicationId?: number
   ) => {
-    console.log(
-      `🔍 Looking for lease for applicant: ${applicantId}, application: ${applicationId}`
-    );
-    console.log(`📄 All leases:`, leases);
-
     // If we have an application ID, match by that (most accurate)
     if (applicationId) {
-      const foundLease = leases.find(
-        (lease) => lease.application_id === applicationId
-      );
-      console.log(
-        `✅ Found lease by application_id: ${applicationId}:`,
-        foundLease
-      );
-      return foundLease;
+      return leases.find((lease) => lease.application_id === applicationId);
     }
-
     // Fallback: match by tenant_id (less accurate, may find wrong lease)
-    const foundLease = leases.find((lease) => lease.tenant_id === applicantId);
-    console.log(
-      `⚠️ Found lease by tenant_id (fallback): ${applicantId}:`,
-      foundLease
-    );
-    return foundLease;
+    return leases.find((lease) => lease.tenant_id === applicantId);
   };
 
   if (loading)
@@ -462,19 +531,20 @@ const Lease: React.FC = () => {
                     </td>
                     <td style={{ padding: "16px 24px" }}>
                       {lease.documents ? (
-                        <a
-                          href={lease.documents}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          onClick={() => downloadApplicationDocument(lease.id)}
                           style={{
-                            color: "#2563EB",
-                            textDecoration: "underline",
-                            fontSize: "14px",
-                            fontWeight: "500",
+                            backgroundColor: "#007bff",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            padding: "5px 10px",
+                            cursor: "pointer",
+                            fontSize: "12px",
                           }}
                         >
                           View PDF
-                        </a>
+                        </button>
                       ) : (
                         <span style={{ color: "#6B7280", fontSize: "14px" }}>
                           No PDF
