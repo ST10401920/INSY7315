@@ -71,7 +71,7 @@
                     android:src="@drawable/download"
                     android:background="@drawable/circle_background"
                     android:scaleType="centerCrop"
-                    android:contentDescription="Profile"/>
+                    android:contentDescription="Profile" />
 
                 <TextView
                     android:id="@+id/profileNameTextView"
@@ -81,7 +81,19 @@
                     android:textSize="18sp"
                     android:textColor="?attr/profileNameColor"
                     android:textStyle="bold"
-                    android:layout_marginStart="12dp"/>
+                    android:layout_marginStart="12dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/announcement"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/marketing"
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
 
             <TextView

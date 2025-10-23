@@ -132,10 +132,13 @@ class ApplicationHistory : AppCompatActivity() {
 
             btnViewLease.setOnClickListener {
                 val intent = Intent(this, Lease::class.java)
+
+                TempDataStore.propertyImageURL = imageUrl
+
                 intent.putExtra("APPLICATION_ID", app.id)
                 intent.putExtra("PROPERTY_NAME", property?.name)
                 intent.putExtra("LEASE_STATUS", app.status)
-                intent.putExtra("PROPERTY_IMAGE_URL", imageUrl)
+                //intent.putExtra("PROPERTY_IMAGE_URL", imageUrl)
                 startActivity(intent)
             }
 

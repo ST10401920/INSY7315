@@ -36,19 +36,11 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.annotations.SerializedName
-import com.vcsd.nestify.HomePage
-import com.vcsd.nestify.LocaleHelper
-import com.vcsd.nestify.R
-import com.vcsd.nestify.Register
-import com.vcsd.nestify.RetrofitClient
-import com.vcsd.nestify.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -352,7 +344,9 @@ class MainActivity : AppCompatActivity() {
                 if (idToken != null) {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
-                            val url = URL("http://10.0.2.2:3000/auth/firebase")
+                            //val url = URL("http://10.0.2.2:3000/auth/firebase")
+                            //val url = URL("http://172.20.10.3:3000/auth/firebase")
+                            val url = URL("http://10.0.0.167:3000/auth/firebase")
                             //val url = URL("http://10.0.0.119:3000/auth/firebase")
                             //val url = URL("https://prog7314-express.onrender.com/auth/firebase")
                             //val url = URL("http://172.20.10.2:3000/auth/firebase")
@@ -436,7 +430,7 @@ class MainActivity : AppCompatActivity() {
             val payload = android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE)
             val json = String(payload)
             val jsonObj = JSONObject(json)
-            jsonObj.optString("sub", "unknown") // 'sub' usually contains user ID
+            jsonObj.optString("sub", "unknown") 
         } catch (e: Exception) {
             Log.e(TAG, "Failed to decode JWT: ${e.message}")
             "unknown"

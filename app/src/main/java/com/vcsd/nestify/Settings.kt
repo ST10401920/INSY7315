@@ -40,6 +40,7 @@ class Settings : AppCompatActivity() {
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var languageSpinner: Spinner
 
+
     private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             try {
@@ -89,6 +90,7 @@ class Settings : AppCompatActivity() {
         setupSignOut()
         setUpHistory()
         ThemeSelector()
+        setupNotifications()
 
         //----------code added for maintenance request--------------
         val maintenanceRow = findViewById<LinearLayout>(R.id.maintaince)
@@ -108,6 +110,14 @@ class Settings : AppCompatActivity() {
             }
         }
         //----------code added for maintenance request--------------
+    }
+
+    private fun setupNotifications() {
+        val announcement = findViewById<ImageView>(R.id.announcement)
+        announcement.setOnClickListener {
+            val intent = Intent(this, Announcement::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupBottomNavigation() {

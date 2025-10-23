@@ -17,6 +17,7 @@
             android:id="@+id/back_arrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            app:tint="?attr/colorOnSurface"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="Back" />

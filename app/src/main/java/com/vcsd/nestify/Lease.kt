@@ -52,7 +52,10 @@ class Lease : AppCompatActivity() {
 
         applicationId = intent.getIntExtra("APPLICATION_ID", -1)
         leaseStatus = intent.getStringExtra("LEASE_STATUS")?.lowercase()
+        //propertyImageUrl = intent.getStringExtra("PROPERTY_IMAGE_URL")
         propertyImageUrl = intent.getStringExtra("PROPERTY_IMAGE_URL")
+            ?: TempDataStore.propertyImageURL
+        TempDataStore.propertyImageURL = null
         propertyName = intent.getStringExtra("PROPERTY_NAME") ?: "Property"
 
         // ⚡ Register the ActivityResultLauncher once here (before STARTED)

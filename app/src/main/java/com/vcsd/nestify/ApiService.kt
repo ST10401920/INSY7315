@@ -281,3 +281,19 @@ interface NotificationApi {
     @POST("notifications/broadcast")
     suspend fun broadcastNotification(@Body payload: FcmApi.FcmMessage): Response<Unit>
 }
+
+data class AnnouncementModel(
+    val id: Int,
+    val title: String,
+    val message: String,
+    val created_at: String
+)
+
+
+interface AnnouncementApi {
+    @GET("announcements")
+    suspend fun getAnnouncements(
+        @Header("Authorization") token: String
+    ): Response<Map<String, List<AnnouncementModel>>>
+
+}
