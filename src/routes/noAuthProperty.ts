@@ -15,7 +15,7 @@ router.get("/", async (req: Request, res: Response) => {
   res.json({ properties: data });
 });
 
-// change
+// Added
 // Get a single property by ID
 router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
