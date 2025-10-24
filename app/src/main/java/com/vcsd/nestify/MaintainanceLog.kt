@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream
 import android.util.Base64
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import java.io.IOException
 
 class MaintainanceLog : AppCompatActivity() {
 
@@ -179,24 +180,32 @@ class MaintainanceLog : AppCompatActivity() {
 
                 dao.insert(entity)
 
-                if (isOnline()) {
-                    val prefs = getSharedPreferences(MainActivity.PREFS_KEY, Context.MODE_PRIVATE)
-                    val token = prefs.getString(MainActivity.TOKEN_KEY, null)
-
-                    if (!token.isNullOrBlank()) {
-                        val resp = RetrofitClient.maintenanceApi.submitRequest("Bearer $token", request)
-                        if (resp.isSuccessful) {
-                            Toast.makeText(this@MaintainanceLog, "Request submitted successfully!", Toast.LENGTH_SHORT).show()
-                            dao.update(entity.copy(synced = true))
-                            finish()
-                        } else {
-                            Toast.makeText(this@MaintainanceLog, "Error: ${resp.code()}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } else {
-                    Toast.makeText(this@MaintainanceLog, "Saved locally. Will sync when online.", Toast.LENGTH_SHORT).show()
+                if (!isOnline()) {
+                    Toast.makeText(this@MaintainanceLog, "You are currently offline. Saved locally.", Toast.LENGTH_SHORT).show()
                     Log.e(TAG, "Will sync when back online")
                     finish()
+                } else {
+                    try {
+                        val prefs = getSharedPreferences(MainActivity.PREFS_KEY, Context.MODE_PRIVATE)
+                        val token = prefs.getString(MainActivity.TOKEN_KEY, null)
+
+                        if (!token.isNullOrBlank()) {
+                            val resp = RetrofitClient.maintenanceApi.submitRequest("Bearer $token", request)
+                            if (resp.isSuccessful) {
+                                Toast.makeText(this@MaintainanceLog, "Request submitted successfully!", Toast.LENGTH_SHORT).show()
+                                dao.update(entity.copy(synced = true))
+                                finish()
+                            } else {
+                                Toast.makeText(this@MaintainanceLog, "Error: ${resp.code()}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } catch (e: IOException) {
+                        Toast.makeText(this@MaintainanceLog, "You are currently offline. Saved locally.", Toast.LENGTH_SHORT).show()
+                        Log.e(TAG, "Network unavailable", e)
+                        finish()
+                    } catch (e: Exception) {
+                        Toast.makeText(this@MaintainanceLog, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
                 }
 
 
