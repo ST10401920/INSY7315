@@ -24,6 +24,7 @@ credentialsPlayServicesAuth = "1.5.0"
 googleid = "1.1.1"
 cardview = "1.0.0"
 firebaseMessaging = "25.0.1"
+room = "2.8.3"
 
 # Combine the [libraries] blocks
 [libraries]
@@ -34,6 +35,12 @@ flexbox = { module = "com.google.android:flexbox", version.ref = "flexbox" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+
+# Room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 # Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
