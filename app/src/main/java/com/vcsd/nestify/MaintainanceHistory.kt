@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -16,8 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
-import kotlinx.coroutines.launch
+import coil.load
 
 class MaintainanceHistory : AppCompatActivity() {
     private lateinit var container: LinearLayout
@@ -122,6 +122,25 @@ class MaintainanceHistory : AppCompatActivity() {
         }
     }
 
+    private fun reopenRequest(req: MaintenanceResponse) {
+        lifecycleScope.launch {
+            val prefs = getSharedPreferences(MainActivity.PREFS_KEY, Context.MODE_PRIVATE)
+            val token = prefs.getString(MainActivity.TOKEN_KEY, null) ?: return@launch
+
+            val response = RetrofitClient.maintenanceApi.reopenRequest(
+                id = req.id,
+                authHeader = "Bearer $token"
+            )
+
+            if (response.isSuccessful) {
+                Toast.makeText(this@MaintainanceHistory, "Request re-opened", Toast.LENGTH_SHORT).show()
+                loadMaintenanceHistory()
+            } else {
+                Toast.makeText(this@MaintainanceHistory, "Failed to re-open", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun addCard(req: MaintenanceResponse, inflater: LayoutInflater) {
         val card = inflater.inflate(R.layout.maintainance_card, container, false)
 
@@ -146,32 +165,44 @@ class MaintainanceHistory : AppCompatActivity() {
             reopenBtn.visibility = View.GONE
         }
 
+        val photosContainer = card.findViewById<LinearLayout>(R.id.photos_container)
+        photosContainer.removeAllViews()
+
+        Log.d("MaintenanceHistory", "Photos count for req ${req.id}: ${req.photos?.size ?: 0}")
+        req.photos?.forEach { photo ->
+            Log.d("MaintenanceHistory", "Photo string (first 100 chars): ${photo.take(100)}")
+            val imageView = ImageView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(200, 200).apply {
+                    setMargins(8, 0, 8, 0)
+                }
+                scaleType = ImageView.ScaleType.CENTER_CROP
+            }
+
+            if (photo.startsWith("data:image") || photo.startsWith("/9j/") || photo.length > 200) {
+                setImageFromBase64(imageView, photo)
+            } else {
+                imageView.load(photo) {
+                    placeholder(R.drawable.placeholder)
+                }
+            }
+
+            photosContainer.addView(imageView)
+        }
         container.addView(card)
     }
 
-    private fun reopenRequest(req: MaintenanceResponse) {
-        lifecycleScope.launch {
-            val prefs = getSharedPreferences(MainActivity.PREFS_KEY, Context.MODE_PRIVATE)
-            val token = prefs.getString(MainActivity.TOKEN_KEY, null) ?: return@launch
-
-            val request = MaintenanceRequest(
-                propertyId = req.property_id.toInt(),
-                rentalId = req.rental_id.toInt(),
-                caretakerId = req.caretaker_id,
-                description = req.description,
-                category = req.category,
-                photos = req.photos ?: emptyList(),
-                urgency = req.urgency,
-                progress_notes = req.progress_notes ?: emptyList()
-            )
-
-            val response = RetrofitClient.maintenanceApi.submitRequest("Bearer $token", request)
-            if (response.isSuccessful) {
-                Toast.makeText(this@MaintainanceHistory, "Request re-opened", Toast.LENGTH_SHORT).show()
-                loadMaintenanceHistory() // refresh list for completed to disappear and pending to show
-            } else {
-                Toast.makeText(this@MaintainanceHistory, "Failed to re-open", Toast.LENGTH_SHORT).show()
-            }
+    private fun setImageFromBase64(imageView: ImageView, rawBase64: String) {
+        var cleanBase64 = rawBase64.trim()
+        if (cleanBase64.startsWith("data:image")) {
+            val commaIndex = cleanBase64.indexOf(",")
+            if (commaIndex != -1) cleanBase64 = cleanBase64.substring(commaIndex + 1)
+        }
+        try {
+            val decodedBytes = android.util.Base64.decode(cleanBase64, android.util.Base64.DEFAULT)
+            val bitmap = android.graphics.BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+            imageView.setImageBitmap(bitmap)
+        } catch (e: Exception) {
+            imageView.setImageResource(R.drawable.placeholder)
         }
     }
 }

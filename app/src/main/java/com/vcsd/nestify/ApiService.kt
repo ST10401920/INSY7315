@@ -203,6 +203,12 @@ interface MaintenanceApi {
     suspend fun getMyRequests(
         @Header("Authorization") token: String
     ): Response<MaintenanceListEnvelope>
+
+    @PUT("maintenance/{id}/reopen")
+    suspend fun reopenRequest(
+        @Path("id") id: String,
+        @Header("Authorization") authHeader: String
+    ): Response<MaintenanceResponse>
 }
 
 data class MaintenanceRequest(
