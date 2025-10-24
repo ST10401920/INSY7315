@@ -36,6 +36,10 @@ interface Property {
 const Properties: React.FC = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingPropertyId, setEditingPropertyId] = useState<number | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -93,26 +97,52 @@ const Properties: React.FC = () => {
         ),
       };
 
-      // Make API call
-      const response = await axios.post(
-        "http://localhost:3000/properties",
-        propertyData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      if (isEditMode && editingPropertyId) {
+        // Update existing property
+        const response = await axios.put(
+          `http://localhost:3000/properties/${editingPropertyId}`,
+          propertyData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      // Add the new property to the local state
-      const newPropertyWithId = {
-        ...newProperty,
-        id: response.data.property.id,
-      };
+        // Update the property in the local state
+        setProperties(
+          properties.map((prop) =>
+            prop.id === editingPropertyId
+              ? { ...newProperty, id: editingPropertyId }
+              : prop
+          )
+        );
+      } else {
+        // Create new property
+        const response = await axios.post(
+          "http://localhost:3000/properties",
+          propertyData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      setProperties([...properties, newPropertyWithId]);
+        // Add the new property to the local state
+        const newPropertyWithId = {
+          ...newProperty,
+          id: response.data.property.id,
+        };
+
+        setProperties([...properties, newPropertyWithId]);
+      }
+
       setIsModalOpen(false);
+      setIsEditMode(false);
+      setEditingPropertyId(null);
 
       // Reset form
       setNewProperty({
@@ -129,17 +159,47 @@ const Properties: React.FC = () => {
         const errorMessage =
           err.response.data?.error || err.response.data?.message || err.message;
         setError(errorMessage);
-        console.error("Error adding property:", {
+        console.error("Error saving property:", {
           status: err.response.status,
           data: err.response.data,
         });
       } else {
-        setError(err instanceof Error ? err.message : "Failed to add property");
-        console.error("Error adding property:", err);
+        setError(
+          err instanceof Error ? err.message : "Failed to save property"
+        );
+        console.error("Error saving property:", err);
       }
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleEditProperty = (property: Property) => {
+    setIsEditMode(true);
+    setEditingPropertyId(property.id);
+    setNewProperty({
+      name: property.name,
+      location: property.location,
+      price: property.price,
+      images: property.images,
+      amenities: property.amenities,
+      bedrooms: property.bedrooms,
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleAddProperty = () => {
+    setIsEditMode(false);
+    setEditingPropertyId(null);
+    setNewProperty({
+      name: "",
+      location: "",
+      price: 0,
+      images: [],
+      amenities: [],
+      bedrooms: 1,
+    });
+    setIsModalOpen(true);
   };
 
   return (
@@ -174,7 +234,7 @@ const Properties: React.FC = () => {
               My Properties
             </h1>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={handleAddProperty}
               style={{
                 background: "linear-gradient(135deg, #50bc72, #41599c)",
                 color: "white",
@@ -370,7 +430,7 @@ const Properties: React.FC = () => {
                       )}
                     </div>
                     <button
-                      onClick={() => {}}
+                      onClick={() => handleEditProperty(property)}
                       style={{
                         width: "100%",
                         padding: "0.75rem",
@@ -439,7 +499,7 @@ const Properties: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <h2 style={{ marginBottom: "1.5rem", color: "#111827" }}>
-                Add New Property
+                {isEditMode ? "Edit Property" : "Add New Property"}
               </h2>
               <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: "1rem" }}>
@@ -603,9 +663,33 @@ const Properties: React.FC = () => {
                         marginTop: "0.25rem",
                         color: "#374151",
                       }}
-                      required
+                      required={!isEditMode}
                     />
                   </label>
+                  {isEditMode && newProperty.images.length > 0 && (
+                    <div style={{ marginTop: "0.5rem" }}>
+                      <img
+                        src={newProperty.images[0]}
+                        alt="Current property image"
+                        style={{
+                          width: "100px",
+                          height: "80px",
+                          objectFit: "cover",
+                          borderRadius: "0.375rem",
+                          border: "1px solid #D1D5DB",
+                        }}
+                      />
+                      <p
+                        style={{
+                          fontSize: "0.875rem",
+                          color: "#6b7280",
+                          margin: "0.25rem 0 0 0",
+                        }}
+                      >
+                        Current image (upload new to replace)
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ marginBottom: "1.5rem" }}>
@@ -690,7 +774,13 @@ const Properties: React.FC = () => {
                       opacity: isSubmitting ? 0.7 : 1,
                     }}
                   >
-                    {isSubmitting ? "Saving..." : "Save Property"}
+                    {isSubmitting
+                      ? isEditMode
+                        ? "Updating..."
+                        : "Saving..."
+                      : isEditMode
+                      ? "Update Property"
+                      : "Save Property"}
                   </button>
                 </div>
               </form>
