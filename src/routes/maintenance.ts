@@ -1,4 +1,3 @@
-
 import { Router, Request, Response } from "express";
 import { supabase } from "../supabaseClient";
 import requireAuth from "../middleware/requireAuth";
@@ -145,7 +144,6 @@ router.put("/:id/assign", requireAuth, async (req: Request, res: Response) => {
   res.json({ maintenance: data?.[0] });
 });
 
-// --------------------code added--------------------------
 // GET /maintenance - tenants can see their request(s)
 router.get("/my", requireAuth, async (req: Request, res: Response) => {
   const userId = (req as any).userId;
@@ -161,7 +159,7 @@ router.get("/my", requireAuth, async (req: Request, res: Response) => {
 });
 
 // GET /rentals/my - tenant fetches their active rental
-router.get("/my", requireAuth, async (req: Request, res: Response) => {
+router.get("/rentals/my", requireAuth, async (req: Request, res: Response) => {
   const userId = (req as any).userId;
 
   const { data, error } = await supabase
@@ -177,7 +175,6 @@ router.get("/my", requireAuth, async (req: Request, res: Response) => {
 
   res.json(data);
 });
-// --------------------code added ends--------------------------
 
 // GET /maintenance/assigned - caretaker sees tasks assigned to them
 router.get("/assigned", requireAuth, async (req: Request, res: Response) => {
@@ -239,7 +236,6 @@ router.put("/:id/update", requireAuth, async (req: Request, res: Response) => {
   const { status, progress_notes, photos } = req.body;
 
   try {
-    // Validate status if provided
     const allowedStatuses = ["pending", "in_progress", "completed"];
     if (status && !allowedStatuses.includes(status)) {
       return res.status(400).json({ error: "Invalid status value." });
@@ -256,54 +252,40 @@ router.put("/:id/update", requireAuth, async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Maintenance request not found" });
     }
 
-    // Verify the caretaker is assigned to this task
+    // Verify caretaker is assigned
     if (maintenance.caretaker_id !== userId) {
-      return res
-        .status(403)
-        .json({ error: "You are not assigned to this task" });
+      return res.status(403).json({ error: "You are not assigned to this task" });
     }
 
-    // Prepare update payload
-    const updatePayload: any = {
-      updated_at: new Date().toISOString(),
-    };
+    // Build update payload
+    const updatePayload: any = { updated_at: new Date().toISOString() };
 
-    // Update status if provided
     if (status) {
       updatePayload.status = status;
     }
 
-    // Add progress notes if provided
     if (progress_notes) {
-      const currentNotes = maintenance.progress_notes || [];
-      const newNote =
-        typeof progress_notes === "string"
-          ? progress_notes
-          : progress_notes.join("; ");
-      updatePayload.progress_notes = [...currentNotes, newNote];
+      const currentNotes: string[] = maintenance.progress_notes || [];
+      const newNotes = Array.isArray(progress_notes)
+        ? progress_notes
+        : [progress_notes];
+      updatePayload.progress_notes = [...currentNotes, ...newNotes];
     }
 
-    // Add photos if provided
     if (photos && Array.isArray(photos) && photos.length > 0) {
-      const currentPhotos = maintenance.photos || [];
+      const currentPhotos: string[] = maintenance.photos || [];
       updatePayload.photos = [...currentPhotos, ...photos];
     }
 
-    // Update the maintenance request
-    const { data, error } = await supabase
+    const { data, error: updateErr } = await supabase
       .from("maintenance")
       .update(updatePayload)
       .eq("id", id)
       .select();
 
-    if (error) {
-      return res.status(400).json({ error: error.message });
-    }
+    if (updateErr) return res.status(400).json({ error: updateErr.message });
 
-    res.json({
-      maintenance: data?.[0],
-      message: "Task updated successfully",
-    });
+    res.json({ maintenance: data?.[0], message: "Task updated successfully" });
   } catch (err: any) {
     res.status(500).json({ error: err.message || "Server error" });
   }
@@ -332,6 +314,47 @@ router.get("/:id", requireAuth, async (req: Request, res: Response) => {
   if (error) return res.status(400).json({ error: error.message });
 
   return res.json({ maintenance: data });
+});
+
+// Tenant reopens a completed request
+router.put("/:id/reopen", requireAuth, async (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+  const { id } = req.params;
+
+  try {
+    const { data: maintenance, error } = await supabase
+      .from("maintenance")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error || !maintenance) {
+      return res.status(404).json({ error: "Maintenance request not found" });
+    }
+
+    // Verify tenant owns this request
+    if (maintenance.tenant_id !== userId) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+
+    // Only allow reopening if completed
+    if (maintenance.status !== "completed") {
+      return res.status(400).json({ error: "Only completed requests can be reopened" });
+    }
+
+    const { data, error: updateErr } = await supabase
+      .from("maintenance")
+      .update({ status: "pending", caretaker_id: null, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (updateErr) return res.status(400).json({ error: updateErr.message });
+
+    res.json({ maintenance: data?.[0], message: "Request reopened" });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Server error" });
+  }
 });
 
 export default router;
