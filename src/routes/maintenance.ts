@@ -1,4 +1,3 @@
-
 import { Router, Request, Response } from "express";
 import { supabase } from "../supabaseClient";
 import requireAuth from "../middleware/requireAuth";
@@ -145,7 +144,6 @@ router.put("/:id/assign", requireAuth, async (req: Request, res: Response) => {
   res.json({ maintenance: data?.[0] });
 });
 
-// --------------------code added--------------------------
 // GET /maintenance - tenants can see their request(s)
 router.get("/my", requireAuth, async (req: Request, res: Response) => {
   const userId = (req as any).userId;
@@ -161,7 +159,7 @@ router.get("/my", requireAuth, async (req: Request, res: Response) => {
 });
 
 // GET /rentals/my - tenant fetches their active rental
-router.get("/my", requireAuth, async (req: Request, res: Response) => {
+router.get("/rentals/my", requireAuth, async (req: Request, res: Response) => {
   const userId = (req as any).userId;
 
   const { data, error } = await supabase
@@ -177,7 +175,6 @@ router.get("/my", requireAuth, async (req: Request, res: Response) => {
 
   res.json(data);
 });
-// --------------------code added ends--------------------------
 
 // GET /maintenance/assigned - caretaker sees tasks assigned to them
 router.get("/assigned", requireAuth, async (req: Request, res: Response) => {
@@ -223,7 +220,7 @@ router.get("/caretakers", requireAuth, async (req: Request, res: Response) => {
     const transformedData = data.map((user) => ({
       id: user.id,
       first_name: user.email.split("@")[0], // Use email username as display name
-      last_name: "", // Empty string since we don't have last name
+      last_name: "", // Empty string
     }));
 
     res.json({ caretakers: transformedData });
@@ -309,18 +306,8 @@ router.put("/:id/update", requireAuth, async (req: Request, res: Response) => {
   }
 });
 
-//get for tenant
-// router.get("/:id", requireAuth, async (req: Request, res: Response) => {
-//   const userId = (req as any).userId;
-//   const { id } = req.params;
-//   const { data, error } = await supabase.from("maintenance").select("*");
-
-//   if (error) return res.status(400).json({ error: error.message });
-//   return res.json({ maintenance: data });
-// });
-
 router.get("/:id", requireAuth, async (req: Request, res: Response) => {
-  const userId = (req as any).userId; 
+  const userId = (req as any).userId;
   const { id } = req.params;
 
   const { data, error } = await supabase
@@ -332,6 +319,53 @@ router.get("/:id", requireAuth, async (req: Request, res: Response) => {
   if (error) return res.status(400).json({ error: error.message });
 
   return res.json({ maintenance: data });
+});
+
+// Tenant reopens a completed request
+router.put("/:id/reopen", requireAuth, async (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+  const { id } = req.params;
+
+  try {
+    const { data: maintenance, error } = await supabase
+      .from("maintenance")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error || !maintenance) {
+      return res.status(404).json({ error: "Maintenance request not found" });
+    }
+
+    // Verify tenant owns this request
+    if (maintenance.tenant_id !== userId) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+
+    // Only allow reopening if completed
+    if (maintenance.status !== "completed") {
+      return res
+        .status(400)
+        .json({ error: "Only completed requests can be reopened" });
+    }
+
+    const { data, error: updateErr } = await supabase
+      .from("maintenance")
+      .update({
+        status: "pending",
+        caretaker_id: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (updateErr) return res.status(400).json({ error: updateErr.message });
+
+    res.json({ maintenance: data?.[0], message: "Request reopened" });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Server error" });
+  }
 });
 
 export default router;

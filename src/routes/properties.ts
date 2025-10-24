@@ -57,4 +57,43 @@ router.get("/:id", requireAuth, async (req: Request, res: Response) => {
   res.json({ property: data });
 });
 
+router.put("/:id", requireAuth, async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const userId = (req as any).userId;
+  const { name, location, images, bedrooms, price, amenities } = req.body;
+
+  // Fetch the property to ensure it exists and belongs to the user
+  const { data: existingProperty, error: fetchError } = await supabase
+    .from("property")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (fetchError || !existingProperty) {
+    return res.status(404).json({ error: "Property not found" });
+  }
+
+  if (existingProperty.user_id !== userId) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+
+  // Update the property
+  const { data, error } = await supabase
+    .from("property")
+    .update({
+      name,
+      location,
+      images,
+      bedrooms,
+      price,
+      amenities,
+    })
+    .eq("id", id)
+    .select();
+
+  if (error) return res.status(400).json({ error: error.message });
+
+  res.json({ property: data?.[0] });
+});
+
 export default router;
