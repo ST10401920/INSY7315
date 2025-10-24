@@ -40,6 +40,7 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
   res.json({ properties: data });
 });
 
+
 // Get property by ID
 router.get("/:id", requireAuth, async (req: Request, res: Response) => {
   const { id } = req.params;

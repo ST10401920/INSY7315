@@ -47,9 +47,9 @@ router.post("/login", async (req: Request, res: Response) => {
 
   if (error || !data.session)
     return res.status(401).json({ error: error?.message || "Login failed" });
-
+// Changes Made
   res.json({
-    accessToken: data.session.access_token, // matches Kotlin data class
+    accessToken: data.session.access_token, 
     userId: data.user?.id,
     email: data.user?.email,
   });
