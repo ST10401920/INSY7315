@@ -36,6 +36,16 @@ const TaskPage: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [newNote, setNewNote] = useState("");
 
+  // Helper function to ensure base64 data is properly formatted as data URL
+  const formatImageSrc = (photoData: string): string => {
+    // If it already starts with data:, return as is
+    if (photoData.startsWith("data:")) {
+      return photoData;
+    }
+    // If it's just base64 data, add the data URL prefix
+    return `data:image/jpeg;base64,${photoData}`;
+  };
+
   // Fetch tasks assigned to the current caretaker
   const fetchTasks = async () => {
     try {
@@ -760,7 +770,7 @@ const TaskPage: React.FC = () => {
                         {task.photos.map((photoData, index) => (
                           <img
                             key={index}
-                            src={photoData} // Base64 data URL can be used directly
+                            src={formatImageSrc(photoData)}
                             alt="Task image"
                             style={styles.imagePreview}
                             onClick={() => setActiveTask(task)}
@@ -1063,7 +1073,7 @@ const TaskPage: React.FC = () => {
                       {activeTask.photos.map((photoData, index) => (
                         <div key={index} style={styles.galleryImageContainer}>
                           <img
-                            src={photoData} // Base64 data URL can be used directly
+                            src={formatImageSrc(photoData)}
                             alt="Task image"
                             style={styles.galleryImage}
                           />
