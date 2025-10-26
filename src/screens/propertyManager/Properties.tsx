@@ -12,11 +12,14 @@ const fetchProperties = async () => {
     throw new Error("Authentication token not found");
   }
 
-  const response = await axios.get("http://localhost:3000/properties", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await axios.get(
+    "https://insy7315-api-deploy.onrender.com/properties",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   return response.data.properties;
 };
@@ -100,7 +103,7 @@ const Properties: React.FC = () => {
       if (isEditMode && editingPropertyId) {
         // Update existing property
         const response = await axios.put(
-          `http://localhost:3000/properties/${editingPropertyId}`,
+          `https://insy7315-api-deploy.onrender.com/properties/${editingPropertyId}`,
           propertyData,
           {
             headers: {
@@ -121,7 +124,7 @@ const Properties: React.FC = () => {
       } else {
         // Create new property
         const response = await axios.post(
-          "http://localhost:3000/properties",
+          "https://insy7315-api-deploy.onrender.com/properties",
           propertyData,
           {
             headers: {

@@ -51,7 +51,7 @@ const TaskPage: React.FC = () => {
     try {
       const token = await getSupabaseToken();
       const response = await axios.get(
-        "http://localhost:3000/maintenance/assigned",
+        "https://insy7315-api-deploy.onrender.com/maintenance/assigned",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -76,7 +76,7 @@ const TaskPage: React.FC = () => {
     try {
       const token = await getSupabaseToken();
       await axios.put(
-        `http://localhost:3000/maintenance/${taskId}/update`,
+        `https://insy7315-api-deploy.onrender.com/maintenance/${taskId}/update`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -142,7 +142,7 @@ const TaskPage: React.FC = () => {
       console.log(`Uploading ${base64Images.length} images as base64`);
 
       const response = await axios.put(
-        `http://localhost:3000/maintenance/${taskId}/update`,
+        `https://insy7315-api-deploy.onrender.com/maintenance/${taskId}/update`,
         {
           photos: base64Images,
           progress_notes: `${uploadedImages.length} completion photos uploaded by caretaker`,
@@ -198,7 +198,7 @@ const TaskPage: React.FC = () => {
     try {
       const token = await getSupabaseToken();
       const response = await axios.put(
-        `http://localhost:3000/maintenance/${taskId}/update`,
+        `https://insy7315-api-deploy.onrender.com/maintenance/${taskId}/update`,
         { progress_notes: note.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );

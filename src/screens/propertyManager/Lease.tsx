@@ -56,9 +56,12 @@ const Lease: React.FC = () => {
   const fetchLeases = async () => {
     try {
       const token = await getSupabaseToken();
-      const response = await axios.get("http://localhost:3000/leases", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "https://insy7315-api-deploy.onrender.com/leases",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       console.log("Fetched leases:", response.data.leases); // Debug log
       setLeases(response.data.leases || []);
     } catch (err: any) {
@@ -72,9 +75,12 @@ const Lease: React.FC = () => {
       const token = await getSupabaseToken();
       console.log("Got token:", token ? "Token exists" : "No token");
 
-      const response = await axios.get("http://localhost:3000/applications", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "https://insy7315-api-deploy.onrender.com/applications",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       console.log("API Response:", response.data);
 
       setLeaseApplications(response.data.applications || []); // API returns { applications: [...] }
@@ -99,7 +105,7 @@ const Lease: React.FC = () => {
     try {
       const token = await getSupabaseToken();
       const response = await axios.put(
-        `http://localhost:3000/applications/${leaseId}`,
+        `https://insy7315-api-deploy.onrender.com/applications/${leaseId}`,
         {
           status: action === "approve" ? "approved" : "rejected",
           notes: "", // optional notes field
@@ -170,7 +176,7 @@ const Lease: React.FC = () => {
 
       // Send as JSON with base64 file data
       const response = await axios.post(
-        "http://localhost:3000/leases",
+        "https://insy7315-api-deploy.onrender.com/leases",
         {
           tenantId: selectedApplicant.applicant_id,
           applicationId: selectedApplicant.id, // Add the application ID
@@ -207,7 +213,7 @@ const Lease: React.FC = () => {
     try {
       const token = await getSupabaseToken();
       await axios.put(
-        `http://localhost:3000/leases/${leaseId}`,
+        `https://insy7315-api-deploy.onrender.com/leases/${leaseId}`,
         { action: "acknowledge" },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -230,7 +236,7 @@ const Lease: React.FC = () => {
       console.log(`Requesting document for application ID: ${applicationId}`);
       const token = await getSupabaseToken();
       const response = await axios.get(
-        `http://localhost:3000/applications/${applicationId}/document`,
+        `https://insy7315-api-deploy.onrender.com/applications/${applicationId}/document`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

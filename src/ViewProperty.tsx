@@ -30,7 +30,7 @@ const ViewProperty: React.FC = () => {
       try {
         console.log("Fetching properties...");
         const response = await axios.get(
-          "http://localhost:3000/no-auth-properties"
+          "https://insy7315-api-deploy.onrender.com/no-auth-properties"
         );
         console.log("API Response:", response);
         console.log("Response data:", response.data);

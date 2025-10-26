@@ -44,7 +44,7 @@ const Maintenance: React.FC = () => {
       const token = await getSupabaseToken();
       console.log("Fetching caretakers...");
       const response = await axios.get(
-        "http://localhost:3000/maintenance/caretakers",
+        "https://insy7315-api-deploy.onrender.com/maintenance/caretakers",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -60,9 +60,12 @@ const Maintenance: React.FC = () => {
   const fetchTasks = async () => {
     try {
       const token = await getSupabaseToken();
-      const response = await axios.get("http://localhost:3000/maintenance", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "https://insy7315-api-deploy.onrender.com/maintenance",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setTasks(response.data.maintenance || []);
       setLoading(false);
     } catch (err: any) {
@@ -83,7 +86,7 @@ const Maintenance: React.FC = () => {
     try {
       const token = await getSupabaseToken();
       await axios.put(
-        `http://localhost:3000/maintenance/${taskId}/assign`,
+        `https://insy7315-api-deploy.onrender.com/maintenance/${taskId}/assign`,
         { caretakerId: selectedCaretaker },
         { headers: { Authorization: `Bearer ${token}` } }
       );

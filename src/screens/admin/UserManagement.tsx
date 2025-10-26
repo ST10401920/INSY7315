@@ -4,7 +4,7 @@ import Footer from "../../components/Footer";
 import axios from "axios";
 
 // Set base URL for API requests
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://insy7315-api-deploy.onrender.com";
 
 // Define user interface
 interface User {

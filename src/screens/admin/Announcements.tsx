@@ -34,12 +34,15 @@ const Announcements: React.FC = () => {
 
       console.log("Using token:", token.substring(0, 20) + "..."); // Log truncated token for debugging
 
-      const response = await axios.get("http://localhost:3000/announcements", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.get(
+        "https://insy7315-api-deploy.onrender.com/announcements",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       console.log("Response received:", response.data); // Debug log
       setAnnouncements(response.data.announcements);
@@ -80,12 +83,16 @@ const Announcements: React.FC = () => {
       //   return;
       // }
 
-      await axios.post("http://localhost:3000/announcements", newAnnouncement, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      await axios.post(
+        "https://insy7315-api-deploy.onrender.com/announcements",
+        newAnnouncement,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       setNewAnnouncement({ title: "", message: "" });
       fetchAnnouncements(); // Refresh the list
       setIsSubmitting(false);

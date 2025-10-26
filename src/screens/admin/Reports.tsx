@@ -3,7 +3,7 @@ import AdminNavbar from "../../components/AdminNavbar";
 import Footer from "../../components/Footer";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://insy7315-api-deploy.onrender.com";
 
 const Reports: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState("");

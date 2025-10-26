@@ -14,8 +14,22 @@ interface DashboardStats {
   total_revenue: number;
 }
 
-// Set base URL for API requests
-axios.defaults.baseURL = "http://localhost:3000";
+// Set base URL for all axios requests
+axios.defaults.baseURL = "https://insy7315-api-deploy.onrender.com";
+
+// Add axios request interceptor for debugging
+axios.interceptors.request.use(
+  (config) => {
+    console.log(
+      "Making request to:",
+      (config.baseURL || "") + (config.url || "")
+    );
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 const Dashboard: React.FC = () => {
   const [data, setData] = useState<DashboardStats | null>(null);
