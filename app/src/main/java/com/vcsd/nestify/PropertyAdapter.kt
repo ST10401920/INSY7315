@@ -17,6 +17,7 @@ class PropertyAdapter(
 
     private var properties: MutableList<Property> = properties.toMutableList()
     private val allProperties = properties.toMutableList()
+    private val priceRanges = listOf(5000, 6000, 7000, 8000, 9000, 10000)
 
     class PropertyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.iv_property_image)
@@ -63,25 +64,36 @@ class PropertyAdapter(
 
     fun filterAndSearch(
         searchText: String? = null,
-        minPrice: Int? = null,
-        maxPrice: Int? = null,
+        selectedPrice: Int? = null,
         bedrooms: Int? = null,
         amenitiesFilter: List<String>? = null
     ) {
         properties = allProperties.filter { property ->
             val matchesSearch = searchText.isNullOrBlank() ||
-                    (property.name?.contains(searchText, ignoreCase = true) == true)
+                    property.name?.contains(searchText, ignoreCase = true) == true
 
-            val matchesPrice = (minPrice == null || (property.price ?: 0) >= minPrice) &&
-                    (maxPrice == null || (property.price ?: Int.MAX_VALUE) <= maxPrice)
+            // Price filtering logic
+            val matchesPrice = if (selectedPrice == null) {
+                true
+            } else {
+                val index = priceRanges.indexOf(selectedPrice)
+                when {
+                    index == 0 -> (property.price ?: 0) <= selectedPrice
+                    index == priceRanges.lastIndex -> (property.price ?: 0) >= selectedPrice
+                    else -> {
+                        val nextValue = priceRanges.getOrNull(index + 1) ?: selectedPrice
+                        (property.price ?: 0) in selectedPrice until nextValue
+                    }
+                }
+            }
 
-            val matchesBedrooms = bedrooms == null || ((property.bedrooms ?: 0) >= bedrooms)
+            val matchesBedrooms = bedrooms == null || (property.bedrooms ?: 0) >= bedrooms
 
             val matchesAmenities = if (amenitiesFilter.isNullOrEmpty()) {
                 true
             } else {
-                val propertyAmenities = property.amenities ?: emptyList()
-                amenitiesFilter.all { it in propertyAmenities }
+                val propertyAmenities = property.amenities?.map { it.lowercase() } ?: emptyList()
+                amenitiesFilter.map { it.lowercase() }.any { it in propertyAmenities }
             }
 
             matchesSearch && matchesPrice && matchesBedrooms && matchesAmenities

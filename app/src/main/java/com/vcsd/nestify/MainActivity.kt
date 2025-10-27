@@ -344,9 +344,9 @@ class MainActivity : AppCompatActivity() {
                 if (idToken != null) {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
-                            //val url = URL("http://10.0.2.2:3000/auth/firebase")
+                            val url = URL("http://10.0.2.2:3000/auth/firebase")
                             //val url = URL("http://172.20.10.3:3000/auth/firebase")
-                            val url = URL("http://10.0.0.167:3000/auth/firebase")
+                            //val url = URL("http://10.0.0.167:3000/auth/firebase")
                             //val url = URL("http://10.0.0.119:3000/auth/firebase")
                             //val url = URL("https://prog7314-express.onrender.com/auth/firebase")
                             //val url = URL("http://172.20.10.2:3000/auth/firebase")

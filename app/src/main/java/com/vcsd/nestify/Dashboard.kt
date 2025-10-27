@@ -109,7 +109,7 @@ class Dashboard : AppCompatActivity() {
                     }.apply()
 
                 } else {
-                    Toast.makeText(this@Dashboard, "No active rental in backend", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@Dashboard, "No active rentals", Toast.LENGTH_LONG).show()
                 }
             } else {
                 Toast.makeText(this@Dashboard, "Error fetching rental: ${resp.code()}", Toast.LENGTH_SHORT).show()

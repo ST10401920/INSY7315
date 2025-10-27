@@ -28,6 +28,7 @@ class Filter : AppCompatActivity() {
 
     private var selectedAmenities = mutableListOf<String>()
     private var selectedBedrooms: Int? = null
+    private var selectedPrice: Int? = null  // null means "any price"
 
     private val priceRanges = listOf(5000, 6000, 7000, 8000, 9000, 10000)
 
@@ -40,44 +41,45 @@ class Filter : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_filter)
 
+        // Views
         priceSeekBar = findViewById(R.id.sb_price_range)
         tvSelectedPrice = findViewById(R.id.tv_selected_price)
         btnApply = findViewById(R.id.btn_apply)
-        backButton = findViewById(R.id.tv_back)
         btnReset = findViewById(R.id.tv_reset_filter)
+        backButton = findViewById(R.id.tv_back)
 
-        // Bedrooms
         tvBedroom1 = findViewById(R.id.tv_bedroom_1)
         tvBedroom2 = findViewById(R.id.tv_bedroom_2)
         tvBedroom3 = findViewById(R.id.tv_bedroom_3)
         tvBedroom4 = findViewById(R.id.tv_bedroom_4)
         tvBedroom5 = findViewById(R.id.tv_bedroom_5)
 
-        // Amenities
         tvGym = findViewById(R.id.tv_category_gym)
         tvPool = findViewById(R.id.tv_category_pool)
         tvWifi = findViewById(R.id.tv_category_wifi)
 
-        // Set bedroom toggle
+        // Bedroom toggles
         setupBedroomToggle(tvBedroom1, 1)
         setupBedroomToggle(tvBedroom2, 2)
         setupBedroomToggle(tvBedroom3, 3)
         setupBedroomToggle(tvBedroom4, 4)
         setupBedroomToggle(tvBedroom5, 5)
 
-        // Set amenities toggle
+        // Amenity toggles
         setupAmenityToggle(tvGym, "Gym")
         setupAmenityToggle(tvPool, "Pool")
         setupAmenityToggle(tvWifi, "WiFi")
 
+        // Back button
         backButton.setOnClickListener { finish() }
 
-        // SeekBar listener to show selected price
+        // SeekBar setup
         priceSeekBar.max = priceRanges.size - 1
+        tvSelectedPrice.text = "Any"
         priceSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val price = priceRanges.getOrNull(progress) ?: 0
-                tvSelectedPrice.text = "R${price}"
+                selectedPrice = priceRanges.getOrNull(progress)
+                tvSelectedPrice.text = selectedPrice?.let { "R$it" } ?: "Any"
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -86,36 +88,34 @@ class Filter : AppCompatActivity() {
 
         // Reset button
         btnReset.setOnClickListener {
-            priceSeekBar.progress = 10000
+            selectedPrice = null
             selectedBedrooms = null
             selectedAmenities.clear()
-
-            resetView(tvBedroom1)
-            resetView(tvBedroom2)
-            resetView(tvBedroom3)
-            resetView(tvBedroom4)
-            resetView(tvBedroom5)
-
-            resetView(tvGym)
-            resetView(tvPool)
-            resetView(tvWifi)
-
+            priceSeekBar.progress = 0
             tvSelectedPrice.text = "Any"
 
-            Toast.makeText(this, "Filters reset", Toast.LENGTH_SHORT).show()
+            listOf(tvBedroom1, tvBedroom2, tvBedroom3, tvBedroom4, tvBedroom5).forEach { resetView(it) }
+            listOf(tvGym, tvPool, tvWifi).forEach { resetView(it) }
+
+            val resetFilter = PropertyFilter(
+                selectedPrice = null,
+                bedrooms = null,
+                amenities = null
+            )
+            val resultIntent = Intent()
+            Toast.makeText(this, "Filter has been reset", Toast.LENGTH_LONG).show()
+            resultIntent.putExtra("FILTER_DATA", resetFilter)
+            setResult(RESULT_OK, resultIntent)
+            finish()
         }
 
         // Apply button
         btnApply.setOnClickListener {
-            val selectedPrice = priceRanges.getOrNull(priceSeekBar.progress)
-
             val filter = PropertyFilter(
-                minPrice = selectedPrice,
-                maxPrice = null,
+                selectedPrice = selectedPrice,
                 bedrooms = selectedBedrooms,
                 amenities = if (selectedAmenities.isNotEmpty()) selectedAmenities.toList() else null
             )
-
             val resultIntent = Intent()
             resultIntent.putExtra("FILTER_DATA", filter)
             setResult(RESULT_OK, resultIntent)
@@ -135,13 +135,7 @@ class Filter : AppCompatActivity() {
                 selectedBedrooms = null
                 resetView(view)
             } else {
-                // Reset all bedroom views
-                resetView(tvBedroom1)
-                resetView(tvBedroom2)
-                resetView(tvBedroom3)
-                resetView(tvBedroom4)
-                resetView(tvBedroom5)
-
+                listOf(tvBedroom1, tvBedroom2, tvBedroom3, tvBedroom4, tvBedroom5).forEach { resetView(it) }
                 selectedBedrooms = value
                 selectView(view)
             }

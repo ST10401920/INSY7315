@@ -115,7 +115,7 @@ class HomePage : AppCompatActivity() {
                 if (::propertyAdapter.isInitialized) {
                     propertyAdapter.filterAndSearch(
                         searchText = newText,
-                        maxPrice = currentFilter?.maxPrice,
+                        selectedPrice = currentFilter?.selectedPrice,
                         bedrooms = currentFilter?.bedrooms,
                         amenitiesFilter = amenitiesToList(currentFilter?.amenities)
                     )
@@ -127,7 +127,7 @@ class HomePage : AppCompatActivity() {
                 if (::propertyAdapter.isInitialized) {
                     propertyAdapter.filterAndSearch(
                         searchText = query,
-                        maxPrice = currentFilter?.maxPrice,
+                        selectedPrice = currentFilter?.selectedPrice,
                         bedrooms = currentFilter?.bedrooms,
                         amenitiesFilter = amenitiesToList(currentFilter?.amenities)
                     )
@@ -191,16 +191,15 @@ class HomePage : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
             val filter = data?.getSerializableExtra("FILTER_DATA") as? PropertyFilter
-            if (filter != null) {
-                currentFilter = filter
-                propertyAdapter.filterAndSearch(
-                    searchText = searchView.query.toString(),
-                    minPrice = currentFilter?.minPrice,
-                    maxPrice = currentFilter?.maxPrice,
-                    bedrooms = currentFilter?.bedrooms,
-                    amenitiesFilter = amenitiesToList(currentFilter?.amenities)
-                )
-            }
+            currentFilter = filter
+
+            propertyAdapter.filterAndSearch(
+                searchText = searchView.query.toString(),
+                selectedPrice = currentFilter?.selectedPrice,
+                bedrooms = currentFilter?.bedrooms,
+                amenitiesFilter = amenitiesToList(currentFilter?.amenities)
+            )
         }
     }
+
 }

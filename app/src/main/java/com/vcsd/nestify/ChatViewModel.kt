@@ -16,9 +16,9 @@ class ChatViewModel : ViewModel() {
     val state: LiveData<ChatState> = _state
 
     private val api: FcmApi = Retrofit.Builder()
-        //.baseUrl("http://10.0.2.2:8080/")
-        .baseUrl("http://172.20.10.3:3000/")
-        //.baseUrl("http://10.0.0.167:3000/")
+        //.baseUrl("http://10.0.2.2:3000/")
+        //.baseUrl("http://172.20.10.3:3000/")
+        .baseUrl("http://10.0.0.167:3000/")
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
         .create(FcmApi::class.java)

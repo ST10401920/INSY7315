@@ -169,8 +169,7 @@ data class SyncResponse(
 )
 
 data class PropertyFilter(
-    val minPrice: Int? = null,
-    val maxPrice: Int? = null,
+    val selectedPrice: Int? = null,  // Make sure it matches HomePage.kt
     val bedrooms: Int? = null,
     val amenities: List<String>? = null
 ) : Serializable
