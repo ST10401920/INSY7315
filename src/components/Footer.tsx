@@ -39,14 +39,14 @@ const Footer: React.FC = () => {
             </p>
           </div>
           <div>
-            <h3 style={{ fontWeight: "600", marginBottom: "16px" }}>Product</h3>
+            <h3 style={{ fontWeight: "600", marginBottom: "16px" }}>Apps</h3>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               <li style={{ marginBottom: "8px" }}>
                 <a
                   href="#"
                   style={{ color: "#9ca3af", textDecoration: "none" }}
                 >
-                  Security
+                  Android mobile app
                 </a>
               </li>
               <li style={{ marginBottom: "8px" }}>
@@ -54,44 +54,20 @@ const Footer: React.FC = () => {
                   href="#"
                   style={{ color: "#9ca3af", textDecoration: "none" }}
                 >
-                  Integrations
+                  Web app
                 </a>
               </li>
             </ul>
           </div>
           <div>
-            <h3 style={{ fontWeight: "600", marginBottom: "16px" }}>Company</h3>
+            <h3 style={{ fontWeight: "600", marginBottom: "16px" }}>Contact</h3>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               <li style={{ marginBottom: "8px" }}>
                 <a
                   href="#"
                   style={{ color: "#9ca3af", textDecoration: "none" }}
                 >
-                  About
-                </a>
-              </li>
-              <li style={{ marginBottom: "8px" }}>
-                <a
-                  href="#"
-                  style={{ color: "#9ca3af", textDecoration: "none" }}
-                >
-                  Blog
-                </a>
-              </li>
-              <li style={{ marginBottom: "8px" }}>
-                <a
-                  href="#"
-                  style={{ color: "#9ca3af", textDecoration: "none" }}
-                >
-                  Careers
-                </a>
-              </li>
-              <li style={{ marginBottom: "8px" }}>
-                <a
-                  href="#"
-                  style={{ color: "#9ca3af", textDecoration: "none" }}
-                >
-                  Contact
+                  Habitatech@gmail.com
                 </a>
               </li>
             </ul>
@@ -112,23 +88,7 @@ const Footer: React.FC = () => {
                   href="#"
                   style={{ color: "#9ca3af", textDecoration: "none" }}
                 >
-                  Documentation
-                </a>
-              </li>
-              <li style={{ marginBottom: "8px" }}>
-                <a
-                  href="#"
-                  style={{ color: "#9ca3af", textDecoration: "none" }}
-                >
-                  API Reference
-                </a>
-              </li>
-              <li style={{ marginBottom: "8px" }}>
-                <a
-                  href="#"
-                  style={{ color: "#9ca3af", textDecoration: "none" }}
-                >
-                  Status
+                  User guides
                 </a>
               </li>
             </ul>

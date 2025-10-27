@@ -183,7 +183,7 @@ const HomePage = () => {
       icon: Building2Icon,
       title: "Property Management Dashboard",
       description:
-        "Comprehensive web-based admin dashboard for managing all your properties and tenants in one place.",
+        "Comprehensive web-based admin dashboard for kPI's and manage users in one place.",
     },
     {
       icon: ShieldIcon,
@@ -199,9 +199,8 @@ const HomePage = () => {
     },
     {
       icon: CalculatorIcon,
-      title: "Lease & Invoice Automation",
-      description:
-        "Automated lease generation and invoice processing with intelligent arrears monitoring.",
+      title: "Lease Automation",
+      description: "lease generation and application processing.",
     },
     {
       icon: WrenchIcon,
@@ -231,7 +230,7 @@ const HomePage = () => {
 
   const benefits = [
     "Reduce administrative overhead by 60%",
-    "Automate rent collection and late payment tracking",
+    "Fast applications and lease processing",
     "Streamline maintenance request resolution",
     "Improve tenant satisfaction and retention",
   ];
@@ -744,16 +743,14 @@ const HomePage = () => {
               </p>
             </div>
             <div>
-              <h3 style={{ fontWeight: "600", marginBottom: "16px" }}>
-                Product
-              </h3>
+              <h3 style={{ fontWeight: "600", marginBottom: "16px" }}>Apps</h3>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 <li style={{ marginBottom: "8px" }}>
                   <a
                     href="#"
                     style={{ color: "#9ca3af", textDecoration: "none" }}
                   >
-                    Security
+                    Android Mobile App
                   </a>
                 </li>
                 <li style={{ marginBottom: "8px" }}>
@@ -761,14 +758,14 @@ const HomePage = () => {
                     href="#"
                     style={{ color: "#9ca3af", textDecoration: "none" }}
                   >
-                    Integrations
+                    Web App
                   </a>
                 </li>
               </ul>
             </div>
             <div>
               <h3 style={{ fontWeight: "600", marginBottom: "16px" }}>
-                Company
+                Contact
               </h3>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 <li style={{ marginBottom: "8px" }}>
@@ -776,31 +773,7 @@ const HomePage = () => {
                     href="#"
                     style={{ color: "#9ca3af", textDecoration: "none" }}
                   >
-                    About
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#"
-                    style={{ color: "#9ca3af", textDecoration: "none" }}
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#"
-                    style={{ color: "#9ca3af", textDecoration: "none" }}
-                  >
-                    Careers
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#"
-                    style={{ color: "#9ca3af", textDecoration: "none" }}
-                  >
-                    Contact
+                    Habitatech@gmail.com
                   </a>
                 </li>
               </ul>
@@ -823,23 +796,7 @@ const HomePage = () => {
                     href="#"
                     style={{ color: "#9ca3af", textDecoration: "none" }}
                   >
-                    Documentation
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#"
-                    style={{ color: "#9ca3af", textDecoration: "none" }}
-                  >
-                    API Reference
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#"
-                    style={{ color: "#9ca3af", textDecoration: "none" }}
-                  >
-                    Status
+                    User Guides
                   </a>
                 </li>
               </ul>
@@ -854,7 +811,7 @@ const HomePage = () => {
               color: "#9ca3af",
             }}
           >
-            <p>&copy; 2024 Nestify. All rights reserved.</p>
+            <p>&copy; 2025 Nestify. All rights reserved.</p>
           </div>
         </div>
       </footer>
