@@ -87,29 +87,6 @@ class HomePage : AppCompatActivity() {
         recyclerView = findViewById(R.id.rv_properties)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Search filtering
-//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                propertyAdapter.filterAndSearch(
-//                    searchText = newText,
-//                    maxPrice = currentFilter?.maxPrice,
-//                    bedrooms = currentFilter?.bedrooms,
-//                    amenitiesFilter = amenitiesToList(currentFilter?.amenities)
-//                )
-//                return true
-//            }
-//
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                propertyAdapter.filterAndSearch(
-//                    searchText = query,
-//                    maxPrice = currentFilter?.maxPrice,
-//                    bedrooms = currentFilter?.bedrooms,
-//                    amenitiesFilter = amenitiesToList(currentFilter?.amenities)
-//                )
-//                return true
-//            }
-//        })
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (::propertyAdapter.isInitialized) {
@@ -136,15 +113,12 @@ class HomePage : AppCompatActivity() {
             }
         })
 
-
-        // Open filter screen
         filterButton.setOnClickListener {
             val intent = Intent(this, Filter::class.java)
             intent.putExtra("FILTER_DATA", currentFilter)
             startActivityForResult(intent, 1001)
         }
 
-        // Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

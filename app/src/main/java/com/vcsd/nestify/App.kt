@@ -7,7 +7,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Apply the saved theme once when the app starts
         val prefs = getSharedPreferences("settings", MODE_PRIVATE)
         val isDarkMode = prefs.getBoolean("dark_mode", false)
 

@@ -44,11 +44,6 @@ class PropertyDetails : AppCompatActivity() {
             finish()
             return
         }
-//        if (propertyId == null) {
-//            Toast.makeText(this, "Property not found", Toast.LENGTH_SHORT).show()
-//            finish()
-//            return
-//        }
 
         propertyApi = RetrofitClient.noAuthPropertyApi
 
@@ -103,9 +98,6 @@ class PropertyDetails : AppCompatActivity() {
     }
 
     private fun fetchPropertyDetails(propertyId: String) {
-//        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-//        val accessToken = sharedPreferences.getString("access_token", null) ?: return
-
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 //val response = propertyApi.getPropertyById("Bearer $accessToken", propertyId)
@@ -143,10 +135,8 @@ class PropertyDetails : AppCompatActivity() {
 
         facilitiesLayout.removeAllViews()
 
-        // Add bedrooms first
         addFacility(facilitiesLayout, "bed", "${property.bedrooms ?: 0} Beds")
 
-        // Add all amenities dynamically
         property.amenities?.forEach { amenity ->
             addFacility(facilitiesLayout, amenity.lowercase(), amenity.capitalize())
         }

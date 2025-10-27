@@ -244,7 +244,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshTokenAndLogin(oldToken: String) {
-        // Firebase token refresh to keep biometrics working
         auth.currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val newToken = task.result?.token
@@ -344,13 +343,8 @@ class MainActivity : AppCompatActivity() {
                 if (idToken != null) {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
-                            val url = URL("http://10.0.2.2:3000/auth/firebase")
-                            //val url = URL("http://172.20.10.3:3000/auth/firebase")
-                            //val url = URL("http://10.0.0.167:3000/auth/firebase")
-                            //val url = URL("http://10.0.0.119:3000/auth/firebase")
-                            //val url = URL("https://prog7314-express.onrender.com/auth/firebase")
-                            //val url = URL("http://172.20.10.2:3000/auth/firebase")
-                            //val url = URL("http://172.20.10.2:3000/auth/firebase")
+                            //val url = URL("http://10.0.2.2:3000/auth/firebase")
+                            val url = URL("https://insy7315-api-deploy.onrender.com/auth/firebase")
                             val conn = url.openConnection() as HttpURLConnection
                             conn.requestMethod = "POST"
                             conn.setRequestProperty("Content-Type", "application/json")
@@ -436,14 +430,6 @@ class MainActivity : AppCompatActivity() {
             "unknown"
         }
     }
-
-    private fun saveToken(token: String) {
-        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-        sharedPreferences.edit(commit = true) {
-            putString("access_token", token)
-        }
-    }
-
     private fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }

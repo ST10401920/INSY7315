@@ -11,6 +11,6 @@ data class MaintenanceRequestEntity(
     val description: String,
     val category: String,
     val urgency: String,
-    val photos: List<String>, // store base64 images
-    val synced: Boolean = false // track if synced to server
+    val photos: List<String>,
+    val synced: Boolean = false
 )

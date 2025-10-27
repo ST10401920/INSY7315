@@ -106,7 +106,6 @@ class Settings : AppCompatActivity() {
                 }
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "No active rental found. Please log in again.", Toast.LENGTH_LONG).show()
             }
         }
         //----------code added for maintenance request--------------
@@ -234,7 +233,6 @@ class Settings : AppCompatActivity() {
                     sharedPrefs.edit().putBoolean("push_enabled", true).apply()
                     Toast.makeText(this, "Push notifications enabled", Toast.LENGTH_SHORT).show()
 
-                    // ✅ Get the FCM token and trigger test notification
                     Firebase.messaging.token.addOnCompleteListener { task ->
                         if (!task.isSuccessful) {
                             Toast.makeText(this, "Failed to get FCM token", Toast.LENGTH_SHORT).show()
@@ -282,109 +280,6 @@ class Settings : AppCompatActivity() {
             }
         }
     }
-
-
-
-//    private fun sendTestNotification(fcmToken: String) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                val url = URL("http://10.0.0.167:3000/notifications/send") // Adjust to your Node backend
-//                val conn = url.openConnection() as HttpURLConnection
-//                conn.requestMethod = "POST"
-//                conn.setRequestProperty("Content-Type", "application/json")
-//                conn.doOutput = true
-//
-//                val body = JSONObject().apply {
-//                    put("fcmToken", fcmToken)
-//                    put("title", "Push Notifications Enabled")
-//                    put("body", "Your device is ready to receive notifications 🎉")
-//                }
-//
-//                conn.outputStream.use { os -> os.write(body.toString().toByteArray()) }
-//
-//                val response = conn.inputStream.bufferedReader().readText()
-//                withContext(Dispatchers.Main) {
-//                    Toast.makeText(this@Settings, "Test notification sent!", Toast.LENGTH_SHORT).show()
-//                }
-//            } catch (e: Exception) {
-//                withContext(Dispatchers.Main) {
-//                    Toast.makeText(this@Settings, "Error sending test: ${e.message}", Toast.LENGTH_LONG).show()
-//                }
-//            }
-//        }
-//    }
-
-
-
-//    private fun setupPushNotifications() {
-//        pushSwitch = findViewById(R.id.switch_push_notifications)
-//
-//        val isPushEnabled = sharedPrefs.getBoolean("push_enabled", true)
-//        val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
-//        } else true
-//
-//        pushSwitch.isChecked = isPushEnabled && hasPermission
-//        pushSwitch.isEnabled = hasPermission || !isPushEnabled
-//
-//        pushSwitch.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-//                    ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-//                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-//                } else {
-//                    Firebase.messaging.isAutoInitEnabled = true
-//                    sharedPrefs.edit().putBoolean("push_enabled", true).apply()
-//                    Toast.makeText(this, "Push notifications enabled", Toast.LENGTH_SHORT).show()
-//                }
-//            } else {
-//                Firebase.messaging.isAutoInitEnabled = false
-//                sharedPrefs.edit().putBoolean("push_enabled", false).apply()
-//                Toast.makeText(this, "Push notifications disabled", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
-
-//    private fun setupLanguageSpinner() {
-//        languageSpinner = findViewById(R.id.languageSpinner)
-//        val languageMap = mapOf(
-//            getString(R.string.english) to "en",
-//            getString(R.string.afrikaans) to "af",
-//            getString(R.string.zulu) to "zu"
-//        )
-//        val languageNames = languageMap.keys.toList()
-//        languageSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languageNames)
-//
-//        val savedLanguageCode = sharedPrefs.getString("selected_language", "en")
-//        val savedIndex = languageNames.indexOfFirst { languageMap[it] == savedLanguageCode }
-//        languageSpinner.setSelection(savedIndex.takeIf { it >= 0 } ?: 0)
-//
-//        var isSpinnerInitialized = false
-//        languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-//                if (!isSpinnerInitialized) {
-//                    isSpinnerInitialized = true
-//                    return
-//                }
-//
-//                val selectedCode = languageMap[languageNames[position]] ?: "en"
-//                val currentCode = sharedPrefs.getString("selected_language", "en")
-//
-//                if (selectedCode != currentCode) {
-//                    sharedPrefs.edit().putString("selected_language", selectedCode).apply()
-//                    setLocale(selectedCode)
-//
-//                    val intent = Intent(this@Settings, HomePage::class.java)
-//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-//                    startActivity(intent)
-//                    finish()
-//                }
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>) {}
-//        }
-//    }
-
     private fun setupLanguageSpinner() {
         languageSpinner = findViewById(R.id.languageSpinner)
         val languageMap = mapOf(
@@ -425,9 +320,6 @@ class Settings : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
-
-
-
 
     private fun setupInfoRows() {
         findViewById<LinearLayout>(R.id.contactUsRow).setOnClickListener {

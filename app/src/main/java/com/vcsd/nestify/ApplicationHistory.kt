@@ -82,7 +82,6 @@ class ApplicationHistory : AppCompatActivity() {
                 val applications = appResponse.body()?.applications ?: emptyList()
                 Log.d("AppHistory", "Applications fetched: ${applications.size}")
 
-                // Fetch properties
                 val propertyIds = applications.map { it.property_id }.distinct()
                 propertyIds.forEach { id ->
                     try {
@@ -119,7 +118,6 @@ class ApplicationHistory : AppCompatActivity() {
             tvPropertyName.text = property?.name ?: "Property"
             tvStatus.text = app.status.replaceFirstChar { it.uppercase() }
 
-            // Use Glide to load the first image URL
             val imageUrl = property?.images?.firstOrNull()
             Glide.with(this)
                 .load(imageUrl)
@@ -138,7 +136,6 @@ class ApplicationHistory : AppCompatActivity() {
                 intent.putExtra("APPLICATION_ID", app.id)
                 intent.putExtra("PROPERTY_NAME", property?.name)
                 intent.putExtra("LEASE_STATUS", app.status)
-                //intent.putExtra("PROPERTY_IMAGE_URL", imageUrl)
                 startActivity(intent)
             }
 

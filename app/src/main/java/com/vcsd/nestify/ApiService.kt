@@ -52,15 +52,6 @@ interface LeaseApi {
 }
 
 data class LeasesResponse(val leases: List<LeaseData>)
-//data class LeaseData(
-//    val id: String,
-//    val propertyName: String?,
-//    val startDate: String,
-//    val endDate: String,
-//    val status: String,
-//    val lease_document: String?,
-//    val applicationId: Int
-//)
 
 data class LeaseData(
     val id: String,
@@ -111,19 +102,12 @@ data class ApplicationData(
     val lease: LeaseData? = null
 )
 
-//data class Application(
-//    val id: String,
-//    val propertyName: String,
-//    val status: String,
-//    val leaseUrl: String? = null
-//)
-
 data class Application(
-    val id: Int, // match the DB type
+    val id: Int,
     @SerializedName("property_id") val propertyId: String?,
     @SerializedName("first_name") val firstName: String?,
     @SerializedName("last_name") val lastName: String?,
-    val status: String? // application status (approved/rejected/etc.)
+    val status: String?
 )
 
 interface ChatApi {
@@ -161,15 +145,8 @@ data class Property(
     val available: Boolean
 )
 
-
-data class SyncResponse(
-    val accessToken: String,
-    val userId: String,
-    val email: String
-)
-
 data class PropertyFilter(
-    val selectedPrice: Int? = null,  // Make sure it matches HomePage.kt
+    val selectedPrice: Int? = null,
     val bedrooms: Int? = null,
     val amenities: List<String>? = null
 ) : Serializable
@@ -269,15 +246,6 @@ data class PropertyData(
 )
 //----------code added for maintenance request end------------
 
-//interface NotificationApi {
-//    @Headers(
-//        "Content-Type: application/json",
-//        "Authorization: key=e5tRK3d0SNek5WDVZBY_3J:APA91bGH7GQC3NqlUEMFJecSYq4vw0U8dSQ_qh7oyeWGyQ_HUkZeZshZ_lNvkvYD9_XeI9LaxynGVLxKelqH8Jluq4gyv2vs-fBcfm-MXuIrp8CDMiEmowo"
-//    )
-//    @POST("https://fcm.googleapis.com/fcm/send")
-//    suspend fun sendNotification(@Body payload: FcmApi.FcmMessage): Response<Unit>
-//}
-
 interface NotificationApi {
     @POST("notifications/send")
     suspend fun sendNotification(@Body payload: FcmApi.FcmMessage): Response<Unit>
@@ -292,7 +260,6 @@ data class AnnouncementModel(
     val message: String,
     val created_at: String
 )
-
 
 interface AnnouncementApi {
     @GET("announcements")

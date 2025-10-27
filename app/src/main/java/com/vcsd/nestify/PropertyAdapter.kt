@@ -72,7 +72,6 @@ class PropertyAdapter(
             val matchesSearch = searchText.isNullOrBlank() ||
                     property.name?.contains(searchText, ignoreCase = true) == true
 
-            // Price filtering logic
             val matchesPrice = if (selectedPrice == null) {
                 true
             } else {
@@ -99,13 +98,6 @@ class PropertyAdapter(
             matchesSearch && matchesPrice && matchesBedrooms && matchesAmenities
         }.toMutableList()
 
-        notifyDataSetChanged()
-    }
-
-    fun updateData(newProperties: List<Property>) {
-        allProperties.clear()
-        allProperties.addAll(newProperties)
-        properties = allProperties.toMutableList()
         notifyDataSetChanged()
     }
 }

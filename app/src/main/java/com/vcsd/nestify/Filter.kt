@@ -28,7 +28,7 @@ class Filter : AppCompatActivity() {
 
     private var selectedAmenities = mutableListOf<String>()
     private var selectedBedrooms: Int? = null
-    private var selectedPrice: Int? = null  // null means "any price"
+    private var selectedPrice: Int? = null
 
     private val priceRanges = listOf(5000, 6000, 7000, 8000, 9000, 10000)
 
@@ -41,7 +41,6 @@ class Filter : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_filter)
 
-        // Views
         priceSeekBar = findViewById(R.id.sb_price_range)
         tvSelectedPrice = findViewById(R.id.tv_selected_price)
         btnApply = findViewById(R.id.btn_apply)
@@ -58,22 +57,18 @@ class Filter : AppCompatActivity() {
         tvPool = findViewById(R.id.tv_category_pool)
         tvWifi = findViewById(R.id.tv_category_wifi)
 
-        // Bedroom toggles
         setupBedroomToggle(tvBedroom1, 1)
         setupBedroomToggle(tvBedroom2, 2)
         setupBedroomToggle(tvBedroom3, 3)
         setupBedroomToggle(tvBedroom4, 4)
         setupBedroomToggle(tvBedroom5, 5)
 
-        // Amenity toggles
         setupAmenityToggle(tvGym, "Gym")
         setupAmenityToggle(tvPool, "Pool")
         setupAmenityToggle(tvWifi, "WiFi")
 
-        // Back button
         backButton.setOnClickListener { finish() }
 
-        // SeekBar setup
         priceSeekBar.max = priceRanges.size - 1
         tvSelectedPrice.text = "Any"
         priceSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -86,7 +81,6 @@ class Filter : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        // Reset button
         btnReset.setOnClickListener {
             selectedPrice = null
             selectedBedrooms = null
@@ -109,7 +103,6 @@ class Filter : AppCompatActivity() {
             finish()
         }
 
-        // Apply button
         btnApply.setOnClickListener {
             val filter = PropertyFilter(
                 selectedPrice = selectedPrice,

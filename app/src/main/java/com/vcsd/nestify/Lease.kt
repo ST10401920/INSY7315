@@ -52,13 +52,11 @@ class Lease : AppCompatActivity() {
 
         applicationId = intent.getIntExtra("APPLICATION_ID", -1)
         leaseStatus = intent.getStringExtra("LEASE_STATUS")?.lowercase()
-        //propertyImageUrl = intent.getStringExtra("PROPERTY_IMAGE_URL")
         propertyImageUrl = intent.getStringExtra("PROPERTY_IMAGE_URL")
             ?: TempDataStore.propertyImageURL
         TempDataStore.propertyImageURL = null
         propertyName = intent.getStringExtra("PROPERTY_NAME") ?: "Property"
 
-        // ⚡ Register the ActivityResultLauncher once here (before STARTED)
         pickFileLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { fileUri ->
                 leaseId?.let { id ->
@@ -127,7 +125,6 @@ class Lease : AppCompatActivity() {
         tvProperty.text = propertyName
         tvStatus.text = "Status: ${leaseStatus?.replaceFirstChar { it.uppercase() }}"
 
-        // Load property image
         propertyImageUrl?.let { urlOrBase64 ->
             if (urlOrBase64.startsWith("data:image")) {
                 loadBase64Image(urlOrBase64, ivProperty)
@@ -140,7 +137,6 @@ class Lease : AppCompatActivity() {
             }
         } ?: ivProperty.setImageResource(R.drawable.placeholder)
 
-        // Open/download lease PDF
         btnView.setOnClickListener { openLeasePdf() }
         btnDownload.setOnClickListener { openLeasePdf() }
 

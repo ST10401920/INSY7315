@@ -48,35 +48,6 @@ class ApplicationForm : AppCompatActivity() {
         }
     }
 
-//    private fun setupBottomNavigation() {
-//        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
-//        bottomNavigation.setOnItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.navigation_home -> {
-//                    startActivity(Intent(this, HomePage::class.java))
-//                    true
-//                }
-//
-//                R.id.navigation_chatbot -> {
-//                    startActivity(Intent(this, Chatbot::class.java))
-//                    true
-//                }
-//
-//                R.id.navigation_dashboard -> {
-//                    startActivity(Intent(this, Dashboard::class.java))
-//                    true
-//                }
-//
-//                R.id.navigation_profile -> {
-//                    startActivity(Intent(this, Settings::class.java))
-//                    true
-//                }
-//
-//                else -> false
-//            }
-//        }
-//    }
-
     companion object {
         private val TAG = "ApplicationForm"
     }
@@ -90,16 +61,12 @@ class ApplicationForm : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_application_form)
 
-        // Adjust insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        //setupBottomNavigation()
-
-        // Bind views
         etFirstName = findViewById(R.id.et_first_name)
         etLastName = findViewById(R.id.et_last_name)
         etPhoneNumber = findViewById(R.id.et_phone_number)
@@ -113,22 +80,18 @@ class ApplicationForm : AppCompatActivity() {
         btnUploadDocs = findViewById(R.id.btn_upload_docs)
         tvUploadedDocs = findViewById(R.id.tv_uploaded_docs)
 
-        // Get propertyId from previous screen
         propertyId = intent.getStringExtra("PROPERTY_ID")
 
-        // Income source options
         val incomeSources = arrayOf("Salary", "Self-Employed", "Student", "Freelance", "Other")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, incomeSources)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerIncomeSource.adapter = adapter
 
 
-        // Upload button (placeholder)
         btnUploadDocs.setOnClickListener {
             pickFileLauncher.launch("application/pdf")
         }
 
-        // Submit button navigates to ScreenSubmit instead of sending API request
         btnSubmitApplication.setOnClickListener {
             if (validateInputs()) {
                 val intent = Intent(this, ScreenSubmit::class.java)

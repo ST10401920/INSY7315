@@ -58,52 +58,6 @@ class Register : AppCompatActivity() {
     private lateinit var credentialManager: CredentialManager
     private lateinit var getCredentialRequest: GetCredentialRequest
 
-//    private val requestPermissionLauncher = registerForActivityResult(
-//        ActivityResultContracts.RequestPermission(),
-//    ) { isGranted: Boolean ->
-//        if (isGranted) {
-//            Firebase.messaging.isAutoInitEnabled = true
-//            Toast.makeText(this, "Notifications enabled", Toast.LENGTH_SHORT).show()
-//        } else {
-//            Toast.makeText(this, "Notifications disabled", Toast.LENGTH_SHORT).show()
-//        }
-//
-//    }
-
-//    private fun askNotificationPermission() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            when {
-//                ContextCompat.checkSelfPermission(
-//                    this,
-//                    Manifest.permission.POST_NOTIFICATIONS
-//                ) == PackageManager.PERMISSION_GRANTED -> {
-//                    // Permission is already granted
-//                    Firebase.messaging.isAutoInitEnabled = true
-//                    Toast.makeText(this, "Notifications already enabled", Toast.LENGTH_SHORT).show()
-//                }
-//
-//                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
-//                    AlertDialog.Builder(this)
-//                        .setTitle("Notifications Permission")
-//                        .setMessage("CozySpaces would like to send you notifications about bookings and updates.")
-//                        .setPositiveButton("Allow") { _, _ ->
-//                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-//                        }
-//                        .setNegativeButton("No Thanks", null)
-//                        .show()
-//                }
-//
-//                else -> {
-//                    // First time request
-//                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-//                }
-//            }
-//        } else {
-//            // For Android < 13, no runtime permission required
-//            Firebase.messaging.isAutoInitEnabled = true
-//        }
-//    }
-
     companion object {
         private const val TAG = "Register"
     }
@@ -116,20 +70,6 @@ class Register : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-//        askNotificationPermission()
-
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
-//            val token = task.result
-//            val msg = getString(R.string.msg_token_fmt, token)
-//            Log.d(TAG, msg)
-//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-//        })
-
 
         setContentView(R.layout.activity_register)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -264,10 +204,8 @@ class Register : AppCompatActivity() {
                 if (idToken != null) {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
-                            val url = URL("http://10.0.2.2:3000/auth/firebase")
-                            //val url = URL("http://10.0.0.119:3000/auth/firebase")
-                            //val url = URL("https://prog7314-express.onrender.com/auth/firebase")
-                            //val url = URL("http://172.20.10.2:3000/auth/firebase")
+                            //val url = URL("http://10.0.2.2:3000/auth/firebase")
+                            val url = URL("https://insy7315-api-deploy.onrender.com/auth/firebase")
                             val conn = url.openConnection() as HttpURLConnection
                             conn.requestMethod = "POST"
                             conn.setRequestProperty("Content-Type", "application/json")
